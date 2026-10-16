@@ -1,0 +1,18 @@
+﻿namespace: Game
+className: AtomicAPIExtensions
+directory: Assets/Game/Scripts/APIKeys/
+aggressiveInlining: true
+unsafe: false
+entityType: IEntity
+
+imports:
+
+tags:
+  # Add your tags here
+  # - Player
+  # - Enemy
+
+values:
+  # Add your values here
+  # - health: float
+  # - position: Vector3
