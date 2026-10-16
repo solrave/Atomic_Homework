@@ -45,22 +45,17 @@
 | `SceneEntity_Debug` | `Scripts/Entities/Unity/SceneEntity_Debug.cs` | Partial: debug |
 | `SceneEntity_Unity` | `Scripts/Entities/Unity/SceneEntity_Unity.cs` | Partial: Unity callbacks |
 
-## Keys — Typed Keys
+## Names — Keys & Name Ids
 
 | Component | Path | Purpose |
 |-----------|------|------------|
-| `ValueKey` | `Scripts/Keys/Keys/ValueKey.cs` | Untyped value key (int hash) |
-| `ValueKey<TEntity,TValue>` | `Scripts/Keys/Keys/ValueKey'1.cs` | Типизированный ключ state |
-| `TagKey` | `Scripts/Keys/Keys/TagKey.cs` | Untyped tag key |
-| `TagKey<TEntity>` | `Scripts/Keys/Keys/TagKey'1.cs` | Типизированный ключ тега |
-| `EntityKeyStore` | `Scripts/Keys/EntityKeyStore.cs` | Реестр ключей, алгоритм хеширования |
-| `IEntityKeyAlgorithm` | `Scripts/Keys/Algorithms/IEntityKeyAlgorithm.cs` | Контракт алгоритма генерации int-ключей |
-| `Fnv1AEntityKeyAlgorithm` | `Scripts/Keys/Algorithms/Fnv1AEntityKeyAlgorithm.cs` | FNV-1a хеш для ключей |
-| `SequentialEntityKeyAlgorithm` | `Scripts/Keys/Algorithms/SequentialEntityKeyAlgorithm.cs` | Последовательные int-ключи |
-| `SHA256EntityKeyAlgorithm` | `Scripts/Keys/Algorithms/SHA256EntityKeyAlgorithm.cs` | SHA256-based ключи |
-| `EntityAPIAttribute` | `Scripts/Keys/Attributes/EntityAPIAttribute.cs` | Атрибут API-класса домена |
-| `ValueKeyAttribute` | `Scripts/Keys/Attributes/ValueKeyAttribute.cs` | Метаданные value key |
-| `TagKeyAttribute` | `Scripts/Keys/Attributes/TagKeyAttribute.cs` | Метаданные tag key |
+| `EntityNames` | `Scripts/Names/EntityNames.cs` | `NameToId` / `IdToName` — int-id для тегов и values (используется сгенерированным API) |
+| `ValueKey<T>`, `ValueKey<E,T>` | `Scripts/Names/ValueKey.cs` | Типизированный ключ value (struct), для ручных ключей |
+| `TagKey`, `TagKey<E>` | `Scripts/Names/TagKey.cs` | Типизированный ключ тега (struct) |
+| `IEntityNameAlgorithm` | `Scripts/Names/Algorithms/IEntityNameAlgorithm.cs` | Контракт алгоритма name → id |
+| `Fnv1AEntityNameAlgorithm` | `Scripts/Names/Algorithms/Fnv1AEntityNameAlgorithm.cs` | FNV-1a хеш |
+| `SequentialEntityNameAlgorithm` | `Scripts/Names/Algorithms/SequentialEntityNameAlgorithm.cs` | Последовательные id |
+| `SHA256EntityNameAlgorithm` | `Scripts/Names/Algorithms/SHA256EntityNameAlgorithm.cs` | SHA256-based id |
 
 ## Installers — composition root entity
 
@@ -70,7 +65,6 @@
 | `IEntityInstaller<T>` | `Scripts/Installers/IEntityInstaller`1.cs` | Типизированный installer |
 | `SceneEntityInstaller` | `Scripts/Installers/SceneEntityInstaller.cs` | MonoBehaviour installer (non-generic) |
 | `SceneEntityInstaller<T>` | `Scripts/Installers/SceneEntityInstaller`1.cs` | MonoBehaviour installer для typed entity |
-| `SceneEntityInstallerConfigurable` | `Scripts/Installers/SceneEntityInstallerConfigurable.cs` | Installer с конфигурируемыми аспектами |
 | `ScriptableEntityInstaller` | `Scripts/Installers/ScriptableEntityInstaller.cs` | SO installer (non-generic) |
 | `ScriptableEntityInstaller<T>` | `Scripts/Installers/ScriptableEntityInstaller`1.cs` | SO installer для typed entity |
 
@@ -87,7 +81,7 @@
 | `IEntityLateTick` | `Scripts/Behaviours/IEntityLateTick.cs` | `LateTick(IEntity, float deltaTime)` |
 | `IEntityGizmos` | `Scripts/Behaviours/IEntityGizmos.cs` | `OnDrawGizmos(IEntity)` |
 | `IEntityDispose` | `Scripts/Behaviours/IEntityDispose.cs` | `Dispose(IEntity)` — cleanup |
-| `EditModeBehaviourAttribute` | `Scripts/Behaviours/Attributes/EditModeBehaviourAttribute.cs` | Запуск behaviour в Edit Mode |
+| `RunInEditModeAttribute` | `Scripts/Attributes/RunInEditModeAttribute.cs` | Запуск behaviour в Edit Mode |
 
 ## Lifecycle — Phase Dispatch
 
@@ -118,11 +112,9 @@
 | `EntityWorld<T>` | `Scripts/World/Core/EntityWorld`1.cs` | Типизированный world |
 | `SceneEntityWorld` | `Scripts/World/Unity/SceneEntityWorld.cs` | MonoBehaviour world |
 | `SceneEntityWorld<T>` | `Scripts/World/Unity/SceneEntityWorld`1.cs` | Типизированный scene world |
-| `SceneEntityWorldSingleton` | `Scripts/World/Unity/SceneEntityWorldSingleton.cs` | Singleton world |
 | `SceneEntityWorld_Inspector` | `Scripts/World/Unity/SceneEntityWorld_Inspector.cs` | Inspector partial |
 | `SceneEntityWorld`1_Collection` | `Scripts/World/Unity/SceneEntityWorld`1_Collection.cs` | Partial: коллекция entity |
 | `SceneEntityWorld`1_Lifecycle` | `Scripts/World/Unity/SceneEntityWorld`1_Lifecycle.cs` | Partial: lifecycle world |
-| `SceneEntityWorld`1_Singleton` | `Scripts/World/Unity/SceneEntityWorld`1_Singleton.cs` | Partial: singleton |
 | `SceneEntityWorld`1_Static` | `Scripts/World/Unity/SceneEntityWorld`1_Static.cs` | Partial: static API |
 | `SceneEntityWorld`1_UnityCallbacks` | `Scripts/World/Unity/SceneEntityWorld`1_UnityCallbacks.cs` | Partial: Unity Update/FixedUpdate |
 | `Extensions` | `Scripts/World/Extensions.cs` | Extension-методы world |
@@ -145,8 +137,8 @@
 |-----------|------|------------|
 | `EntityFilter` | `Scripts/Filters/EntityFilter.cs` | Фильтр по triggers |
 | `EntityFilter<T>` | `Scripts/Filters/EntityFilter`1.cs` | Typed фильтр |
-| `DerivedEntityFilter` | `Scripts/Filters/DerivedEntityFilter.cs` | Фильтр-наследник |
-| `DerivedEntityFilter<T>` | `Scripts/Filters/DerivedEntityFilter`1.cs` | Typed derived filter |
+| `TypedEntityFilter` | `Scripts/Filters/TypedEntityFilter.cs` | Фильтр по типу entity |
+| `TypedEntityFilter<T>` | `Scripts/Filters/TypedEntityFilter`1.cs` | Typed type-filter |
 | `IEntityTrigger` | `Scripts/Filters/Triggers/IEntityTrigger.cs` | Контракт trigger-условия |
 | `IEntityTrigger<T>` | `Scripts/Filters/Triggers/IEntityTrigger`1.cs` | Typed trigger |
 | `InlineEntityTrigger` | `Scripts/Filters/Triggers/InlineEntityTrigger.cs` | Delegate → trigger |
@@ -168,10 +160,16 @@
 | `IEntityFactory<T>` | `Scripts/Factories/Interfaces/IEntityFactory`1.cs` | Typed фабрика |
 | `IMultiEntityFactory` | `Scripts/Factories/Interfaces/IMultiEntityFactory.cs` | Фабрика нескольких типов |
 | `IMultiEntityFactory<T>` | `Scripts/Factories/Interfaces/IMultiEntityFactory`1.cs` | Typed multi-factory |
-| `EntityFactory` | `Scripts/Factories/Unity/EntityFactory.cs` | Unity factory |
-| `EntityFactory<T>` | `Scripts/Factories/Unity/EntityFactory`1.cs` | Instantiate + install |
-| `EntityCatalog` | `Scripts/Factories/Unity/EntityCatalog.cs` | Каталог prefab → factory |
-| `EntityCatalog<T>` | `Scripts/Factories/Unity/EntityCatalog`1.cs` | Typed каталог |
+| `InlineEntityFactory` | `Scripts/Factories/Core/InlineEntityFactory.cs` | Delegate → factory |
+| `InlineEntityFactory<T>` | `Scripts/Factories/Core/InlineEntityFactory`1.cs` | Typed inline factory |
+| `MultiEntityFactory` | `Scripts/Factories/Core/MultiEntityFactory.cs` | Фабрика нескольких типов по ключу |
+| `MultiEntityFactory<T>` | `Scripts/Factories/Core/MultiEntityFactory`1.cs` | Typed multi-factory |
+| `SceneEntityFactory` | `Scripts/Factories/Unity/SceneEntityFactory.cs` | MonoBehaviour factory |
+| `SceneEntityFactory<T>` | `Scripts/Factories/Unity/SceneEntityFactory`1.cs` | Typed scene factory |
+| `ScriptableEntityFactory` | `Scripts/Factories/Unity/ScriptableEntityFactory.cs` | SO factory |
+| `ScriptableEntityFactory<T>` | `Scripts/Factories/Unity/ScriptableEntityFactory`1.cs` | Typed SO factory |
+| `ScriptableMultiEntityFactory` | `Scripts/Factories/Unity/ScriptableMultiEntityFactory.cs` | SO multi-factory |
+| `ScriptableMultiEntityFactory<T>` | `Scripts/Factories/Unity/ScriptableMultiEntityFactory`1.cs` | Typed SO multi-factory |
 
 ## Pooling — Entity Pools
 
@@ -205,20 +203,6 @@
 | `ScriptableEntityAspect<T>` | `Scripts/Aspects/ScriptableEntityAspect`1.cs` | Typed SO аспект |
 | `Extensions` | `Scripts/Aspects/Extensions.cs` | Extension-методы аспектов |
 
-## Systems — Entity Update Systems
-
-| Component | Path | Purpose |
-|-----------|------|------------|
-| `EntitySystem` | `Scripts/Systems/EntitySystem.cs` | Система обновления entity |
-| `EntitySystemBase` | `Scripts/Systems/EntitySystemBase.cs` | Базовый класс системы |
-| `PriorityEntitySystem` | `Scripts/Systems/PriorityEntitySystem.cs` | Система с приоритетами |
-| `EntityUpdater` | `Scripts/Systems/Updaters/EntityUpdater.cs` | Updater без приоритетов |
-| `EntityUpdaterBase` | `Scripts/Systems/Updaters/EntityUpdaterBase.cs` | Базовый updater |
-| `PriorityEntityUpdater` | `Scripts/Systems/Updaters/PriorityEntityUpdater.cs` | Updater с High/Mid/Low buckets |
-| `EntityUpdatePriority` | `Scripts/Systems/Settings/EntityUpdatePriority.cs` | Enum приоритетов |
-| `EntityUpdateSettings` | `Scripts/Systems/Settings/EntityUpdateSettings.cs` | Настройки update |
-| `PriorityEntityUpdateSettings` | `Scripts/Systems/Settings/PriorityEntityUpdateSettings.cs` | Настройки priority update |
-
 ## UI — Entity View Layer
 
 | Component | Path | Purpose |
@@ -226,37 +210,44 @@
 | `EntityView` | `Scripts/UI/View/EntityView.cs` | MonoBehaviour view для entity |
 | `EntityView<T>` | `Scripts/UI/View/EntityView`1.cs` | Typed view |
 | `EntityView`1_Gizmos` | `Scripts/UI/View/EntityView`1_Gizmos.cs` | Gizmos partial |
-| `Extensions` | `Scripts/UI/View/Extensions.cs` | View extensions |
+| `EntityView`1_Static` | `Scripts/UI/View/EntityView`1_Static.cs` | Static partial |
 | `EntityCollectionView` | `Scripts/UI/Collection/EntityCollectionView.cs` | View для коллекции entity |
 | `EntityCollectionView<T>` | `Scripts/UI/Collection/EntityCollectionView`1.cs` | Typed collection view |
 | `EntityViewPool` | `Scripts/UI/Pool/EntityViewPool.cs` | Пул view |
 | `EntityViewPool<T>` | `Scripts/UI/Pool/EntityViewPool`1.cs` | Typed view pool |
 | `EntityViewCatalog` | `Scripts/UI/Catalog/EntityViewCatalog.cs` | Каталог view prefab |
 | `EntityViewCatalog<T>` | `Scripts/UI/Catalog/EntityViewCatalog`1.cs` | Typed view catalog |
-| `EntityWorldView` | `Scripts/UI/World/EntityWorldView.cs` | View всего world |
-| `EntityWorldView<T>` | `Scripts/UI/World/EntityWorldView`1.cs` | Typed world view |
-| `EntityWorldViewSingleton` | `Scripts/UI/World/EntityWorldViewSingleton.cs` | Singleton world view |
-| `EntityWorldViewSingleton<T>` | `Scripts/UI/World/EntityWorldViewSingleton`1.cs` | Typed singleton |
 
 ## Baking — Editor Bake
 
 | Component | Path | Purpose |
 |-----------|------|------------|
-| `EntityBaker` | `Scripts/Baking/EntityBaker.cs` | Bake scene entities |
-| `EntityBaker<T>` | `Scripts/Baking/EntityBaker`1.cs` | Typed baker |
-| `EntityBakerOptimized` | `Scripts/Baking/EntityBakerOptimized.cs` | Оптимизированный baker |
-| `EntityBakerOptimized<T>` | `Scripts/Baking/EntityBakerOptimized`1.cs` | Typed optimized baker |
-| `EntityBaker`1_Editor` | `Scripts/Baking/EntityBaker`1_Editor.cs` | Editor partial |
-| `EntityBaker`1_Gizmos` | `Scripts/Baking/EntityBaker`1_Gizmos.cs` | Gizmos partial |
-| `EntityBaker`1_Static` | `Scripts/Baking/EntityBaker`1_Static.cs` | Static partial |
+| `SceneEntityBaker` | `Scripts/Baking/SceneEntityBaker.cs` | Bake scene object → entity |
+| `SceneEntityBaker<T>` | `Scripts/Baking/SceneEntityBaker`1.cs` | Typed baker |
+| `SceneEntityBakerOptimized<T>` | `Scripts/Baking/SceneEntityBakerOptimized`1.cs` | Typed optimized baker |
+| `SceneEntityBaker`1_Editor` | `Scripts/Baking/SceneEntityBaker`1_Editor.cs` | Editor partial |
+| `SceneEntityBaker`1_Gizmos` | `Scripts/Baking/SceneEntityBaker`1_Gizmos.cs` | Gizmos partial |
+| `SceneEntityBaker`1_Static` | `Scripts/Baking/SceneEntityBaker`1_Static.cs` | Static partial |
 
-## Codegen — Domain Generation
+## Codegen — Editor Tools (used in this project)
 
 | Component | Path | Purpose |
 |-----------|------|------------|
-| `EntityDomainBuilder` | `Scripts/Codegen/EntityDomainBuilder.cs` | Editor: генерация typed domain |
-| `EntityDomainBuilderGenerator` | `Scripts/Codegen/EntityDomainBuilderGenerator.cs` | Генератор кода домена |
-| `EntityDomainSnapshot` | `Scripts/Codegen/EntityDomainSnapshot.cs` | Snapshot конфигурации домена |
+| `EntityAPIManager` | `Editor/EntityAPI/EntityAPIManager.cs` | Меню `Tools/Atomic/Entities/Compile Entity API`, `Refresh Entity API`, `Assets/Create/Atomic/Entities/Entity API`; авто-обновление |
+| `EntityAPIGenerator` | `Editor/EntityAPI/EntityAPIGenerator.cs` | `.atomic` → static class: `Has/Add/Del{Tag}Tag`, `Get/Ref/TryGet/Add/Has/Del/Set{Value}` |
+| `EntityAPIAsset` | `Editor/EntityAPI/EntityAPIAsset.cs` | Парсер `.atomic` YAML (namespace, className, directory, entityType, imports, tags, values) |
+| `EntityAPISettings` | `Editor/EntityAPI/EntityAPISettings.cs` | `autoRefresh`, `autoRefreshPeriod` |
+| `EntityDomainWindow` | `Editor/EntityDomain/EntityDomainWindow.cs` | `Window/Atomic/Entities/Entity Domain Generator` — генерация домена |
+| `EntityDomainGenerator` | `Editor/EntityDomain/EntityDomainGenerator.cs` | Оркестратор генерации домена |
+| `EntityInterfaceGenerator` | `Editor/EntityDomain/Entity/EntityInterfaceGenerator.cs` | `I{Domain} : IEntity` |
+| `EntityConcreteGenerator` | `Editor/EntityDomain/Entity/EntityConcreteGenerator.cs` | Concrete class (Entity / EntitySingleton / SceneEntity / SceneEntitySingleton) |
+| `EntityBehaviourGenerator` | `Editor/EntityDomain/Behaviours/EntityBehaviourGenerator.cs` | `{Domain}Init/Enable/Disable/Dispose/Tick/FixedTick/LateTick/Gizmos` |
+| `EntityInstallerGenerator` | `Editor/EntityDomain/Installers/EntityInstallerGenerator.cs` | Scene/Scriptable installer base classes |
+| `EntityAspectGenerator` | `Editor/EntityDomain/Aspects/EntityAspectGenerator.cs` | Aspect base classes |
+| `EntityPoolGenerator` / `EntityFactoryGenerator` | `Editor/EntityDomain/Pools/EntityPoolGenerator.cs`, `Editor/EntityDomain/Factories/EntityFactoryGenerator.cs` | Пулы и фабрики домена |
+| `EntityViewGenerator` | `Editor/EntityDomain/View/EntityViewGenerator.cs` | View / collection view / catalog / pool домена |
+| `EntityDomainBuilder` | `Scripts/Codegen/EntityDomainBuilder.cs` | Закомментирован в 2.0.0 (fluent API домена) — не использовать |
+| `EntityAPIAttribute` | `Scripts/Codegen/EntityAPIAttribute.cs` | Закомментирован в 2.0.0 — не использовать |
 
 ## Bootstrap & Registry
 
@@ -269,5 +260,5 @@
 
 | Component | Path | Purpose |
 |-----------|------|------------|
-| `Args` | `Scripts/Utils/Args.cs` | Утилита аргументов |
+| `TypeCache` | `Scripts/Utils/TypeCache.cs` | Кэш типов (reflection) |
 | `InternalUtils` | `Scripts/Utils/InternalUtils.cs` | Внутренние утилиты |

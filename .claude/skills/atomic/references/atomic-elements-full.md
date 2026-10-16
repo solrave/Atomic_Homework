@@ -16,9 +16,9 @@
 | `CompositeAction` | `Scripts/Actions/Core/CompositeAction.cs` | Последовательный запуск `IAction[]` |
 | `LogAction` | `Scripts/Actions/Core/LogAction.cs` | Debug: лог при invoke |
 | `Extensions` | `Scripts/Actions/Extensions.cs` | Extension-методы actions |
-| `SceneAction` | `Scripts/Actions/Unity/SceneAction.cs` | MonoBehaviour wrapper `IAction` |
+| `SceneActionAbstract` | `Scripts/Actions/Unity/SceneActionAbstract.cs` | Базовый MonoBehaviour `IAction` |
+| `SceneActionDefault` | `Scripts/Actions/Unity/SceneActionDefault.cs` | MonoBehaviour action, настраиваемый в Inspector |
 | `SceneActionComposite` | `Scripts/Actions/Unity/SceneActionComposite.cs` | MonoBehaviour composite actions |
-| `SceneActionConfigurable` | `Scripts/Actions/Unity/SceneActionConfigurable.cs` | Inspector-configurable action sequence |
 | `SceneActionReference` | `Scripts/Actions/Unity/SceneActionReference.cs` | Ссылка на SceneAction |
 
 ## Command — conditions + action
@@ -29,8 +29,6 @@
 | `ICommand<T>` … `ICommand<T1,T2,T3,T4>` | `Scripts/Command/ICommand.cs` | Параметризованные command |
 | `Command` | `Scripts/Command/Command.cs` | Реализация: AND conditions → action → `OnEvent` |
 | `Command<T>` … `Command<T1,T2,T3,T4>` | `Scripts/Command/Command.cs` | Параметризованные реализации |
-| `ThreadSafeCommand` | `Scripts/Command/ThreadSafeCommand.cs` | Thread-safe вариант с flush |
-| `ThreadSafeCommand<T>` … | `Scripts/Command/ThreadSafeCommand.cs` | Typed thread-safe |
 | `Extensions` | `Scripts/Command/Extensions.cs` | `AddCondition(IFunction)`, `AddAction(IAction)` |
 
 ## Functions — query / predicate (IFunction)
@@ -43,9 +41,6 @@
 | `InlineFunction<R>` | `Scripts/Functions/InlineFunction.cs` | Delegate → `IFunction` |
 | `InlineFunction<T,R>` … | `Scripts/Functions/InlineFunction.cs` | Typed inline function |
 | `InlinePredicate` / `InlinePredicate<T>` | `Scripts/Functions/InlinePredicate.cs` | Delegate → predicate |
-| `AndPredicate` | `Scripts/Functions/AndPredicate.cs` | AND двух предикатов |
-| `OrPredicate` | `Scripts/Functions/OrPredicate.cs` | OR двух предикатов |
-| `NotPredicate` | `Scripts/Functions/NotPredicate.cs` | NOT предиката |
 | `Extensions` | `Scripts/Functions/Extensions.cs` | Extension-методы functions |
 
 ## Expressions — вычисляемые выражения
@@ -83,7 +78,6 @@
 | `ISignal` / `ISignal<T>` … | `Scripts/Events/ISignal.cs` | Контракт сигнала с подпиской |
 | `IEvent` / `IEvent<T>` … | `Scripts/Events/IEvent.cs` | Контракт event (invoke + subscribe) |
 | `Event` / `Event<T>` … | `Scripts/Events/Event.cs` | Реализация event, `Invoke()` → subscribers |
-| `ThreadSafeEvent` | `Scripts/Events/ThreadSafeEvent.cs` | Thread-safe event |
 | `InlineSignal` | `Scripts/Events/InlineSignal.cs` | Delegate → signal |
 | `Subscription` | `Scripts/Events/Subscription.cs` | Handle подписки с dispose |
 | `Extensions` | `Scripts/Events/Extensions.cs` | `Subscribe`/`Unsubscribe` extensions |
@@ -102,7 +96,6 @@
 | `IVariable<T>` | `Scripts/Variables/Base/IVariable.cs` | Контракт переменной `.Value` |
 | `Variable<T>` | `Scripts/Variables/Base/Variable.cs` | Базовая реализация |
 | `InlineVariable<T>` | `Scripts/Variables/Base/InlineVariable.cs` | Inline variable |
-| `ThreadSafeVariable<T>` | `Scripts/Variables/Base/ThreadSafeVariable.cs` | Thread-safe variable |
 | `BoolVariable` | `Scripts/Variables/Base/Common/BoolVariable.cs` | Bool variable |
 | `IntVariable` | `Scripts/Variables/Base/Common/IntVariable.cs` | Int variable |
 | `FloatVariable` | `Scripts/Variables/Base/Common/FloatVariable.cs` | Float variable |
@@ -124,7 +117,6 @@
 | `IReactiveVariable<T>` | `Scripts/Variables/Reactive/IReactiveVariable.cs` | Reactive: `.Value` + `OnEvent` |
 | `ReactiveVariable<T>` | `Scripts/Variables/Reactive/ReactiveVariable.cs` | Generic reactive variable |
 | `InlineReactiveVariable<T>` | `Scripts/Variables/Reactive/InlineReactiveVariable.cs` | Inline reactive |
-| `ThreadSafeReactiveVariable<T>` | `Scripts/Variables/Reactive/ThreadSafeReactiveVariable.cs` | Thread-safe reactive |
 | `ReactiveBool` | `Scripts/Variables/Reactive/Common/ReactiveBool.cs` | Reactive bool |
 | `ReactiveInt` | `Scripts/Variables/Reactive/Common/ReactiveInt.cs` | Reactive int |
 | `ReactiveFloat` | `Scripts/Variables/Reactive/Common/ReactiveFloat.cs` | Reactive float |
@@ -196,7 +188,6 @@
 | `ICooldown` | `Scripts/Time/Cooldown/ICooldown.cs` | Контракт: Tick, Progress, IsCompleted, Reset |
 | `Cooldown` | `Scripts/Time/Cooldown/Cooldown.cs` | Fill-and-reset таймер |
 | `RandomCooldown` | `Scripts/Time/Cooldown/RandomCooldown.cs` | Cooldown со случайной длительностью |
-| `ThreadSafeCooldown` | `Scripts/Time/Cooldown/ThreadSafeCooldown.cs` | Thread-safe cooldown |
 
 ## Time — Timer
 
@@ -256,17 +247,14 @@
 | `CollisionEvents` | `Scripts/UnityComponents/CollisionEvents.cs` | OnCollision → Event |
 | `CollisionEvents2D` | `Scripts/UnityComponents/CollisionEvents2D.cs` | 2D collision events |
 | `AnimationEvents` | `Scripts/UnityComponents/AnimationEvents.cs` | Animation callbacks → Event |
-| `RendererEvents` | `Scripts/UnityComponents/RendererEvents.cs` | Renderer visibility events |
 
 ## Utils
 
 | Component | Path | Purpose |
 |-----------|------|------------|
-| `MainThreadDispatcher` | `Scripts/Utils/MainThreadDispatcher.cs` | Flush thread-safe ops на main thread |
 | `AtomicUtils` | `Scripts/Utils/AtomicUtils.cs` | Общие утилиты |
 | `InternalUtils` | `Scripts/Utils/InternalUtils.cs` | Внутренние утилиты |
 | `Extensions` | `Scripts/Utils/Extensions.cs` | Utils extensions |
-| `IRandomizer` | `Scripts/Utils/IRandomizer.cs` | Контракт random |
 | `Optional<T>` | `Scripts/Utils/Optional.cs` | Optional value wrapper |
 | `Reference<T>` | `Scripts/Utils/Reference.cs` | Mutable reference wrapper |
 | `EqualityComparer` | `Scripts/Utils/EqualityComparer.cs` | Custom equality |

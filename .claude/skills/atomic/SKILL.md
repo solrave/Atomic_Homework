@@ -1,52 +1,53 @@
 ---
 name: atomic
-description: Atomic Framework (Entities, Elements, Events) reference for Unity/C#. Use when writing or reviewing IGameContext / IGameEntity code, installers, entity values/tags/behaviours, reactive state (IValue, IVariable, ReactiveVariable), Atomic events, Action/Command/Function/Request, GameContextAPI / GameEntityAPI keys, or debugging entity lifecycle.
+description: Atomic Framework 2.0 (Entities, Elements) reference for this Unity top-down zombie shooter. Use when writing or reviewing IGameEntity / IGameContext code, SceneEntity prefabs, SceneEntityInstaller installers, entity values/tags/behaviours, .atomic Entity API files, Entity Domain Generator output, reactive state (IValue, IVariable, ReactiveInt/ReactiveVector3), Event/Subscription, Cooldown/Timer, Command/Request, aspects, MVP presenters over entity state, or debugging entity lifecycle.
 ---
 
 # Atomic Framework
 
-> **Scope**: Atomic Framework (Entities, Elements, Events) — entity-state-behaviour pattern, typed API keys via source generation, scene installers, reactive state, lifecycle behaviours, flow primitives (Action/Command/Function/Request), and project-specific GameContext / GameEntity domains.
-> **Load when**: authoring or reviewing IGameContext / IGameEntity code, registering values and behaviours in installers, subscribing to reactive state or Atomic events, choosing Atomic flow components, adding GameContextAPI / GameEntityAPI keys, debugging entity lifecycle or state access.
-> **References**: `references/atomic-entities-quickref.md` (quick lookup), `references/atomic-entities-full.md` (exhaustive index), `references/atomic-elements-quickref.md` (quick lookup), `references/atomic-elements-full.md` (exhaustive index), `references/atomic-events-full.md` (exhaustive index)
-> **Upstream**: https://github.com/StarKRE22/Atomic — Docs/Entities/Manual.md, Docs/Elements/*/Manual.md, Docs/Events/Manual.md (synced against this repo's `main` branch)
+> **Scope**: Atomic Framework 2.0.0 (`Assets/Plugins/Atomic/`, modules Entities + Elements) — entity-state-behaviour pattern, typed API generated from `.atomic` files, scene entities and installers, reactive state, lifecycle behaviours, flow primitives (Action/Command/Function/Request), and this project's GameEntity / GameContext domains.
+> **Load when**: authoring or reviewing gameplay code for the shooter (character, zombies, weapons, bullets, pickups, trigger zones, kill counter), registering values and behaviours in installers, editing `.atomic` API files, subscribing to reactive state or events, choosing Atomic flow components, writing UI presenters, debugging entity lifecycle or state access.
+> **References**: `references/atomic-entities-quickref.md` (quick lookup), `references/atomic-entities-full.md` (exhaustive index), `references/atomic-elements-quickref.md` (quick lookup), `references/atomic-elements-full.md` (exhaustive index)
+> **Upstream**: https://github.com/StarKRE22/Atomic — plugin version **2.0.0** (`Assets/Plugins/Atomic/package.json`). Upstream docs may describe APIs (`[EntityAPI]` / `[EntityExtensionsAPI]` source-generator attributes, `Atomic.Events`) that are **not** in this version — always verify against the plugin sources.
+> **Game spec**: `HomeworkObjectives/Homework.docx` (same text as `AtomicMD/Homework.pdf`).
 
 ---
 
 ## Core Concepts
 
-Atomic Framework is a Unity/C# toolkit under `Assets/Plugins/Atomic/` with three main modules:
+Atomic Framework is a Unity/C# toolkit under `Assets/Plugins/Atomic/` with two modules:
 
 | Module | Namespace | Purpose |
 |--------|-----------|---------|
-| **Entities** | `Atomic.Entities` | Entity container — tags, typed values, behaviours, lifecycle, installers, worlds |
+| **Entities** | `Atomic.Entities` | Entity container — tags, typed values, behaviours, lifecycle, installers, aspects, worlds, codegen tools |
 | **Elements** | `Atomic.Elements` | Reactive primitives — values, variables, collections, events, timers, cooldowns, actions, commands, requests |
-| **Events** | `Atomic.Events` | Standalone typed event-bus module (available; project gameplay events prefer `Atomic.Elements.Event` on entity values) |
+
+There is **no** `Atomic.Events`, `Atomic.Contexts` or `Atomic.Presenters` module in this version. "Contexts" from the game spec are implemented as a scene-singleton entity domain (`GameContext`); presenters are plain C# / MonoBehaviour MVP classes.
 
 The core pattern is **Entity–State–Behaviour**:
 
 - **State** — typed data attached to an entity via generated accessor methods (`Add{Name}` / `Get{Name}` / `Set{Name}`)
 - **Tags** — lightweight categorization (`Add{Name}Tag` / `Has{Name}Tag`)
-- **Behaviours** — modular logic implementing lifecycle interfaces (`IEntityInit`, `IEntityTick`, etc., or their domain-typed equivalents)
+- **Behaviours** — modular logic implementing lifecycle interfaces (`IEntityInit`, `IEntityTick`, …, or their domain-typed equivalents)
 
-Prefer small, composable behaviours over monolithic entity classes. Gameplay rules belong in behaviours or static use cases — not in entity subclasses.
+Prefer small, composable behaviours over monolithic entity classes. Gameplay rules belong in behaviours or static use cases — not in entity subclasses or MonoBehaviours. The spec grades: procedural style, separation of data and logic, reusable mechanics, SOLID, MVP.
 
-**Data abstraction rule**: always work with data through reference-type wrappers (`IValue<T>` / `IVariable<T>`), never through raw fields. This removes tight coupling to storage and simplifies testing and multiplayer.
+**Data abstraction rule**: always work with data through reference-type wrappers (`IValue<T>` / `IVariable<T>`), never through raw fields. This removes tight coupling to storage and simplifies testing.
 
 - `IValue<T>` — read-only wrapper (`Value { get; }`). Use for constants (`Const<T>`, `ScriptableConst<T>`) or read-only projections of externally-owned data.
-- `IVariable<T>` — extends `IValue<T>`, adds a setter (`Value { get; set; }`). Use for mutable entity state (`Variable<T>`, `ReactiveVariable<T>`, `InlineVariable<T>`).
-- Reactive versions (`IReactiveValue<T>`, `IReactiveVariable<T>`) add an `OnEvent` change notification.
+- `IVariable<T>` — extends `IValue<T>`, adds a setter. Use for mutable entity state (`Variable<T>`, `ReactiveVariable<T>`, `InlineVariable<T>`).
+- Reactive versions (`IReactiveValue<T>`, `IReactiveVariable<T>`) are also `ISignal<T>` — they expose `OnEvent` change notification.
 
 ---
 
 ## Component Lookup Workflow
 
-When a task requires an Atomic Framework component and you are unsure which type to use:
+When a task requires an Atomic component and you are unsure which type to use:
 
-1. **Identify the module** — `Entities` (entity container/lifecycle), `Elements` (reactive state + flow), or `Events` (standalone bus; rarely used in this project).
-2. **Open the quickref first** — search `atomic-entities-quickref.md` or `atomic-elements-quickref.md` for a matching component by name or purpose.
-3. **If not found in quickref** — open the corresponding `*-full.md` exhaustive index and search there.
-4. **For Events module only** — use `atomic-events-full.md` (no quickref; full catalog only).
-5. **Do not guess** — verify component name and file path against the reference table before recommending usage.
+1. **Identify the module** — `Entities` (entity container/lifecycle/codegen) or `Elements` (reactive state + flow).
+2. **Open the quickref first** — search `atomic-entities-quickref.md` or `atomic-elements-quickref.md`.
+3. **If not found in quickref** — open the corresponding `*-full.md` exhaustive index.
+4. **Do not guess** — verify the type and its members in `Assets/Plugins/Atomic/{Module}/Scripts/` before recommending usage. Names from upstream docs or other projects may not exist here (e.g. `AndPredicate`, `Command.TryInvoke`, `MonoEntityInstaller`).
 
 Path prefix for all tables: `Assets/Plugins/Atomic/{Module}/`.
 
@@ -54,214 +55,238 @@ Path prefix for all tables: `Assets/Plugins/Atomic/{Module}/`.
 
 ## Project Entity Domains
 
-This project defines two entity domains built on Atomic's **Entity API Source Generation** (`[EntityExtensionsAPI]`) and **Entity Domain Behaviours** generation (`[EntityDomainBehaviours(typeof(...))]`):
+> **Status**: gameplay code is not written yet. This section is the **target convention** derived from the spec's "Архитектура игры" section. Update it with real class names once the domains are generated.
 
-| Domain | Interface | Singleton | Installer base | API class |
-|--------|-----------|-----------|----------------|-----------|
-| Scene context | `IGameContext` | `GameContext : SceneEntitySingleton<GameContext>` | `GameContextInstaller` | `GameContextAPI` |
-| Game objects | `IGameEntity` | per-instance | `GameEntityInstaller` | `GameEntityAPI` |
+| Domain | Spec term | Interface | Concrete (mode) | Lives on | API file |
+|--------|-----------|-----------|-----------------|----------|----------|
+| Game objects | Atomic.Entities | `IGameEntity` | `GameEntity : SceneEntity` | Character, Enemy, Bullet, Pistol, Hand, AmmoItem, HealthItem prefabs | `GameEntityAPI.atomic` |
+| Game systems | Atomic.Contexts | `IGameContext` | `GameContext : SceneEntitySingleton<GameContext>` | `[Context]` object in `GameScene` | `GameContextAPI.atomic` |
 
-Domain declaration (once per domain, drives generation of `IGameContextInit`, `IGameContextTick`, `IGameContextEnable`, etc.):
+### Generating a domain
 
-```csharp
-public interface IGameContext : IEntity { }
+Use **`Window/Atomic/Entities/Entity Domain Generator`** (`Entities/Editor/EntityDomain/EntityDomainWindow.cs`). Settings per domain:
 
-[EntityDomainBehaviours(typeof(IGameContext))]
-public static class GameContextDomain { }
+- **Entity Type**: `GameEntity` / `GameContext`; **Mode**: `SceneEntity` / `SceneEntitySingleton`
+- **Namespace**: `Game`; **Directory**: `Assets/Game/Scripts/GameEntities/` or `Assets/Game/Scripts/GameContext/`
+- **Installers**: `SceneEntityInstaller` (add `ScriptableEntityInstaller` if data-driven configs are needed)
+- Optional: `SceneEntityProxy` (for colliders on child objects → resolve the owning entity in triggers/raycasts), `SceneEntityWorld`, aspects, pools/factories (bullets)
+
+The generator writes: the interface (`IGameEntity : IEntity`), the concrete class, domain behaviour interfaces `IGameEntityInit`, `IGameEntityEnable`, `IGameEntityDisable`, `IGameEntityDispose`, `IGameEntityTick`, `IGameEntityFixedTick`, `IGameEntityLateTick`, `IGameEntityGizmos` (file `{Type}Behaviours.cs`), and installer base classes. These are generated files — regenerate instead of hand-editing. Verify exact names after generation.
+
+**Access the scene context** via `GameContext.Instance` (lazy `FindObjectsByType`, may be null before the scene is loaded — null-check at call site / in `OnEnable`). Prefer passing `IGameContext` explicitly into use cases.
+
+### Folder layout (target)
+
+```
+Assets/Game/Scripts/
+├── APIKeys/              # GameEntityAPI.atomic, GameContextAPI.atomic + generated *.cs
+├── GameContext/          # IGameContext domain (generated) 
+│   ├── Installers/       # GameContextInstaller (KillCount, Character ref, input)
+│   └── Systems/          # IGameContext* behaviours: InputSystem, KillCounter, EnemyTriggerZone logic
+├── GameEntities/         # IGameEntity domain (generated)
+│   ├── Common/           # reusable mechanics: Health, Death, Movement, Rotation/Aim, Weapon, Pickup, Lifetime
+│   ├── Character/        # CharacterInstaller
+│   ├── Enemy/            # ZombieInstaller, target-chasing behaviour
+│   ├── Weapons/          # PistolInstaller (ranged, bullets, ammo), HandInstaller (melee OverlapSphere)
+│   ├── Bullet/           # BulletInstaller
+│   ├── Items/            # HealthItemInstaller, AmmoItemInstaller
+│   └── View/             # Animator binding (IsMoving, Attack, TakeDamage, Death, "fire_event"), audio, VFX
+└── UI/                   # HealthScreenView, StatView (existing) + Presenters/ (MVP)
 ```
 
-The generator produces `I{Domain}Behaviour`, `I{Domain}Init`, `I{Domain}Tick`, `I{Domain}FixedTick`, `I{Domain}Enable`, `I{Domain}Disable`, `I{Domain}Dispose`, etc. — do not hand-write these interfaces.
-
-**Access the scene context** via `GameContext.Instance` (null-check in `OnEnable` / at call site).
-
-**Folder layout** (per Atomic best practices, already used in this project):
-
-```
-Gameplay/
-├── GameContext/          # scene singleton context
-│   ├── Installer/        # SceneGameContextInstaller, TechInstaller
-│   └── Controllers/      # IGameContext* behaviours
-└── GameEntities/
-    ├── Core/             # reusable mechanics (ProductionBehaviour, etc.)
-    ├── View/             # presenters, visual binding
-    └── Content/          # concrete building logic, SceneBuildingInstaller
-```
-
-Mechanics live in the domain they belong to. Do not put building production logic in GameContext controllers.
+Mechanics live in the domain they belong to: per-object mechanics (health, movement, shooting) in `GameEntities/Common`; scene-wide rules (input, kill counter, trigger zones) in `GameContext/Systems`.
 
 ---
 
-## Typed API Keys (Entity API Source Generation)
+## Typed Entity API (`.atomic` files)
 
-Never use magic strings, raw `int` keys, or generic key lookups for entity state. Declare keys in a `static partial class` decorated with `[EntityExtensionsAPI]`; a Roslyn source generator turns each field into strongly-typed extension methods at compile time — this runs automatically on every compile, no manual build step:
+Never use magic strings, raw `int` keys, or generic `GetValue<T>(key)` lookups in gameplay code. Declare tags and values in a `.atomic` YAML file; the editor generator (`Entities/Editor/EntityAPI/`) turns it into a static class of extension methods.
 
-```csharp
-// GameContextAPI.cs
-[EntityExtensionsAPI]
-public static partial class GameContextAPI
-{
-    public static readonly ValueKey<IGameContext, ReactiveDictionary<ResourceSO, ReactiveFloat>> InventoryItems =
-        new(nameof(InventoryItems));
-}
+```yaml
+# Assets/Game/Scripts/APIKeys/GameEntityAPI.atomic
+namespace: Game
+className: GameEntityAPI
+directory: Assets/Game/Scripts/APIKeys/
+aggressiveInlining: true
+unsafe: false
+entityType: IGameEntity
 
-// GameEntityAPI.cs
-[EntityExtensionsAPI]
-public static partial class GameEntityAPI
-{
-    public static readonly TagKey<IGameEntity> Building = new(nameof(Building));
-    public static readonly ValueKey<IGameEntity, Cooldown> ProductionTimer = new(nameof(ProductionTimer));
-}
+imports:
+  - UnityEngine
+  - Atomic.Elements
+
+tags:
+  - Character
+  - Enemy
+  - Dead
+
+values:
+  # Common
+  - Transform: Transform
+  # Health
+  - Health: ReactiveInt
+  - MaxHealth: IValue<int>
+  - TakeDamageEvent: Event<int>
+  # Movement / Aim
+  - MoveSpeed: IValue<float>
+  - MoveDirection: ReactiveVector3
+  - AimDirection: ReactiveVector3
+  # Weapon
+  - Ammo: ReactiveInt
+  - FireCooldown: Cooldown
+  - FireCommand: Command
+  - AttackRequest: Request
 ```
 
-| Field type | Generated as |
-|---|---|
-| `TagKey<E>` | Tag methods extending `E` (e.g. `Add{Name}Tag`, `Has{Name}Tag`, `Del{Name}Tag`) |
-| `TagKey` | Tag methods extending `IEntity` |
-| `ValueKey<E, T>` | Value methods of type `T` extending `E` |
-| `ValueKey<T>` | Value methods of type `T` extending `IEntity` |
-
-After compilation the generator produces concrete, named methods — not a generic `GetValue(key)` accessor:
-
-```csharp
-entity.AddBuildingTag();
-bool isBuilding = entity.HasBuildingTag();
-
-entity.AddProductionTimer(new Cooldown(timeToProduce, 0f));
-Cooldown timer = entity.GetProductionTimer();
-entity.SetProductionTimer(newCooldown);
-
-context.AddInventoryItems(new ReactiveDictionary<ResourceSO, ReactiveFloat>());
-var inventory = context.GetInventoryItems();
-```
-
-### Rules
-
-- Add new context state to `GameContextAPI` (partial class, grouped by feature with comments).
-- Add new entity state/tags to `GameEntityAPI`.
-- Every key field must be initialized with `new(nameof(FieldName))` — the **Entity API Analyzer** enforces this (`EAPI0001`: missing initializer, `EAPI0002`: initialized with `new()`/`default`), with a code fix available.
-- Do not hand-edit generated extension methods or the generated `IGameContext` / `IGameEntity` domain-behaviour interfaces — they regenerate from the source classes on every compile.
-- Prefer the generated `Add{Name}` / `Get{Name}` / `Set{Name}` / `Has{Name}Tag` methods over any raw/generic key lookup — they are what the framework and analyzer are built around.
+- **Generate**: `Tools/Atomic/Entities/Compile Entity API`; auto-refresh is on by default (`EntityAPISettings.autoRefresh`, `Tools/Atomic/Entities/Select Entity API Settings`). **Create** a new file: `Assets/Create/Atomic/Entities/Entity API`.
+- **Generated methods** (see `EntityAPIGenerator.cs`):
+  - tags: `Has{Tag}Tag`, `Add{Tag}Tag`, `Del{Tag}Tag`
+  - values: `Get{Value}`, `Ref{Value}`, `TryGet{Value}(out)`, `Add{Value}`, `Has{Value}`, `Del{Value}`, `Set{Value}`
+- The existing `Assets/Game/Scripts/APIKeys/EntityAPI.atomic` (className `AtomicAPIExtensions`, `entityType: IEntity`) is an empty placeholder — rename/repoint it to `GameEntityAPI` / `IGameEntity` once the domain exists, and add `GameContextAPI.atomic` for `IGameContext`.
+- The generated class stores keys as `public static readonly int` ids resolved via `EntityNames.NameToId(nameof(...))` (`Entities/Scripts/Names/`).
+- `ValueKey<T>` / `ValueKey<E,T>` / `TagKey` / `TagKey<E>` structs (`Entities/Scripts/Names/`) also exist for hand-written typed keys with `AddValue(key, value)` — but in this project prefer the `.atomic` generator; there is **no** attribute-driven source generator in 2.0.0 (`Scripts/Codegen/EntityAPIAttribute.cs` is commented out).
+- Group keys by feature with comments; keep the `.atomic` file as the single source of truth. Do not hand-edit generated `*.cs`.
 
 ### Value access
 
 ```csharp
-// Required value — generated getter throws if missing
-var inventory = context.GetInventoryItems();
+// Required value — throws if missing; use when the installer guarantees it
+ReactiveInt health = entity.GetHealth();
 
-// Optional value — prefer in behaviours and UI (generated TryGet)
-if (entity.TryGetIsWorking(out var isWorking) && isWorking.Value)
-    ...
+// Optional value — prefer in reusable behaviours, triggers, UI
+if (other.TryGetHealth(out ReactiveInt targetHealth)) ...
 
-// Existence check before access (UI OnEnable)
-if (_context == null || !_context.HasInventoryItems())
-    return;
+// Tag checks
+if (entity.HasDeadTag()) return;
 ```
-
-Use the plain `Get{Name}` accessor only when the value is guaranteed to exist (registered in installer). Use `TryGet{Name}` / `Has{Name}` for optional or externally owned state.
 
 ---
 
 ## Installers
 
-Installers wire state and behaviours onto entities at creation time. Base types: `IEntityInstaller` / `IEntityInstaller<E>` (plain interface), `MonoEntityInstaller` / `MonoEntityInstaller<E>` (scene-bound MonoBehaviour), `ScriptableEntityInstaller<E>` (reusable ScriptableObject). Every installer implements a single `Install(E entity)` method.
+Installers wire state and behaviours onto entities at creation time. Base types (`Entities/Scripts/Installers/`): `IEntityInstaller` / `IEntityInstaller<E>`, `SceneEntityInstaller` / `SceneEntityInstaller<E>` (MonoBehaviour), `ScriptableEntityInstaller` / `ScriptableEntityInstaller<E>` (ScriptableObject). Each has `Install(E entity)` and a virtual `Uninstall(E entity)`.
 
-### Scene context installer
+A `SceneEntity` collects installers from its **Scene Installers** (`sceneInstallers`, auto-filled from children on Reset) and **Scriptable Installers** lists; `installOnAwake` and `useUnityLifecycle` are on by default, so the entity installs and ticks itself.
 
-`SceneGameContextInstaller : GameContextInstaller` is the composition root for gameplay state:
+### Entity installer
 
 ```csharp
-public override void Install(IGameContext entity)
+public sealed class CharacterInstaller : SceneEntityInstaller<IGameEntity>
 {
-    entity.AddBuildings(new ReactiveDictionary<Vector2Int, IGameEntity>());
-    entity.AddOnBuildingChanged(new Atomic.Elements.Event<IGameEntity>());
-    entity.AddBehaviour<BuildController>();
-    entity.OnInitialized += () => { /* post-init setup */ };
+    [SerializeField] private Transform _transform;
+    [SerializeField] private int _maxHealth = 10;
+    [SerializeField] private float _moveSpeed = 5f;
+
+    public override void Install(IGameEntity entity)
+    {
+        entity.AddCharacterTag();
+        entity.AddTransform(_transform);
+        entity.AddHealth(new ReactiveInt(_maxHealth));
+        entity.AddMaxHealth(new Const<int>(_maxHealth));
+        entity.AddMoveSpeed(new Const<float>(_moveSpeed));
+        entity.AddMoveDirection(new ReactiveVector3());
+        entity.AddTakeDamageEvent(new Event<int>());
+
+        entity.AddBehaviour<MoveBehaviour>();
+        entity.AddBehaviour<DeathBehaviour>();
+    }
 }
 ```
 
-- Register all shared reactive state here (or delegated sub-installers like `TechInstaller`).
-- Register context controllers with `entity.AddBehaviour<T>()`.
+- Tune numbers from the spec via serialized fields or `ScriptableConst<T>` / `ScriptableEntityInstaller` — not hard-coded in behaviours.
+- Shared mechanics (health + death + movement) used by both Character and Zombie → extract a reusable installer (e.g. `HealthInstaller`, `MovementInstaller`) and add it to both prefabs.
+
+### Context installer
+
+```csharp
+public sealed class GameContextInstaller : SceneEntityInstaller<IGameContext>
+{
+    [SerializeField] private GameEntity _character;
+
+    public override void Install(IGameContext context)
+    {
+        context.AddCharacter(_character);
+        context.AddKillCount(new ReactiveInt());
+        context.AddBehaviour<KillCounterSystem>();
+    }
+}
+```
+
+- Register all shared/scene-wide state here (or in sub-installers).
 - Use `entity.OnInitialized` for setup that depends on all values being registered.
-- Set `[DefaultExecutionOrder(-1001)]` on the scene installer so context is ready before dependents.
-
-### Entity installers
-
-Prefab/scene entities use `GameEntityInstaller` subclasses (a `MonoEntityInstaller<IGameEntity>` specialization). Attach the script to a GameObject and drag it into the entity's **Scene Installers** field:
-
-```csharp
-public override void Install(IGameEntity entity)
-{
-    entity.AddSpriteRenderer(spriteRenderer);
-    entity.OnInitialized += TryRegisterInGrid;
-}
-```
-
-Building logic aspects (`ProductionLogicInstaller`, etc.) implement `Apply` / `Discard` (see Aspects below) — mirror every `Add{Name}` + `AddBehaviour` in `Discard` with `Del{Name}` + `DelBehaviour`.
-
-### Sub-installer pattern
-
-Extract feature registration into plain classes (not MonoBehaviour) when `SceneGameContextInstaller` grows:
-
-```csharp
-public sealed class TechInstaller
-{
-    public void Install(IGameContext entity, TechRepository repo) { ... }
-}
-```
+- If other entities read context state during their own install/init, ensure the context initializes first (`[DefaultExecutionOrder]` on the context or explicit ordering).
 
 ---
 
 ## Aspects
 
-An **Entity Aspect** (`IEntityAspect` / `IEntityAspect<E>`) applies or discards tags, values, and behaviours on an existing entity — a declarative way to extend/modify an entity at runtime (buffs, temporary states, trigger-zone effects), as opposed to installers which configure an entity once at creation.
+An **Entity Aspect** (`IEntityAspect<E>`, `SceneEntityAspect<E>`, `ScriptableEntityAspect<E>`) applies or discards tags/values/behaviours on an existing entity at runtime — buffs, temporary states, trigger-zone effects — as opposed to installers, which configure an entity once at creation.
 
 ```csharp
-public sealed class SpeedBuffAspect : IEntityAspect<IGameEntity>
+// Enemy trigger zone: character enters → zombies chase/attack; exits → back to Idle
+public sealed class EnemyAggroAspect : SceneEntityAspect<IGameEntity>
 {
-    public void Apply(IGameEntity entity) =>
-        entity.SetMoveSpeed(entity.GetMoveSpeed() * 2f);
+    public override void Apply(IGameEntity enemy) =>
+        enemy.AddBehaviour<ChaseTargetBehaviour>();
 
-    public void Discard(IGameEntity entity) =>
-        entity.SetMoveSpeed(entity.GetMoveSpeed() / 2f);
+    public override void Discard(IGameEntity enemy) =>
+        enemy.DelBehaviour<ChaseTargetBehaviour>();
 }
 ```
 
-Three implementation styles: interface-based (`IEntityAspect`), MonoBehaviour-based (scene-bound), and ScriptableObject-based (reusable/shareable — good fit for the flyweight pattern across many entities). Always implement `Discard` as the exact inverse of `Apply` to avoid leaks.
+Always implement `Discard` as the exact inverse of `Apply` (mirror every `Add{Name}` / `AddBehaviour` with `Del{Name}` / `DelBehaviour`).
 
 ---
 
 ## Lifecycle Behaviours
 
-Behaviours are plain C# classes implementing typed lifecycle markers. Base (non-domain) interfaces: `IEntityInit`, `IEntityTick`, `IEntityFixedTick`, `IEntityEnable`, `IEntityDisable`, `IEntityDispose`. This project uses the domain-typed equivalents generated by `[EntityDomainBehaviours]`:
+Behaviours are plain C# classes implementing lifecycle markers. Base interfaces (`Entities/Scripts/Behaviours/`): `IEntityInit`, `IEntityEnable`, `IEntityDisable`, `IEntityTick`, `IEntityFixedTick`, `IEntityLateTick`, `IEntityDispose`, `IEntityGizmos` (and generic `IEntityXxx<E>`). This project uses the domain-typed ones (`IGameEntityInit`, `IGameContextTick`, …).
 
-| Marker | When invoked | Project usage |
-|--------|--------------|---------------|
-| `IGameContextInit` / `IGameEntityInit` | Entity initialized | Cache values, subscribe to events |
-| `IGameContextEnable` / `Disable` | Enable/disable cycle | Pause/resume without dispose |
-| `IGameContextTick` / `IGameEntityFixedTick` | Per-frame / fixed update | Input, simulation, production |
-| `IGameContextDispose` / `IGameEntityDispose` | Entity destroyed | Unsubscribe, release resources |
+| Marker | Signature | Typical usage |
+|--------|-----------|---------------|
+| `*Init` | `Init(E entity)` | Cache values, subscribe to events |
+| `*Enable` / `*Disable` | `Enable(E)` / `Disable(E)` | Pause/resume without dispose |
+| `*Tick` / `*FixedTick` / `*LateTick` | `Tick(E entity, float deltaTime)` | Input, movement, cooldowns, AI |
+| `*Dispose` | `Dispose(E entity)` | Unsubscribe, release resources |
 
 ```csharp
-public sealed class SynergyController : IGameContextInit, IGameContextDispose
+public sealed class DeathBehaviour : IGameEntityInit, IGameEntityDispose
 {
-    public void Init(IGameContext entity)
+    private IGameEntity _entity;
+    private Subscription<int> _subscription;
+
+    public void Init(IGameEntity entity)
     {
-        entity.GetOnBuildingChanged().Subscribe(OnBuildingChanged);
+        _entity = entity;
+        _subscription = entity.GetHealth().Subscribe(OnHealthChanged);
     }
 
-    public void Dispose(IGameContext entity)
+    public void Dispose(IGameEntity entity) => _subscription.Dispose();
+
+    private void OnHealthChanged(int health)
     {
-        entity.GetOnBuildingChanged().Unsubscribe(OnBuildingChanged);
+        if (health <= 0 && !_entity.HasDeadTag())
+            _entity.AddDeadTag();
+    }
+}
+
+public sealed class MoveBehaviour : IGameEntityFixedTick
+{
+    public void FixedTick(IGameEntity entity, float deltaTime)
+    {
+        if (entity.HasDeadTag()) return; // dead cannot move / aim / attack
+        Vector3 direction = entity.GetMoveDirection().Value;
+        entity.GetTransform().position += direction * (entity.GetMoveSpeed().Value * deltaTime);
     }
 }
 ```
 
 ### Rules
 
-- Register behaviours in the installer — `entity.AddBehaviour<T>()`, not `new` in random places.
-- Pair every `Subscribe` in `Init` with `Unsubscribe` in `Dispose` (same delegate reference), or store and dispose the returned `Subscription` object.
-- Controllers that need per-frame logic implement `IGameContextTick` — do not use `MonoBehaviour.Update` for context-level gameplay.
-- Entity behaviours (`ProductionBehaviour`) may read `GameContext.Instance` inside `FixedTick` when they need global state — pass `IGameContext` as parameter when the caller already has it.
+- Register behaviours in installers — `entity.AddBehaviour<T>()` (requires `new()`), not `new` in random places.
+- Pair every subscription in `Init` with disposal/unsubscription in `Dispose` (store the `Subscription`, or use the same delegate with `OnEvent -=`).
+- Per-frame gameplay uses `*Tick` / `*FixedTick` behaviours, not `MonoBehaviour.Update`.
+- The "dead" rule is shared: every movement/aim/attack behaviour guards on the `Dead` tag (or a shared predicate) rather than each reimplementing it.
 
 ---
 
@@ -269,74 +294,52 @@ public sealed class SynergyController : IGameContextInit, IGameContextDispose
 
 ### ReactiveVariable
 
-Use for single observable values:
-
 ```csharp
-entity.AddSelectedBuilding(new ReactiveVariable<BuildingInfo>(null));
-entity.AddProductionMultiplier(new ReactiveFloat(1f));
+entity.AddHealth(new ReactiveInt(10));
+entity.AddAimDirection(new ReactiveVector3());
+entity.AddTarget(new ReactiveVariable<IGameEntity>());
 ```
 
-- Assign via `.Value` — fires `OnEvent` only when value actually changes.
-- Subscribe via `reactive.Subscribe(handler)` (returns a disposable `Subscription`) or the raw `OnEvent +=` delegate for UI binding.
-- Expose as `IReactiveVariable<T>` in API keys when consumers should not replace the instance.
-- For hot paths, prefer the specialized non-generic-comparer variants (`ReactiveFloat`, `ReactiveInt`, `ReactiveBool`, `ReactiveVector3`, …) over generic `ReactiveVariable<T>` — they skip `EqualityComparer<T>` and are faster.
+- Assign via `.Value` — fires `OnEvent` only when the value actually changes.
+- Subscribe via `.Subscribe(handler)` (returns a disposable `Subscription<T>`) or raw `OnEvent +=`.
+- Expose as `IReactiveVariable<T>` / `IReactiveValue<T>` in API keys when consumers should not replace the instance.
+- Prefer specialized types (`ReactiveInt`, `ReactiveFloat`, `ReactiveBool`, `ReactiveVector2`, `ReactiveVector3`, `ReactiveQuaternion`, …) over `ReactiveVariable<T>` for primitives.
 
-### ReactiveDictionary / ReactiveList
+### ReactiveList / ReactiveDictionary
 
-Use for collections that drive UI or cross-entity reactions:
-
-```csharp
-var inventory = context.GetInventoryItems();
-inventory.OnItemAdded += OnItemAdded;
-inventory.OnItemRemoved += OnItemRemoved;
-```
-
-- Subscribe to `OnItemAdded`, `OnItemRemoved`, `OnItemChanged`, `OnStateChanged` as needed.
-- Unsubscribe all handlers in `OnDisable` / `Dispose`.
-- Nested reactivity: dictionary values can themselves be reactive (`ReactiveDictionary<ResourceSO, ReactiveFloat>`).
+Use for collections that drive UI or cross-entity reactions (e.g. list of enemies in a trigger zone). Subscribe to `OnItemAdded`, `OnItemRemoved`, `OnItemChanged`, `OnStateChanged`; unsubscribe all handlers in `Dispose` / `OnDisable`.
 
 ### Event / Signal
 
-`Atomic.Elements.Event` / `Event<T1..T4>` implement the `ISignal` family and are used as fire-and-forget signals stored as entity values:
+`Atomic.Elements.Event` / `Event<T1..T4>` (`Elements/Scripts/Events/`) implement `ISignal` and are stored as entity values:
 
 ```csharp
-context.GetOnBuildingChanged().Invoke(changedEntity);
+entity.GetTakeDamageEvent().Invoke(damage);           // fire
+var sub = entity.GetTakeDamageEvent().Subscribe(PlayTakeDamageAnimation);
+sub.Dispose();                                        // unsubscribe
 ```
 
-```csharp
-IEvent playerDiedEvent = new Event();
-playerDiedEvent.OnEvent += () => Console.WriteLine("Player died");
-
-Subscription sub = playerDiedEvent.Subscribe(() => Debug.Log("..."));
-sub.Dispose(); // unsubscribe
-```
-
-- Implement `IEntityInit` + `IEntityDispose` listeners; subscribe via `.Subscribe(handler)` (returns `Subscription`, dispose to unsubscribe) or the raw `OnEvent +=` / `-=` delegate.
-- Prefer context-level events for cross-cutting notifications (building changed, tech completed).
-- Prefer entity-level `Event` values for local notifications (production completed, deposit refilled).
-- This is distinct from the standalone `Atomic.Events` bus module (typed global bus with `Bus`/`Keys`/`Subscriptions`) — this project prefers entity-scoped `Atomic.Elements.Event` values for traceability; reach for `Atomic.Events` only for truly global, entity-independent signals.
+- Entity-level events for local notifications (took damage, died, fired, picked up).
+- Context-level events for cross-cutting notifications (enemy killed → kill counter).
 
 ### Cooldown / Timer
 
-Both live in `Atomic.Elements` (Time module) and expose `Tick(deltaTime)`, `IsCompleted()`, `SetProgress(float)`, and `OnTimeChanged` / `OnProgressChanged` / `OnCompleted` events.
+Both live in `Atomic.Elements` (`Elements/Scripts/Time/`).
 
 ```csharp
-entity.AddProductionTimer(new Cooldown(timeToProduce, 0f));
+entity.AddFireCooldown(new Cooldown(1f));     // pistol / hand: 1 s
 // In behaviour:
-var timer = entity.GetProductionTimer();
-timer.Tick(deltaTime);
-if (timer.IsCompleted())
-    timer.ResetTime();
+var cooldown = entity.GetFireCooldown();
+cooldown.Tick(deltaTime);
+if (cooldown.IsCompleted()) { /* fire */ cooldown.ResetTime(); }
 ```
 
-- **`Cooldown`** — simple countdown, `ResetTime()` restarts it. Use for repeating fill-and-reset gameplay cycles (production, gather, ability cooldowns).
-- **`Timer`** (`UpTimer` / `DownTimer`) — richer lifecycle: requires an explicit `Start()`, supports `Pause()` / `Resume()` / `Stop()`, fires `OnStarted`. Use when the mechanic needs start/pause/stop control, not just repeat-on-reset.
+- **`Cooldown`** — countdown with `Tick`, `IsCompleted()`, `ResetTime()`, `GetProgress()`/`SetProgress()`. Use for repeating gameplay cycles: weapon cooldowns, first-shot aim delay (0.5 s), bullet lifetime (3 s).
+- **`DownTimer` / `UpTimer`** — explicit `Start()` / `Pause()` / `Resume()` / `Stop()`. Use when the mechanic needs start/stop control.
 
 ---
 
 ## Flow Primitives (Atomic Elements)
-
-Atomic Elements provides composable flow types for entity-bound logic. These are alternatives to embedding guards directly inside static methods.
 
 ```
 IFunction / IPredicate  ──conditions──►  Command  ──action──►  IAction
@@ -350,106 +353,100 @@ ISetter     = Set(value)
 
 | Primitive | Role | When to use |
 |-----------|------|-------------|
-| `IAction` / `InlineAction` | Side effect (`Invoke`) | Entity-bound callback; store as value on entity |
+| `IAction` / `InlineAction` | Side effect (`Invoke`) | Entity-bound callback stored as a value |
 | `IFunction` / `InlineFunction` | Query with return value | Compute/read without mutation |
-| `IPredicate` | `bool` condition | Guards, filters; compose with `AndPredicate`/`OrPredicate` |
-| `Command` / `Command<T>` | `CanInvoke()` + `TryInvoke()` + `OnEvent` | Player interaction boundary: same guard for UI preview and click |
-| `Event<T>` | Fire-and-forget signal | Cross-cutting notifications on context/entity |
-| `Request` / `Request<T>` | Deferred, dedup'd action | "Do once on next tick" without a permanent subscription |
-| `IExpression` | Evaluatable expression | Composable numeric/bool logic (less mature; tests commented in plugin) |
+| `IPredicate` / `InlinePredicate` | `bool` condition | Guards, filters |
+| `Command` / `Command<T>` | `CanInvoke()` + guarded `Invoke()` + `OnEvent` | Same guard for preview and execution |
+| `Event<T>` | Fire-and-forget signal | Notifications on context/entity |
+| `Request` / `Request<T>` | Deferred, dedup'd action | "Do once on next tick" (input → simulation, animation event → shot) |
+| `IExpression` | Evaluatable expression | Composable numeric/bool logic |
 
 ### Command pattern
 
 ```csharp
-ICommand<IGameEntity> fireCommand = new Command<IGameEntity>();
+var fireCommand = new Command();
 fireCommand
-    .AddCondition(e => UnitUseCase.CanFire(context, e))
-    .AddAction(e => FireUseCase.Fire(context, e));
+    .AddCondition(() => !weapon.HasDeadTag())
+    .AddCondition(() => weapon.GetAmmo().Value > 0)
+    .AddCondition(() => weapon.GetFireCooldown().IsCompleted());
+fireCommand.AddAction(() => FireUseCase.Fire(weapon));
 
-entity.AddFireCommand(fireCommand);
-// Controller: bool fired = fireCommand.TryInvoke(target);
-// UI preview:  bool canFire = fireCommand.CanInvoke(target);
+weapon.AddFireCommand(fireCommand);
+// Behaviour: command.Invoke();      // checks conditions itself, no-op if any fails
+// UI/AI:     command.CanInvoke();   // check without side effects
 ```
 
-`Command` is semantically equivalent to manual `Can*` / `Try*` pairs already used in static use cases — but as a composable object shareable between highlight, UI, and click handlers. `TryInvoke` checks conditions and runs the action in one call, returning success; `CanInvoke` checks without side effects (drive button enabled/disabled state with it).
+There is **no `TryInvoke`** in this version: `Invoke()` silently returns when a condition fails; call `CanInvoke()` first if you need to know whether it ran.
 
 ### Request pattern
 
 ```csharp
-IRequest<GameObject> attackRequest = new Request<GameObject>();
+// Input / animation phase: right joystick held, or "fire_event" from Animator
+entity.GetAttackRequest().Invoke();
 
-// Input phase (e.g. Tick)
-attackRequest.Invoke(targetObject);
-
-// Processing phase (e.g. FixedTick)
-if (attackRequest.Consume(out GameObject target))
-{
-    // execute the deferred action exactly once
-}
+// Processing phase (Tick/FixedTick)
+if (entity.GetAttackRequest().Consume())
+    entity.GetFireCommand().Invoke();
 ```
 
-Use `Request` instead of a raw bool flag when you need to defer an action from input-time to simulation-time while guaranteeing it fires at most once.
+Use `Request` instead of a raw bool flag when an action must be deferred and fire at most once.
 
-### Use Cases vs Command vs Behaviour
+### Unity event bridges
+
+`Elements/Scripts/UnityComponents/` has MonoBehaviours that turn Unity callbacks into Atomic events — prefer them over custom `OnTriggerEnter` MonoBehaviours with logic inside:
+
+- `TriggerEvents` — `OnTriggerEnter/Exit` → event: pickups (Health/Ammo item), enemy trigger zones.
+- `CollisionEvents` — collisions: bullet hits.
+- `AnimationEvents` — Animator event callbacks: the `"fire_event"` in Character/Zombie attack animations.
+
+Register the component as an entity value in the installer and subscribe in an `*Init` behaviour (unsubscribe in `*Dispose`). Check the exact event members in the source before use.
+
+---
+
+## Use Cases vs Command vs Behaviour
 
 | Layer | Responsibility | Prefer when |
 |-------|----------------|-------------|
-| **Static use case** | Stateless domain rules | Internal logic, unit tests, batch/tick operations |
-| **Command on entity/context** | Guard + action entry point | Player-facing interaction; preview must match click |
+| **Static use case** | Stateless domain rules (`DamageUseCase.TakeDamage(target, damage)`, `HealUseCase.Heal(target, 3)`, `AmmoUseCase.Add(weapon, 10)`) | Shared rules, unit tests |
+| **Command on entity** | Guard + action entry point | Same guard needed in several places |
 | **Behaviour** | Per-entity tick and lifecycle | Continuous simulation, event reaction |
+| **Presenter (UI)** | Bind reactive state to views | MVP layer, no rules |
 
-Do not replace all static use cases with `Command` — that is over-engineering. Keep use cases as rule implementations; expose `Command` only at interaction boundaries where guard reuse matters.
-
----
-
-## Use Cases vs Behaviours
-
-| Layer | Responsibility | Access pattern |
-|-------|----------------|----------------|
-| **Behaviour** | Per-entity tick, lifecycle, event reaction | `IGameEntity` / `IGameContext` param |
-| **Use case** | Stateless gameplay operations | `static` methods with `IGameContext` first param |
-| **Presenter (UI)** | Bind reactive state to views | `GameContext.Instance`, subscribe in `OnEnable` |
-
-```csharp
-// Use case — stateless operation
-public static bool TryPlace(IGameContext context, BuildingInfo data, Vector2Int gridPos)
-
-// Behaviour — per-entity tick
-public void FixedTick(IGameEntity entity, float deltaTime)
-```
-
-Do not put business rules in `MonoBehaviour` UI classes — call use cases from UI event handlers.
+Do not replace all use cases with `Command` — keep rules in use cases, expose `Command` only where guard reuse matters. Bullets, hands and pickups all call the same `DamageUseCase` / `HealUseCase` — do not duplicate damage logic per weapon.
 
 ---
 
-## UI Binding Pattern
+## UI Binding Pattern (MVP)
 
-Presenters read context state and subscribe to reactive collections:
+Views are dumb MonoBehaviours (existing: `Assets/Game/Scripts/UI/StatView.cs` — `SetText`, `SetProgress`, `SetVisible`; `HealthScreenView.cs` — `ChangePercent`, `TakeDamage`). Presenters subscribe to entity/context state and push it into views:
 
 ```csharp
-private void OnEnable()
+public sealed class HealthPresenter : IDisposable
 {
-    _context = GameContext.Instance;
-    if (_context == null || !_context.HasInventoryItems()) return;
+    private readonly StatView _view;
+    private readonly IGameEntity _character;
+    private readonly Subscription<int> _subscription;
 
-    _inventory = _context.GetInventoryItems();
-    _inventory.OnItemAdded += OnItemAdded;
-    _inventory.OnItemRemoved += OnItemRemoved;
-    foreach (var kv in _inventory) TryBind(kv.Key, kv.Value);
-}
-
-private void OnDisable()
-{
-    if (_inventory != null)
+    public HealthPresenter(StatView view, IGameEntity character)
     {
-        _inventory.OnItemAdded -= OnItemAdded;
-        _inventory.OnItemRemoved -= OnItemRemoved;
+        _view = view;
+        _character = character;
+        _subscription = character.GetHealth().Subscribe(OnHealthChanged);
+        OnHealthChanged(character.GetHealth().Value);
     }
-    // Unsubscribe nested ReactiveFloat.OnEvent handlers
+
+    private void OnHealthChanged(int health)
+    {
+        int max = _character.GetMaxHealth().Value;
+        _view.SetText(health.ToString());
+        _view.SetProgress((float) health / max);
+    }
+
+    public void Dispose() => _subscription.Dispose();
 }
 ```
 
-Track per-item `OnEvent` handlers in a dictionary so they can be removed on item removal.
+Same shape for ammo (`StatView`), kill counter (context `KillCount`) and `HealthScreenView` (percent + `TakeDamageEvent`). No gameplay rules in views or presenters.
 
 ---
 
@@ -458,8 +455,7 @@ Track per-item `OnEvent` handlers in a dictionary so they can be removed on item
 Use for entity-bound delegates without dedicated behaviour classes:
 
 ```csharp
-entity.AddOnBuildingChanged(new InlineAction());
-entity.AddGetImpactPositions(new InlineFunction<IEnumerable<Vector2Int>>(...));
+entity.AddIsAlive(new InlineFunction<bool>(() => !entity.HasDeadTag()));
 ```
 
 Prefer dedicated `Event` or behaviour classes when logic grows beyond a one-liner.
@@ -468,16 +464,18 @@ Prefer dedicated `Event` or behaviour classes when logic grows beyond a one-line
 
 ## Anti-patterns
 
-- **Magic string keys** — `entity.GetValue<int>("health")` instead of generated `Get{Name}()` accessors from a `[EntityExtensionsAPI]` class.
-- **Missing unsubscribe** — subscribing in `Init` without `Unsubscribe` in `Dispose` / `OnDisable`, or discarding the `Subscription` returned by `.Subscribe(...)` without disposing it.
-- **MonoBehaviour.Update for context logic** — use `IGameContextTick` behaviours registered in installer.
-- **Direct dictionary mutation bypassing use cases** — e.g. adding buildings without going through placement use cases (skips validation, events, synergy).
-- **Storing `IGameContext` in static fields** — use `GameContext.Instance` at point of use; do not cache globally beyond presenter lifetime.
-- **Subclassing `Entity` for gameplay types** — use `IGameEntity` + values/tags/behaviours; project uses interfaces generated by `[EntityDomainBehaviours]`.
-- **Registering values in behaviours** — values belong in installers; behaviours read and react.
-- **Forgetting `Discard` symmetry** — aspect `Discard` must undo everything `Apply` registers (mirror every `Add{Name}` + `AddBehaviour` with `Del{Name}` + `DelBehaviour`).
-- **Using `Atomic.Events` bus when an entity value event suffices** — prefer `Atomic.Elements.Event<T>` on context/entity for typed, traceable signals.
-- **Guessing Atomic component names** — always verify against quickref first, then full index (see Component Lookup Workflow).
-- **Replacing static use cases with Command everywhere** — use Command only at interaction boundaries; keep domain rules in use cases.
-- **Confusing `Cooldown` and `Timer`** — use `Cooldown` for simple repeat-on-reset cycles, `Timer` (`UpTimer`/`DownTimer`) when start/pause/stop control is needed.
-- **Using `IValue<T>` where mutation is required, or exposing `IVariable<T>` where callers should only read** — pick the narrowest interface that matches the actual read/write need.
+- **Magic keys** — `entity.GetValue<int>(someInt)` instead of generated `Get{Name}()` from a `.atomic` file.
+- **Using APIs from upstream docs/other projects** — `[EntityExtensionsAPI]` / `[EntityDomainBehaviours]` attributes, `MonoEntityInstaller`, `Atomic.Events`, `Command.TryInvoke`, `AndPredicate` do not exist in 2.0.0.
+- **Hand-editing generated files** — `*API.cs`, `IGameEntity*` behaviour interfaces; edit the `.atomic` file or regenerate the domain instead.
+- **Missing unsubscribe** — subscribing in `Init` without disposing in `Dispose` / `OnDisable`.
+- **MonoBehaviour.Update for gameplay** — use `*Tick` behaviours registered in installers.
+- **Gameplay logic in views** — `HealthScreenView` / `StatView` only display; presenters bind; behaviours/use cases decide.
+- **Duplicated mechanics** — separate health/death/movement code for Character and Zombie; extract to `GameEntities/Common` and reuse.
+- **Ignoring the Dead state** — every move/aim/attack mechanic must stop when the entity is dead.
+- **Storing `IGameContext` in static fields** — use `GameContext.Instance` at the point of use or pass it as a parameter.
+- **Subclassing `Entity`/`SceneEntity` for gameplay types** — use `IGameEntity` + values/tags/behaviours.
+- **Registering values in behaviours** — values belong in installers (or aspects); behaviours read and react.
+- **Forgetting `Discard` symmetry** — aspect `Discard` must undo everything `Apply` adds.
+- **Guessing Atomic component names** — verify against quickref, then full index, then source.
+- **Confusing `Cooldown` and `Timer`** — `Cooldown` for repeat-on-reset cycles, `DownTimer`/`UpTimer` when start/pause/stop is needed.
+- **Wrong interface width** — don't use `IValue<T>` where mutation is required, or expose `IVariable<T>` where callers should only read.

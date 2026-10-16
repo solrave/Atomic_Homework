@@ -12,11 +12,10 @@
 | `IEntity` | `Scripts/Entities/Interface/IEntity.cs` | Base entity interface: values, tags, behaviours, lifecycle |
 | `Entity` | `Scripts/Entities/Core/Entity.cs` | Pure C# `IEntity` without Unity dependencies |
 | `SceneEntity` | `Scripts/Entities/Unity/SceneEntity.cs` | MonoBehaviour entity on scene/prefab |
-| `SceneEntitySingleton<T>` | `Scripts/Entities/Unity/SceneEntitySingleton.cs` | Scene singleton entity (`GameContext` in this project) |
+| `SceneEntitySingleton<T>` | `Scripts/Entities/Unity/SceneEntitySingleton.cs` | Scene singleton entity with `Instance` (target: `GameContext`) |
 | `SceneEntityProxy<T>` | `Scripts/Entities/Unity/SceneEntityProxy`1.cs` | Proxy delegating to another entity |
-| `ValueKey` / `ValueKey<TEntity,T>` | `Scripts/Keys/Keys/ValueKey.cs`, `ValueKey'1.cs` | Typed state key (`GameContextAPI`, `GameEntityAPI`) |
-| `TagKey` / `TagKey<TEntity>` | `Scripts/Keys/Keys/TagKey.cs`, `TagKey'1.cs` | Typed tag key |
-| `EntityAPIAttribute` | `Scripts/Keys/Attributes/EntityAPIAttribute.cs` | Attribute for domain API codegen |
+| `EntityAPIManager` | `Editor/EntityAPI/EntityAPIManager.cs` | `.atomic` → generated `Add/Get/Set/TryGet/Has/Del{Name}` + `{Tag}Tag` methods (`Tools/Atomic/Entities/Compile Entity API`) |
+| `EntityNames` | `Scripts/Names/EntityNames.cs` | Name → int id used by generated API; `ValueKey`/`TagKey` structs live next to it |
 | `IEntityInstaller` | `Scripts/Installers/IEntityInstaller.cs` | Installer contract: register values/behaviours at creation |
 | `SceneEntityInstaller<T>` | `Scripts/Installers/SceneEntityInstaller`1.cs` | MonoBehaviour installer on prefab/scene entity |
 | `ScriptableEntityInstaller<T>` | `Scripts/Installers/ScriptableEntityInstaller`1.cs` | ScriptableObject installer for data-driven setup |
@@ -34,10 +33,11 @@
 | `EntityCollection<T>` | `Scripts/Collections/EntityCollection`1.cs` | Reactive entity collection with add/remove/change events |
 | `EntityFilter<T>` | `Scripts/Filters/EntityFilter`1.cs` | Filter entities by triggers (tag, value, behaviour) |
 | `IEntityFactory<T>` | `Scripts/Factories/Interfaces/IEntityFactory`1.cs` | Entity factory contract |
-| `EntityFactory<T>` | `Scripts/Factories/Unity/EntityFactory`1.cs` | Unity factory: instantiate prefab + install |
+| `SceneEntityFactory<T>` | `Scripts/Factories/Unity/SceneEntityFactory`1.cs` | MonoBehaviour factory (e.g. bullets) |
 | `PrefabEntityPool<T>` | `Scripts/Pooling/Unity/PrefabEntityPool`1.cs` | Prefab-based entity pool |
 | `SceneEntityBootstrap` | `Scripts/Bootstrap/SceneEntityBootstrap.cs` | Scene bootstrap: init world and tick manager |
 | `TickManager` | `Scripts/Lifecycle/TickManager.cs` | Central dispatcher for tick/fixedTick/lateTick |
-| `EntityDomainBuilder` | `Scripts/Codegen/EntityDomainBuilder.cs` | Editor: generate typed domain (IGameContext, API, installers) |
+| `EntityDomainWindow` | `Editor/EntityDomain/EntityDomainWindow.cs` | `Window/Atomic/Entities/Entity Domain Generator`: generate `IGameEntity` / `IGameContext` domains |
 | `IEntityAspect` | `Scripts/Aspects/IEntityAspect.cs` | Aspect: bundle of values/behaviours for Apply/Discard |
-| `ScriptableEntityAspect<T>` | `Scripts/Aspects/ScriptableEntityAspect`1.cs` | SO aspect (like `ProductionLogicInstaller` in this project) |
+| `SceneEntityAspect<T>` | `Scripts/Aspects/SceneEntityAspect`1.cs` | MonoBehaviour aspect: `Apply` / `Discard` (e.g. enemy aggro in trigger zone) |
+| `ScriptableEntityAspect<T>` | `Scripts/Aspects/ScriptableEntityAspect`1.cs` | SO aspect, shareable across many entities |
