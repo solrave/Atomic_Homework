@@ -6,13 +6,45 @@ unsafe: false
 entityType: IEntity
 
 imports:
+- UnityEngine
+- Atomic.Elements
 
 tags:
-  # Add your tags here
-  # - Player
-  # - Enemy
+    -Moveable
+    -Damageable
+    -Alive
 
 values:
+# Animator
+    -Animator : Animator
+# Movement RCAE
+    -MoveRequest : IRequest<Vector3>
+    -MoveCondition : IExpression<Vector3, bool>
+    -MoveAction : ICompositeAction<Vector3, float>
+    -MoveEvent : IEvent<Vector3>
+    
+# Movement    
+    -LookDirection : ReactiveVector3
+    -MoveSpeed : IVariable<float>
+    -RotationSpeed : IVariable<float>
+    -Rigidbody : Rigidbody
+    
+# Health
+     -CurrentHealth : IReactiveVariable<int>
+     -MaxHealth :  IValue<int>
+     
+# Death
+     -DeathEvent : IEvent<IEntity>
+     
+# Damage
+     -Damage : IVariable<int>
+     
+# Damage RCAE
+     -TakeDamageRequest : IRequest<int>
+     -TakeDamageCondition : IExpression<int, bool>
+     -TakeDamageAction : ICompositeAction<int>
+     -TakeDamageEvent : IEvent<int>
+     
   # Add your values here
   # - health: float
   # - position: Vector3

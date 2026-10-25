@@ -57,10 +57,10 @@ Path prefix for all tables: `Assets/Plugins/Atomic/{Module}/`.
 
 > **Status**: gameplay code is not written yet. This section is the **target convention** derived from the spec's "Архитектура игры" section. Update it with real class names once the domains are generated.
 
-| Domain | Spec term | Interface | Concrete (mode) | Lives on | API file |
-|--------|-----------|-----------|-----------------|----------|----------|
-| Game objects | Atomic.Entities | `IGameEntity` | `GameEntity : SceneEntity` | Character, Enemy, Bullet, Pistol, Hand, AmmoItem, HealthItem prefabs | `GameEntityAPI.atomic` |
-| Game systems | Atomic.Contexts | `IGameContext` | `GameContext : SceneEntitySingleton<GameContext>` | `[Context]` object in `GameScene` | `GameContextAPI.atomic` |
+| Domain       | Spec term       | Interface      | Concrete (mode)                                   | Lives on                                                             | API file                |
+| ------------ | --------------- | -------------- | ------------------------------------------------- | -------------------------------------------------------------------- | ----------------------- |
+| Game objects | Atomic.Entities | `IGameEntity`  | `GameEntity : SceneEntity`                        | Character, Enemy, Bullet, Pistol, Hand, AmmoItem, HealthItem prefabs | `GameEntityAPI.atomic`  |
+| Game systems | Atomic.Contexts | `IGameContext` | `GameContext : SceneEntitySingleton<GameContext>` | `[Context]` object in `GameScene`                                    | `GameContextAPI.atomic` |
 
 ### Generating a domain
 
