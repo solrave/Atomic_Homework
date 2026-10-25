@@ -4,28 +4,25 @@ using UnityEngine;
 
 namespace Game
 {
-    public class CharacterViewInstaller : SceneEntityInstaller
+    public class DeathViewBehaviour : IEntityInit, IEntityDispose
     {
+        private Animator _animator;
         private static readonly int DEATH = Animator.StringToHash("Death");
         private Subscription<IEntity> _deathSubscription;
         
-        [SerializeField]
-        private Animator _animator;
-        
-        public override void Install(IEntity entity)
+        public void Init(IEntity entity)
         {
-            entity.AddAnimator(_animator);
+            _animator = entity.GetAnimator();
             _deathSubscription = entity.GetDeathEvent().Subscribe(this.AnimateDeath);
         }
-
+        
         private void AnimateDeath(IEntity obj)
         {
             _animator.SetBool(DEATH, true);
         }
 
-        public override void Uninstall(IEntity entity)
+        public void Dispose(IEntity entity)
         {
-            base.Uninstall(entity);
             _deathSubscription.Dispose();
         }
     }

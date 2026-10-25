@@ -1,5 +1,4 @@
-﻿using System;
-using Atomic.Elements;
+﻿using Atomic.Elements;
 using Atomic.Entities;
 using UnityEngine;
 

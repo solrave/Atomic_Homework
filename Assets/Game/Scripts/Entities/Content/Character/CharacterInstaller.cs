@@ -1,5 +1,4 @@
-﻿using Atomic.Elements;
-using Atomic.Entities;
+﻿using Atomic.Entities;
 using UnityEngine;
 
 namespace Game
@@ -13,13 +12,14 @@ namespace Game
         private HealthInstaller _healthInstaller;
 
         [SerializeField]
-        private CharacterViewInstaller _characterViewInstaller;
+        private ViewInstaller _viewInstaller;
         
         public override void Install(IEntity entity)
         {
            _moveInstaller.Install(entity);
            _healthInstaller.Install(entity);
-           _characterViewInstaller.Install(entity);
+           _viewInstaller.Install(entity);
+            entity.AddBehaviour<CharacterAimBehaviour>();
         }
     }
 }

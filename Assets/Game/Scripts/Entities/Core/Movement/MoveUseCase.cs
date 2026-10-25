@@ -17,5 +17,10 @@ namespace Game
             body.MovePosition
                     (body.position + direction * (speed * deltaTime));
         }
+
+        // public static bool IsMoving(this IEntity entity)
+        // {
+        //     return entity.GetMove
+        // }
     }
 }
