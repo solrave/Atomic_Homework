@@ -1,4 +1,5 @@
-﻿using Atomic.Elements;
+﻿using System.Xml;
+using Atomic.Elements;
 using Atomic.Entities;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ namespace Game
                 && moveDirection != Vector3.zero 
                 && _condition.Invoke(moveDirection))
             {
+                entity.GetMoveTime().Value = Time.time;
                 _action.Invoke(moveDirection, deltaTime);
                 _event.Invoke(moveDirection);
             }

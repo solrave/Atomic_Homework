@@ -9,7 +9,7 @@ namespace Game
         private static readonly int IsAiming = Animator.StringToHash("IsAiming");
         private static readonly int AimX = Animator.StringToHash("AimX");
         private static readonly int AimZ = Animator.StringToHash("AimZ");
-        private const float AIM_DUMP_TIME = 0.052f;
+        private const float AIM_DAMP_TIME = 0.052f;
         private Animator _animator;
         private Rigidbody _rigidbody;
         private IEvent<Vector3> _moveEvent;
@@ -32,8 +32,8 @@ namespace Game
 
         public void Tick(IEntity entity, float deltaTime)
         {
-            _animator.SetFloat(AimX, _local.x, AIM_DUMP_TIME, deltaTime);
-            _animator.SetFloat(AimZ, _local.z, AIM_DUMP_TIME, deltaTime);
+            _animator.SetFloat(AimX, _local.x, AIM_DAMP_TIME, deltaTime);
+            _animator.SetFloat(AimZ, _local.z, AIM_DAMP_TIME, deltaTime);
         }
         
         public void Dispose(IEntity entity)

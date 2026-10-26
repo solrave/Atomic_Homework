@@ -18,9 +18,9 @@ namespace Game
                     (body.position + direction * (speed * deltaTime));
         }
 
-        // public static bool IsMoving(this IEntity entity)
-        // {
-        //     return entity.GetMove
-        // }
+        public static bool IsMoving(this IEntity entity)
+        {
+            return  Time.time - entity.GetMoveTime().Value <= entity.GetMoveDuration().Value;
+        }
     }
 }

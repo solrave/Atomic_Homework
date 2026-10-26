@@ -34,6 +34,8 @@ namespace Game
 		public static readonly int MoveSpeed; // IVariable<float>
 		public static readonly int RotationSpeed; // IVariable<float>
 		public static readonly int Rigidbody; // Rigidbody
+		public static readonly int MoveDuration; // Const<float>
+		public static readonly int MoveTime; // IVariable<float>
 		public static readonly int CurrentHealth; // IReactiveVariable<int>
 		public static readonly int MaxHealth; // IValue<int>
 		public static readonly int DeathEvent; // IEvent<IEntity>
@@ -60,6 +62,8 @@ namespace Game
 			MoveSpeed = NameToId(nameof(MoveSpeed));
 			RotationSpeed = NameToId(nameof(RotationSpeed));
 			Rigidbody = NameToId(nameof(Rigidbody));
+			MoveDuration = NameToId(nameof(MoveDuration));
+			MoveTime = NameToId(nameof(MoveTime));
 			CurrentHealth = NameToId(nameof(CurrentHealth));
 			MaxHealth = NameToId(nameof(MaxHealth));
 			DeathEvent = NameToId(nameof(DeathEvent));
@@ -310,6 +314,50 @@ namespace Game
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void SetRigidbody(this IEntity entity, Rigidbody value) => entity.SetValue(Rigidbody, value);
+
+		#endregion
+
+		#region MoveDuration
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Const<float> GetMoveDuration(this IEntity entity) => entity.GetValue<Const<float>>(MoveDuration);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetMoveDuration(this IEntity entity, out Const<float> value) => entity.TryGetValue(MoveDuration, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddMoveDuration(this IEntity entity, Const<float> value) => entity.AddValue(MoveDuration, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasMoveDuration(this IEntity entity) => entity.HasValue(MoveDuration);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelMoveDuration(this IEntity entity) => entity.DelValue(MoveDuration);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetMoveDuration(this IEntity entity, Const<float> value) => entity.SetValue(MoveDuration, value);
+
+		#endregion
+
+		#region MoveTime
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IVariable<float> GetMoveTime(this IEntity entity) => entity.GetValue<IVariable<float>>(MoveTime);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetMoveTime(this IEntity entity, out IVariable<float> value) => entity.TryGetValue(MoveTime, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddMoveTime(this IEntity entity, IVariable<float> value) => entity.AddValue(MoveTime, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasMoveTime(this IEntity entity) => entity.HasValue(MoveTime);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelMoveTime(this IEntity entity) => entity.DelValue(MoveTime);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetMoveTime(this IEntity entity, IVariable<float> value) => entity.SetValue(MoveTime, value);
 
 		#endregion
 

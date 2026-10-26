@@ -22,23 +22,21 @@ values:
     -MoveCondition : IExpression<Vector3, bool>
     -MoveAction : ICompositeAction<Vector3, float>
     -MoveEvent : IEvent<Vector3>
-    
 # Movement    
     -LookDirection : ReactiveVector3
     -MoveSpeed : IVariable<float>
     -RotationSpeed : IVariable<float>
     -Rigidbody : Rigidbody
-    
+# IsMoving
+     -MoveDuration : Const<float>
+     -MoveTime : IVariable<float>    
 # Health
      -CurrentHealth : IReactiveVariable<int>
      -MaxHealth :  IValue<int>
-     
 # Death
      -DeathEvent : IEvent<IEntity>
-     
 # Damage
      -Damage : IVariable<int>
-     
 # Damage RCAE
      -TakeDamageRequest : IRequest<int>
      -TakeDamageCondition : IExpression<int, bool>

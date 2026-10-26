@@ -14,10 +14,16 @@ namespace Game
         
         [SerializeField]
         private float _rotationSpeed;
+
+        [SerializeField]
+        private Const<float> _moveDuration;
         
         public override void Install(IEntity entity)
         {
             entity.AddMoveableTag();
+            
+            entity.AddMoveDuration(_moveDuration);
+            entity.AddMoveTime(new Variable<float>(-_moveDuration));
             
             entity.AddMoveRequest(new Request<Vector3>());
             entity.AddMoveCondition(new AndExpression<Vector3>());
