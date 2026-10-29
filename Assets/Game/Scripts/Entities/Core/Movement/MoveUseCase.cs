@@ -5,13 +5,13 @@ namespace Game
 {
     public static class MoveUseCase
     {
-        public static void MoveStep(this IEntity entity, Vector3 direction, float deltaTime)
+        public static void RigidbodyMoveStep(this IEntity entity, Vector3 direction, float deltaTime)
         {
-            entity.MoveStep(direction, entity.GetRigidbody(),
+            entity.RigidbodyMoveStep(direction, entity.GetRigidbody(),
                 entity.GetMoveSpeed().Value, deltaTime);
         }
         
-        public static void MoveStep(this IEntity entity, Vector3 direction,
+        public static void RigidbodyMoveStep(this IEntity entity, Vector3 direction,
             Rigidbody body, float speed, float deltaTime)
         {
             body.MovePosition

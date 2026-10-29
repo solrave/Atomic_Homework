@@ -11,6 +11,9 @@ namespace Game
         
         [SerializeField]
         private SceneEntity _character;
+        
+        [SerializeField]
+        private SceneEntity _weapon;
 
         private Plane _floor;
 
@@ -53,8 +56,11 @@ namespace Game
             if (Input.GetKey(KeyCode.D))
                 moveDirection.x = 1;
             
-            if (Input.GetKeyDown(KeyCode.H))
+            if (Input.GetKeyDown(KeyCode.H)) //Damage
                 _character.GetTakeDamageRequest().Invoke(1);
+            
+            if (Input.GetKeyDown(KeyCode.Space)) //Fire
+                _weapon.GetFireRequest().Invoke();
             
             _character.GetMoveRequest().Invoke(moveDirection.normalized);
         }

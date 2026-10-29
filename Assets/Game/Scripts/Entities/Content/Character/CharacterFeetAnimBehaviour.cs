@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class CharacterAimBehaviour : IEntityInit, IEntityTick, IEntityDispose
+    public class CharacterFeetAnimBehaviour : IEntityInit, IEntityTick, IEntityDispose
     {
         private static readonly int IsAiming = Animator.StringToHash("IsAiming");
         private static readonly int AimX = Animator.StringToHash("AimX");
@@ -40,6 +40,5 @@ namespace Game
         {
             _subscription.Dispose();
         }
-
     }
 }

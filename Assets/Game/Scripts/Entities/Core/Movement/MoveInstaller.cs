@@ -24,22 +24,21 @@ namespace Game
             
             entity.AddMoveDuration(_moveDuration);
             entity.AddMoveTime(new Variable<float>(-_moveDuration));
+            entity.AddRigidbody(_rigidbody);
+            entity.AddMoveSpeed(new Variable<float>(_moveSpeed));
+            entity.AddRotationSpeed(new Variable<float>(_rotationSpeed));
+            entity.AddLookDirection(Vector3.zero);
+            
+            entity.AddBehaviour<MoveBehaviour>();
+            entity.AddBehaviour<LookBehaviour>();
             
             entity.AddMoveRequest(new Request<Vector3>());
             entity.AddMoveCondition(new AndExpression<Vector3>());
             entity.AddMoveAction(new CompositeAction<Vector3, float>());
             entity.AddMoveEvent(new Event<Vector3>());
             
-            entity.AddBehaviour<MoveBehaviour>();
-            entity.AddBehaviour<LookBehaviour>();
-            
-            entity.GetMoveAction().Add(entity.MoveStep);
+            entity.GetMoveAction().Add(entity.RigidbodyMoveStep);
             entity.GetMoveCondition().Add(_ => entity.HasMoveableTag() && entity.HasAliveTag());
-            
-            entity.AddRigidbody(_rigidbody);
-            entity.AddMoveSpeed(new Variable<float>(_moveSpeed));
-            entity.AddRotationSpeed(new Variable<float>(_rotationSpeed));
-            entity.AddLookDirection(Vector3.zero);
         }
     }
 }

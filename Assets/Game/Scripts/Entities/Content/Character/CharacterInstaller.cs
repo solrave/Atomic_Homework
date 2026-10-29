@@ -19,7 +19,7 @@ namespace Game
            _moveInstaller.Install(entity);
            _healthInstaller.Install(entity);
            _viewInstaller.Install(entity);
-            entity.AddBehaviour<CharacterAimBehaviour>();
+            entity.AddBehaviour<CharacterFeetAnimBehaviour>();
         }
     }
 }

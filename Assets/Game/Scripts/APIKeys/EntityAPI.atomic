@@ -17,32 +17,50 @@ tags:
 values:
 # Animator
     -Animator : Animator
+    
 # Movement RCAE
     -MoveRequest : IRequest<Vector3>
     -MoveCondition : IExpression<Vector3, bool>
     -MoveAction : ICompositeAction<Vector3, float>
     -MoveEvent : IEvent<Vector3>
+    
 # Movement    
     -LookDirection : ReactiveVector3
     -MoveSpeed : IVariable<float>
     -RotationSpeed : IVariable<float>
     -Rigidbody : Rigidbody
+    
 # IsMoving
      -MoveDuration : Const<float>
-     -MoveTime : IVariable<float>    
+     -MoveTime : IVariable<float>  
+       
 # Health
      -CurrentHealth : IReactiveVariable<int>
      -MaxHealth :  IValue<int>
+     
 # Death
      -DeathEvent : IEvent<IEntity>
+     
 # Damage
      -Damage : IVariable<int>
+     
 # Damage RCAE
      -TakeDamageRequest : IRequest<int>
      -TakeDamageCondition : IExpression<int, bool>
      -TakeDamageAction : ICompositeAction<int>
      -TakeDamageEvent : IEvent<int>
      
-  # Add your values here
-  # - health: float
-  # - position: Vector3
+# Fire RCAE
+    -FireRequest : IRequest
+    -FireCondition : IExpression<bool>
+    -FireAction : ICompositeAction
+    -FireEvent : IEvent
+
+# Weapon
+    -Ammo : IVariable<int>
+    -SpreadAngle : Const<float>
+    -FireCooldown : ICooldown
+    
+# Bullet
+    -LifeTime : DownTimer
+    -Trigger : TriggerEvents

@@ -6602,6 +6602,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.CharacterController
   _camera: {fileID: 4510875680707912767}
   _character: {fileID: 879014911}
+  _weapon: {fileID: 9048405937420967257}
 --- !u!4 &458326645
 Transform:
   m_ObjectHideFlags: 0
@@ -18827,7 +18828,7 @@ Transform:
   m_GameObject: {fileID: 1452492133}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0000000037252903}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18869,7 +18870,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1452492133}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
@@ -27976,7 +27977,83 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3578180279390331970, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 879014918}
+    - targetCorrespondingSourceObject: {fileID: 7112523048471529541, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9048405937420967257}
+    - targetCorrespondingSourceObject: {fileID: 7112523048471529541, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9048405937420967256}
+    - targetCorrespondingSourceObject: {fileID: 7112523048471529541, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9048405937420967255}
   m_SourcePrefab: {fileID: 100100000, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
+--- !u!4 &9048405937420967253 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7272988223813815378, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
+  m_PrefabInstance: {fileID: 9048405937420967252}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9048405937420967254 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7112523048471529541, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
+  m_PrefabInstance: {fileID: 9048405937420967252}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9048405937420967255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9048405937420967254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5608ac30e1bf4f5fb7b293622d465cb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.GunFireInstaller
+--- !u!114 &9048405937420967256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9048405937420967254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29112cff398540dc809bdacac3312874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Scripts.Entities.Content.Weapon.WeaponInstaller
+  _ammo: 4
+  _spreadAngle: 0.24
+  _firePoint: {fileID: 9048405937420967253}
+  _projectilePrefab: {fileID: 7950386576483382146, guid: fc383e20fc5b342059ed5ab71e30da44, type: 3}
+  _fireInstaller: {fileID: 9048405937420967255}
+  _cooldown:
+    _duration: 1
+    _time: 0.1
+--- !u!114 &9048405937420967257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9048405937420967254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
+  useUnityLifecycle: 1
+  disposeValues: 1
+  installOnAwake: 1
+  uninstallOnDestroy: 1
+  scriptableInstallers: []
+  sceneInstallers:
+  - {fileID: 9048405937420967256}
+  onlySelectedGizmos: 0
+  onlyEditModeGizmos: 0
+  autoCompile: 0
+  initialTagCapacity: 0
+  initialValueCapacity: 7
+  initialBehaviourCapacity: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -22,14 +22,13 @@ namespace Game
 
         public void FixedTick(IEntity entity, float deltaTime)
         {
-            if (_request.Consume(out var moveDirection) 
-                && moveDirection != Vector3.zero 
-                && _condition.Invoke(moveDirection))
-            {
-                entity.GetMoveTime().Value = Time.time;
-                _action.Invoke(moveDirection, deltaTime);
-                _event.Invoke(moveDirection);
-            }
+            if (!_request.Consume(out var moveDirection)
+                || moveDirection == Vector3.zero
+                || !_condition.Invoke(moveDirection)) return;
+            
+            entity.GetMoveTime().Value = Time.time;
+            _action.Invoke(moveDirection, deltaTime);
+            _event.Invoke(moveDirection);
         }
     }
 }
