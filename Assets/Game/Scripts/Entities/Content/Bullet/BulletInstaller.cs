@@ -7,41 +7,46 @@ namespace Game
     public class BulletInstaller : SceneEntityInstaller
     {
         [SerializeField]
-        private Rigidbody _rigidbody;
+        private RigidbodyInstaller _rigidBodyInstaller;
+        
+        [SerializeField] 
+        private RigidbodyMoveInstaller _rigidBodyMoveInstaller;
         
         [SerializeField] 
         private TriggerEvents _trigger;
         
+        [Header("Damage")] 
+        
         [SerializeField, Min(0)] 
         private int _damage;
         
+        [Header("SphereCast")] 
+        
         [SerializeField]
-        private Variable<float> _moveSpeed;
+        private float _sphereCastRadius;
+
+        [SerializeField]
+        private LayerMask _layerMask;
         
         [SerializeField]
         private DownTimer _lifeTime;
         
         public override void Install(IEntity entity)
         {
-            entity.AddMoveableTag();
-            entity.AddRigidbody(_rigidbody);
-            entity.AddMoveSpeed(_moveSpeed);
-            entity.AddDamage(new Variable<int>(_damage));
+            _rigidBodyInstaller.Install(entity);
+            _rigidBodyMoveInstaller.Install(entity);
+            
             entity.AddLifeTime(_lifeTime);
-            entity.AddMoveTime(new Variable<float>(0f));
+            entity.AddDamage(new Variable<int>(_damage));
             entity.AddTrigger(_trigger);
+            entity.AddSphereCastRadius(_sphereCastRadius);
+            entity.AddLayerMask(_layerMask);
             
-            entity.AddMoveRequest(new Request<Vector3>());
-            entity.AddMoveCondition(new AndExpression<Vector3>());
-            entity.AddMoveAction(new CompositeAction<Vector3, float>());
-            entity.AddMoveEvent(new Event<Vector3>());
-            
+            entity.GetMoveAction().Add(entity.CheckHit);
             entity.WhenFixedTick(_ => entity.GetMoveRequest().Invoke(entity.GetRigidbody().rotation * Vector3.forward));
-            entity.GetMoveAction().Add(entity.RigidbodyMoveStep);
             
-            entity.AddBehaviour<MoveBehaviour>();
-            entity.AddBehaviour<BulletCollisionBehaviour>();
-            entity.AddBehaviour<BulletLifeBehaviour>();
+            //entity.AddBehaviour<BulletCollisionBehaviour>();
+            entity.AddBehaviour<BulletLifeTimeBehaviour>();
         }
     }
 }

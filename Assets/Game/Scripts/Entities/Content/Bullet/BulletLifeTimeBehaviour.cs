@@ -3,7 +3,7 @@ using Atomic.Entities;
 
 namespace Game
 {
-    public sealed class BulletLifeBehaviour : IEntityInit, IEntityFixedTick, IEntityDispose
+    public sealed class BulletLifeTimeBehaviour : IEntityInit, IEntityFixedTick, IEntityDispose
     {
         private IEntity _self;
         private ITimer _lifeTime;
@@ -16,12 +16,8 @@ namespace Game
             _lifeTime.Start();
         }
 
-        public void FixedTick(IEntity entity, float deltaTime)
-        {
-            //if (!_lifeTime.IsCompleted())
-                _lifeTime.Tick(deltaTime);
-        }
-        
+        public void FixedTick(IEntity entity, float deltaTime) => _lifeTime.Tick(deltaTime);
+
         private void OnLifeEnded() => SceneEntity.Destroy(_self);
 
         public void Dispose(IEntity entity) => _lifeTime.OnCompleted -= this.OnLifeEnded;

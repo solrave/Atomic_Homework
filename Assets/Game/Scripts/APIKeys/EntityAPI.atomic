@@ -8,8 +8,12 @@ entityType: IEntity
 imports:
 - UnityEngine
 - Atomic.Elements
+- System.Collections.Generic
+- Atomic.Entities
+- Unity.Mathematics
 
 tags:
+    -Player
     -Moveable
     -Damageable
     -Alive
@@ -50,17 +54,30 @@ values:
      -TakeDamageAction : ICompositeAction<int>
      -TakeDamageEvent : IEvent<int>
      
-# Fire RCAE
-    -FireRequest : IRequest
-    -FireCondition : IExpression<bool>
-    -FireAction : ICompositeAction
-    -FireEvent : IEvent
+# Attack RCAE
+    -AttackRequest : IRequest
+    -AttackCondition : IExpression<bool>
+    -AttackAction : ICompositeAction
+    -AttackEvent : IEvent
+
+# Attack
+    -AttackCooldown : ICooldown
 
 # Weapon
+    -Weapon : IVariable<IEntity>
     -Ammo : IVariable<int>
     -SpreadAngle : Const<float>
-    -FireCooldown : ICooldown
+    -HitDelay : DownTimer
     
 # Bullet
     -LifeTime : DownTimer
     -Trigger : TriggerEvents
+    -SphereCastRadius : Const<float>
+    -LayerMask : Const<LayerMask>
+    
+# Trigger
+    -TriggerEnemies : List<SceneEntity>
+    
+# Zombie
+    -Target : IVariable<IEntity>
+    -AttackDistance : Const<float>

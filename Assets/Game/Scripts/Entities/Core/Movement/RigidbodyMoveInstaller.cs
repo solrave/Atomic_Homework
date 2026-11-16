@@ -4,17 +4,11 @@ using UnityEngine;
 
 namespace Game
 {
-    public class MoveInstaller : SceneEntityInstaller
+    public class RigidbodyMoveInstaller : SceneEntityInstaller
     {
-        [SerializeField]
-        private Rigidbody _rigidbody;
-
         [SerializeField]
         private float _moveSpeed;
         
-        [SerializeField]
-        private float _rotationSpeed;
-
         [SerializeField]
         private Const<float> _moveDuration;
         
@@ -24,13 +18,9 @@ namespace Game
             
             entity.AddMoveDuration(_moveDuration);
             entity.AddMoveTime(new Variable<float>(-_moveDuration));
-            entity.AddRigidbody(_rigidbody);
             entity.AddMoveSpeed(new Variable<float>(_moveSpeed));
-            entity.AddRotationSpeed(new Variable<float>(_rotationSpeed));
-            entity.AddLookDirection(Vector3.zero);
             
             entity.AddBehaviour<MoveBehaviour>();
-            entity.AddBehaviour<LookBehaviour>();
             
             entity.AddMoveRequest(new Request<Vector3>());
             entity.AddMoveCondition(new AndExpression<Vector3>());
@@ -38,7 +28,7 @@ namespace Game
             entity.AddMoveEvent(new Event<Vector3>());
             
             entity.GetMoveAction().Add(entity.RigidbodyMoveStep);
-            entity.GetMoveCondition().Add(_ => entity.HasMoveableTag() && entity.HasAliveTag());
+            entity.GetMoveCondition().Add(_ => entity.HasMoveableTag());
         }
     }
 }

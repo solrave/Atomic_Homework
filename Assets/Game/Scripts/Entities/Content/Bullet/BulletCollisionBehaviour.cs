@@ -25,10 +25,14 @@ namespace Game
         
         private void OnTriggerEnter(Collider obj)
         {
-            if (obj.TryGetComponent(out IEntity entity) && entity.HasDamageableTag())
+                Debug.Log("Bullet Trigger!");
+            
+            if (obj.TryGetComponent(out IEntity entity) && entity.HasDamageableTag() 
+                                                        && entity.IsAliveTarget())
             {
-                var health = entity.GetCurrentHealth();
-                health.Value = Mathf.Max(0, health.Value - _damage.Value);
+                entity.GetTakeDamageRequest().Invoke(_damage.Value);
+                Debug.Log("Bullet Collision!");
+                SceneEntity.Destroy(_self);
             }
         }
     }

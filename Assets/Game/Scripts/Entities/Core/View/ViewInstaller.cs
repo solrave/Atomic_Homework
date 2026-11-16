@@ -7,8 +7,8 @@ namespace Game
     public class ViewInstaller : SceneEntityInstaller
     {
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
-        private static readonly int DEATH = Animator.StringToHash("Death");
-        
+        private static readonly int Death = Animator.StringToHash("Death");
+
         private readonly DisposableComposite _disposables = new();
         
         [SerializeField]
@@ -23,7 +23,7 @@ namespace Game
                 .AddTo(_disposables);
             
             entity.GetDeathEvent().Subscribe(_ => _animator
-                .SetBool(DEATH, true))
+                .SetBool(Death, true))
                 .AddTo(_disposables);
         }
 

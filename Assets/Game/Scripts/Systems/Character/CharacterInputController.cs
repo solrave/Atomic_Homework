@@ -1,5 +1,4 @@
-﻿using System;
-using Atomic.Entities;
+﻿using Atomic.Entities;
 using UnityEngine;
 
 namespace Game
@@ -60,7 +59,7 @@ namespace Game
                 _character.GetTakeDamageRequest().Invoke(1);
             
             if (Input.GetKeyDown(KeyCode.Space)) //Fire
-                _weapon.GetFireRequest().Invoke();
+                _weapon.GetAttackRequest().Invoke();
             
             _character.GetMoveRequest().Invoke(moveDirection.normalized);
         }

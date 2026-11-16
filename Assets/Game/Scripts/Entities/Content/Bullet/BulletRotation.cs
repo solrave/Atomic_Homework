@@ -1,11 +1,10 @@
-﻿using Atomic.Entities;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Game
 {
-    public static class FireUseCase
+    public static class BulletRotation
     {
-        public static Quaternion WithRandomSpread(Quaternion current,float spread)
+        public static Quaternion WithRandomSpread(this Quaternion current,float spread)
         {
             var angle = Random.Range(-spread, spread);
             var randomSpread = Quaternion.AngleAxis(angle, Vector3.up);

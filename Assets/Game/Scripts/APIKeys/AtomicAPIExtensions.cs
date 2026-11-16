@@ -10,6 +10,8 @@ using UnityEditor;
 #endif
 using UnityEngine;
 using Atomic.Elements;
+using System.Collections.Generic;
+using Unity.Mathematics;
 
 namespace Game
 {
@@ -20,6 +22,7 @@ namespace Game
 	{
 
 		///Tags
+		public static readonly int Player;
 		public static readonly int Moveable;
 		public static readonly int Damageable;
 		public static readonly int Alive;
@@ -44,19 +47,27 @@ namespace Game
 		public static readonly int TakeDamageCondition; // IExpression<int,bool>
 		public static readonly int TakeDamageAction; // ICompositeAction<int>
 		public static readonly int TakeDamageEvent; // IEvent<int>
-		public static readonly int FireRequest; // IRequest
-		public static readonly int FireCondition; // IExpression<bool>
-		public static readonly int FireAction; // ICompositeAction
-		public static readonly int FireEvent; // IEvent
+		public static readonly int AttackRequest; // IRequest
+		public static readonly int AttackCondition; // IExpression<bool>
+		public static readonly int AttackAction; // ICompositeAction
+		public static readonly int AttackEvent; // IEvent
+		public static readonly int AttackCooldown; // ICooldown
+		public static readonly int Weapon; // IVariable<IEntity>
 		public static readonly int Ammo; // IVariable<int>
 		public static readonly int SpreadAngle; // Const<float>
-		public static readonly int FireCooldown; // ICooldown
+		public static readonly int HitDelay; // DownTimer
 		public static readonly int LifeTime; // DownTimer
 		public static readonly int Trigger; // TriggerEvents
+		public static readonly int SphereCastRadius; // Const<float>
+		public static readonly int LayerMask; // Const<LayerMask>
+		public static readonly int TriggerEnemies; // List<SceneEntity>
+		public static readonly int Target; // IVariable<IEntity>
+		public static readonly int AttackDistance; // Const<float>
 
 		static AtomicAPIExtensions()
 		{
 			//Tags
+			Player = NameToId(nameof(Player));
 			Moveable = NameToId(nameof(Moveable));
 			Damageable = NameToId(nameof(Damageable));
 			Alive = NameToId(nameof(Alive));
@@ -81,19 +92,39 @@ namespace Game
 			TakeDamageCondition = NameToId(nameof(TakeDamageCondition));
 			TakeDamageAction = NameToId(nameof(TakeDamageAction));
 			TakeDamageEvent = NameToId(nameof(TakeDamageEvent));
-			FireRequest = NameToId(nameof(FireRequest));
-			FireCondition = NameToId(nameof(FireCondition));
-			FireAction = NameToId(nameof(FireAction));
-			FireEvent = NameToId(nameof(FireEvent));
+			AttackRequest = NameToId(nameof(AttackRequest));
+			AttackCondition = NameToId(nameof(AttackCondition));
+			AttackAction = NameToId(nameof(AttackAction));
+			AttackEvent = NameToId(nameof(AttackEvent));
+			AttackCooldown = NameToId(nameof(AttackCooldown));
+			Weapon = NameToId(nameof(Weapon));
 			Ammo = NameToId(nameof(Ammo));
 			SpreadAngle = NameToId(nameof(SpreadAngle));
-			FireCooldown = NameToId(nameof(FireCooldown));
+			HitDelay = NameToId(nameof(HitDelay));
 			LifeTime = NameToId(nameof(LifeTime));
 			Trigger = NameToId(nameof(Trigger));
+			SphereCastRadius = NameToId(nameof(SphereCastRadius));
+			LayerMask = NameToId(nameof(LayerMask));
+			TriggerEnemies = NameToId(nameof(TriggerEnemies));
+			Target = NameToId(nameof(Target));
+			AttackDistance = NameToId(nameof(AttackDistance));
 		}
 
 
 		///Tag Extensions
+
+		#region Player
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasPlayerTag(this IEntity entity) => entity.HasTag(Player);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool AddPlayerTag(this IEntity entity) => entity.AddTag(Player);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelPlayerTag(this IEntity entity) => entity.DelTag(Player);
+
+		#endregion
 
 		#region Moveable
 
@@ -555,91 +586,135 @@ namespace Game
 
 		#endregion
 
-		#region FireRequest
+		#region AttackRequest
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static IRequest GetFireRequest(this IEntity entity) => entity.GetValue<IRequest>(FireRequest);
+		public static IRequest GetAttackRequest(this IEntity entity) => entity.GetValue<IRequest>(AttackRequest);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool TryGetFireRequest(this IEntity entity, out IRequest value) => entity.TryGetValue(FireRequest, out value);
+		public static bool TryGetAttackRequest(this IEntity entity, out IRequest value) => entity.TryGetValue(AttackRequest, out value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void AddFireRequest(this IEntity entity, IRequest value) => entity.AddValue(FireRequest, value);
+		public static void AddAttackRequest(this IEntity entity, IRequest value) => entity.AddValue(AttackRequest, value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool HasFireRequest(this IEntity entity) => entity.HasValue(FireRequest);
+		public static bool HasAttackRequest(this IEntity entity) => entity.HasValue(AttackRequest);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool DelFireRequest(this IEntity entity) => entity.DelValue(FireRequest);
+		public static bool DelAttackRequest(this IEntity entity) => entity.DelValue(AttackRequest);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void SetFireRequest(this IEntity entity, IRequest value) => entity.SetValue(FireRequest, value);
+		public static void SetAttackRequest(this IEntity entity, IRequest value) => entity.SetValue(AttackRequest, value);
 
 		#endregion
 
-		#region FireCondition
+		#region AttackCondition
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static IExpression<bool> GetFireCondition(this IEntity entity) => entity.GetValue<IExpression<bool>>(FireCondition);
+		public static IExpression<bool> GetAttackCondition(this IEntity entity) => entity.GetValue<IExpression<bool>>(AttackCondition);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool TryGetFireCondition(this IEntity entity, out IExpression<bool> value) => entity.TryGetValue(FireCondition, out value);
+		public static bool TryGetAttackCondition(this IEntity entity, out IExpression<bool> value) => entity.TryGetValue(AttackCondition, out value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void AddFireCondition(this IEntity entity, IExpression<bool> value) => entity.AddValue(FireCondition, value);
+		public static void AddAttackCondition(this IEntity entity, IExpression<bool> value) => entity.AddValue(AttackCondition, value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool HasFireCondition(this IEntity entity) => entity.HasValue(FireCondition);
+		public static bool HasAttackCondition(this IEntity entity) => entity.HasValue(AttackCondition);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool DelFireCondition(this IEntity entity) => entity.DelValue(FireCondition);
+		public static bool DelAttackCondition(this IEntity entity) => entity.DelValue(AttackCondition);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void SetFireCondition(this IEntity entity, IExpression<bool> value) => entity.SetValue(FireCondition, value);
+		public static void SetAttackCondition(this IEntity entity, IExpression<bool> value) => entity.SetValue(AttackCondition, value);
 
 		#endregion
 
-		#region FireAction
+		#region AttackAction
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ICompositeAction GetFireAction(this IEntity entity) => entity.GetValue<ICompositeAction>(FireAction);
+		public static ICompositeAction GetAttackAction(this IEntity entity) => entity.GetValue<ICompositeAction>(AttackAction);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool TryGetFireAction(this IEntity entity, out ICompositeAction value) => entity.TryGetValue(FireAction, out value);
+		public static bool TryGetAttackAction(this IEntity entity, out ICompositeAction value) => entity.TryGetValue(AttackAction, out value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void AddFireAction(this IEntity entity, ICompositeAction value) => entity.AddValue(FireAction, value);
+		public static void AddAttackAction(this IEntity entity, ICompositeAction value) => entity.AddValue(AttackAction, value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool HasFireAction(this IEntity entity) => entity.HasValue(FireAction);
+		public static bool HasAttackAction(this IEntity entity) => entity.HasValue(AttackAction);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool DelFireAction(this IEntity entity) => entity.DelValue(FireAction);
+		public static bool DelAttackAction(this IEntity entity) => entity.DelValue(AttackAction);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void SetFireAction(this IEntity entity, ICompositeAction value) => entity.SetValue(FireAction, value);
+		public static void SetAttackAction(this IEntity entity, ICompositeAction value) => entity.SetValue(AttackAction, value);
 
 		#endregion
 
-		#region FireEvent
+		#region AttackEvent
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static IEvent GetFireEvent(this IEntity entity) => entity.GetValue<IEvent>(FireEvent);
+		public static IEvent GetAttackEvent(this IEntity entity) => entity.GetValue<IEvent>(AttackEvent);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool TryGetFireEvent(this IEntity entity, out IEvent value) => entity.TryGetValue(FireEvent, out value);
+		public static bool TryGetAttackEvent(this IEntity entity, out IEvent value) => entity.TryGetValue(AttackEvent, out value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void AddFireEvent(this IEntity entity, IEvent value) => entity.AddValue(FireEvent, value);
+		public static void AddAttackEvent(this IEntity entity, IEvent value) => entity.AddValue(AttackEvent, value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool HasFireEvent(this IEntity entity) => entity.HasValue(FireEvent);
+		public static bool HasAttackEvent(this IEntity entity) => entity.HasValue(AttackEvent);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool DelFireEvent(this IEntity entity) => entity.DelValue(FireEvent);
+		public static bool DelAttackEvent(this IEntity entity) => entity.DelValue(AttackEvent);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void SetFireEvent(this IEntity entity, IEvent value) => entity.SetValue(FireEvent, value);
+		public static void SetAttackEvent(this IEntity entity, IEvent value) => entity.SetValue(AttackEvent, value);
+
+		#endregion
+
+		#region AttackCooldown
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ICooldown GetAttackCooldown(this IEntity entity) => entity.GetValue<ICooldown>(AttackCooldown);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetAttackCooldown(this IEntity entity, out ICooldown value) => entity.TryGetValue(AttackCooldown, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddAttackCooldown(this IEntity entity, ICooldown value) => entity.AddValue(AttackCooldown, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasAttackCooldown(this IEntity entity) => entity.HasValue(AttackCooldown);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelAttackCooldown(this IEntity entity) => entity.DelValue(AttackCooldown);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetAttackCooldown(this IEntity entity, ICooldown value) => entity.SetValue(AttackCooldown, value);
+
+		#endregion
+
+		#region Weapon
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IVariable<IEntity> GetWeapon(this IEntity entity) => entity.GetValue<IVariable<IEntity>>(Weapon);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetWeapon(this IEntity entity, out IVariable<IEntity> value) => entity.TryGetValue(Weapon, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddWeapon(this IEntity entity, IVariable<IEntity> value) => entity.AddValue(Weapon, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasWeapon(this IEntity entity) => entity.HasValue(Weapon);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelWeapon(this IEntity entity) => entity.DelValue(Weapon);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetWeapon(this IEntity entity, IVariable<IEntity> value) => entity.SetValue(Weapon, value);
 
 		#endregion
 
@@ -687,25 +762,25 @@ namespace Game
 
 		#endregion
 
-		#region FireCooldown
+		#region HitDelay
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ICooldown GetFireCooldown(this IEntity entity) => entity.GetValue<ICooldown>(FireCooldown);
+		public static DownTimer GetHitDelay(this IEntity entity) => entity.GetValue<DownTimer>(HitDelay);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool TryGetFireCooldown(this IEntity entity, out ICooldown value) => entity.TryGetValue(FireCooldown, out value);
+		public static bool TryGetHitDelay(this IEntity entity, out DownTimer value) => entity.TryGetValue(HitDelay, out value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void AddFireCooldown(this IEntity entity, ICooldown value) => entity.AddValue(FireCooldown, value);
+		public static void AddHitDelay(this IEntity entity, DownTimer value) => entity.AddValue(HitDelay, value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool HasFireCooldown(this IEntity entity) => entity.HasValue(FireCooldown);
+		public static bool HasHitDelay(this IEntity entity) => entity.HasValue(HitDelay);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool DelFireCooldown(this IEntity entity) => entity.DelValue(FireCooldown);
+		public static bool DelHitDelay(this IEntity entity) => entity.DelValue(HitDelay);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void SetFireCooldown(this IEntity entity, ICooldown value) => entity.SetValue(FireCooldown, value);
+		public static void SetHitDelay(this IEntity entity, DownTimer value) => entity.SetValue(HitDelay, value);
 
 		#endregion
 
@@ -750,6 +825,116 @@ namespace Game
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void SetTrigger(this IEntity entity, TriggerEvents value) => entity.SetValue(Trigger, value);
+
+		#endregion
+
+		#region SphereCastRadius
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Const<float> GetSphereCastRadius(this IEntity entity) => entity.GetValue<Const<float>>(SphereCastRadius);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetSphereCastRadius(this IEntity entity, out Const<float> value) => entity.TryGetValue(SphereCastRadius, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddSphereCastRadius(this IEntity entity, Const<float> value) => entity.AddValue(SphereCastRadius, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasSphereCastRadius(this IEntity entity) => entity.HasValue(SphereCastRadius);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelSphereCastRadius(this IEntity entity) => entity.DelValue(SphereCastRadius);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetSphereCastRadius(this IEntity entity, Const<float> value) => entity.SetValue(SphereCastRadius, value);
+
+		#endregion
+
+		#region LayerMask
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Const<LayerMask> GetLayerMask(this IEntity entity) => entity.GetValue<Const<LayerMask>>(LayerMask);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetLayerMask(this IEntity entity, out Const<LayerMask> value) => entity.TryGetValue(LayerMask, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddLayerMask(this IEntity entity, Const<LayerMask> value) => entity.AddValue(LayerMask, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasLayerMask(this IEntity entity) => entity.HasValue(LayerMask);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelLayerMask(this IEntity entity) => entity.DelValue(LayerMask);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetLayerMask(this IEntity entity, Const<LayerMask> value) => entity.SetValue(LayerMask, value);
+
+		#endregion
+
+		#region TriggerEnemies
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static List<SceneEntity> GetTriggerEnemies(this IEntity entity) => entity.GetValue<List<SceneEntity>>(TriggerEnemies);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetTriggerEnemies(this IEntity entity, out List<SceneEntity> value) => entity.TryGetValue(TriggerEnemies, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddTriggerEnemies(this IEntity entity, List<SceneEntity> value) => entity.AddValue(TriggerEnemies, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasTriggerEnemies(this IEntity entity) => entity.HasValue(TriggerEnemies);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelTriggerEnemies(this IEntity entity) => entity.DelValue(TriggerEnemies);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetTriggerEnemies(this IEntity entity, List<SceneEntity> value) => entity.SetValue(TriggerEnemies, value);
+
+		#endregion
+
+		#region Target
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IVariable<IEntity> GetTarget(this IEntity entity) => entity.GetValue<IVariable<IEntity>>(Target);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetTarget(this IEntity entity, out IVariable<IEntity> value) => entity.TryGetValue(Target, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddTarget(this IEntity entity, IVariable<IEntity> value) => entity.AddValue(Target, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasTarget(this IEntity entity) => entity.HasValue(Target);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelTarget(this IEntity entity) => entity.DelValue(Target);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetTarget(this IEntity entity, IVariable<IEntity> value) => entity.SetValue(Target, value);
+
+		#endregion
+
+		#region AttackDistance
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Const<float> GetAttackDistance(this IEntity entity) => entity.GetValue<Const<float>>(AttackDistance);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetAttackDistance(this IEntity entity, out Const<float> value) => entity.TryGetValue(AttackDistance, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddAttackDistance(this IEntity entity, Const<float> value) => entity.AddValue(AttackDistance, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasAttackDistance(this IEntity entity) => entity.HasValue(AttackDistance);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelAttackDistance(this IEntity entity) => entity.DelValue(AttackDistance);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetAttackDistance(this IEntity entity, Const<float> value) => entity.SetValue(AttackDistance, value);
 
 		#endregion
     }
