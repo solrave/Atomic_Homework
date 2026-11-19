@@ -9,12 +9,16 @@ namespace Game
         [SerializeField] 
         private int _maxHealth;
 
+        [SerializeField]
+        private Collider _hitCollider;
+
         public override void Install(IEntity entity)
         {
             entity.AddDamageableTag();
             entity.AddAliveTag();
             entity.AddMaxHealth(new Const<int>(_maxHealth));
             entity.AddCurrentHealth(new ReactiveVariable<int>(_maxHealth));
+            entity.AddHitCollider(_hitCollider);
             
             entity.AddBehaviour<TakeDamageBehaviour>();
             entity.AddBehaviour<DeathBehaviour>();

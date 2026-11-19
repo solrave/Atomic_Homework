@@ -42,11 +42,12 @@ namespace Game
 		public static readonly int CurrentHealth; // IReactiveVariable<int>
 		public static readonly int MaxHealth; // IValue<int>
 		public static readonly int DeathEvent; // IEvent<IEntity>
-		public static readonly int Damage; // IVariable<int>
+		public static readonly int HitCollider; // Collider
 		public static readonly int TakeDamageRequest; // IRequest<int>
 		public static readonly int TakeDamageCondition; // IExpression<int,bool>
 		public static readonly int TakeDamageAction; // ICompositeAction<int>
 		public static readonly int TakeDamageEvent; // IEvent<int>
+		public static readonly int Damage; // IVariable<int>
 		public static readonly int AttackRequest; // IRequest
 		public static readonly int AttackCondition; // IExpression<bool>
 		public static readonly int AttackAction; // ICompositeAction
@@ -63,6 +64,13 @@ namespace Game
 		public static readonly int TriggerEnemies; // List<SceneEntity>
 		public static readonly int Target; // IVariable<IEntity>
 		public static readonly int AttackDistance; // Const<float>
+		public static readonly int PickupRequest; // IRequest<IEntity>
+		public static readonly int PickupCondition; // AndExpression<IEntity>
+		public static readonly int PickupAction; // ICompositeAction<IEntity>
+		public static readonly int PickupEvent; // IEvent<IEntity>
+		public static readonly int VFX; // ParticleSystem
+		public static readonly int SFX; // AudioSource
+		public static readonly int Amount; // Const<int>
 
 		static AtomicAPIExtensions()
 		{
@@ -87,11 +95,12 @@ namespace Game
 			CurrentHealth = NameToId(nameof(CurrentHealth));
 			MaxHealth = NameToId(nameof(MaxHealth));
 			DeathEvent = NameToId(nameof(DeathEvent));
-			Damage = NameToId(nameof(Damage));
+			HitCollider = NameToId(nameof(HitCollider));
 			TakeDamageRequest = NameToId(nameof(TakeDamageRequest));
 			TakeDamageCondition = NameToId(nameof(TakeDamageCondition));
 			TakeDamageAction = NameToId(nameof(TakeDamageAction));
 			TakeDamageEvent = NameToId(nameof(TakeDamageEvent));
+			Damage = NameToId(nameof(Damage));
 			AttackRequest = NameToId(nameof(AttackRequest));
 			AttackCondition = NameToId(nameof(AttackCondition));
 			AttackAction = NameToId(nameof(AttackAction));
@@ -108,6 +117,13 @@ namespace Game
 			TriggerEnemies = NameToId(nameof(TriggerEnemies));
 			Target = NameToId(nameof(Target));
 			AttackDistance = NameToId(nameof(AttackDistance));
+			PickupRequest = NameToId(nameof(PickupRequest));
+			PickupCondition = NameToId(nameof(PickupCondition));
+			PickupAction = NameToId(nameof(PickupAction));
+			PickupEvent = NameToId(nameof(PickupEvent));
+			VFX = NameToId(nameof(VFX));
+			SFX = NameToId(nameof(SFX));
+			Amount = NameToId(nameof(Amount));
 		}
 
 
@@ -476,25 +492,25 @@ namespace Game
 
 		#endregion
 
-		#region Damage
+		#region HitCollider
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static IVariable<int> GetDamage(this IEntity entity) => entity.GetValue<IVariable<int>>(Damage);
+		public static Collider GetHitCollider(this IEntity entity) => entity.GetValue<Collider>(HitCollider);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool TryGetDamage(this IEntity entity, out IVariable<int> value) => entity.TryGetValue(Damage, out value);
+		public static bool TryGetHitCollider(this IEntity entity, out Collider value) => entity.TryGetValue(HitCollider, out value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void AddDamage(this IEntity entity, IVariable<int> value) => entity.AddValue(Damage, value);
+		public static void AddHitCollider(this IEntity entity, Collider value) => entity.AddValue(HitCollider, value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool HasDamage(this IEntity entity) => entity.HasValue(Damage);
+		public static bool HasHitCollider(this IEntity entity) => entity.HasValue(HitCollider);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool DelDamage(this IEntity entity) => entity.DelValue(Damage);
+		public static bool DelHitCollider(this IEntity entity) => entity.DelValue(HitCollider);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void SetDamage(this IEntity entity, IVariable<int> value) => entity.SetValue(Damage, value);
+		public static void SetHitCollider(this IEntity entity, Collider value) => entity.SetValue(HitCollider, value);
 
 		#endregion
 
@@ -583,6 +599,28 @@ namespace Game
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void SetTakeDamageEvent(this IEntity entity, IEvent<int> value) => entity.SetValue(TakeDamageEvent, value);
+
+		#endregion
+
+		#region Damage
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IVariable<int> GetDamage(this IEntity entity) => entity.GetValue<IVariable<int>>(Damage);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetDamage(this IEntity entity, out IVariable<int> value) => entity.TryGetValue(Damage, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddDamage(this IEntity entity, IVariable<int> value) => entity.AddValue(Damage, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasDamage(this IEntity entity) => entity.HasValue(Damage);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelDamage(this IEntity entity) => entity.DelValue(Damage);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetDamage(this IEntity entity, IVariable<int> value) => entity.SetValue(Damage, value);
 
 		#endregion
 
@@ -935,6 +973,160 @@ namespace Game
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void SetAttackDistance(this IEntity entity, Const<float> value) => entity.SetValue(AttackDistance, value);
+
+		#endregion
+
+		#region PickupRequest
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IRequest<IEntity> GetPickupRequest(this IEntity entity) => entity.GetValue<IRequest<IEntity>>(PickupRequest);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetPickupRequest(this IEntity entity, out IRequest<IEntity> value) => entity.TryGetValue(PickupRequest, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddPickupRequest(this IEntity entity, IRequest<IEntity> value) => entity.AddValue(PickupRequest, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasPickupRequest(this IEntity entity) => entity.HasValue(PickupRequest);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelPickupRequest(this IEntity entity) => entity.DelValue(PickupRequest);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetPickupRequest(this IEntity entity, IRequest<IEntity> value) => entity.SetValue(PickupRequest, value);
+
+		#endregion
+
+		#region PickupCondition
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static AndExpression<IEntity> GetPickupCondition(this IEntity entity) => entity.GetValue<AndExpression<IEntity>>(PickupCondition);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetPickupCondition(this IEntity entity, out AndExpression<IEntity> value) => entity.TryGetValue(PickupCondition, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddPickupCondition(this IEntity entity, AndExpression<IEntity> value) => entity.AddValue(PickupCondition, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasPickupCondition(this IEntity entity) => entity.HasValue(PickupCondition);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelPickupCondition(this IEntity entity) => entity.DelValue(PickupCondition);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetPickupCondition(this IEntity entity, AndExpression<IEntity> value) => entity.SetValue(PickupCondition, value);
+
+		#endregion
+
+		#region PickupAction
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ICompositeAction<IEntity> GetPickupAction(this IEntity entity) => entity.GetValue<ICompositeAction<IEntity>>(PickupAction);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetPickupAction(this IEntity entity, out ICompositeAction<IEntity> value) => entity.TryGetValue(PickupAction, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddPickupAction(this IEntity entity, ICompositeAction<IEntity> value) => entity.AddValue(PickupAction, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasPickupAction(this IEntity entity) => entity.HasValue(PickupAction);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelPickupAction(this IEntity entity) => entity.DelValue(PickupAction);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetPickupAction(this IEntity entity, ICompositeAction<IEntity> value) => entity.SetValue(PickupAction, value);
+
+		#endregion
+
+		#region PickupEvent
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IEvent<IEntity> GetPickupEvent(this IEntity entity) => entity.GetValue<IEvent<IEntity>>(PickupEvent);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetPickupEvent(this IEntity entity, out IEvent<IEntity> value) => entity.TryGetValue(PickupEvent, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddPickupEvent(this IEntity entity, IEvent<IEntity> value) => entity.AddValue(PickupEvent, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasPickupEvent(this IEntity entity) => entity.HasValue(PickupEvent);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelPickupEvent(this IEntity entity) => entity.DelValue(PickupEvent);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetPickupEvent(this IEntity entity, IEvent<IEntity> value) => entity.SetValue(PickupEvent, value);
+
+		#endregion
+
+		#region VFX
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ParticleSystem GetVFX(this IEntity entity) => entity.GetValue<ParticleSystem>(VFX);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetVFX(this IEntity entity, out ParticleSystem value) => entity.TryGetValue(VFX, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddVFX(this IEntity entity, ParticleSystem value) => entity.AddValue(VFX, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasVFX(this IEntity entity) => entity.HasValue(VFX);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelVFX(this IEntity entity) => entity.DelValue(VFX);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetVFX(this IEntity entity, ParticleSystem value) => entity.SetValue(VFX, value);
+
+		#endregion
+
+		#region SFX
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static AudioSource GetSFX(this IEntity entity) => entity.GetValue<AudioSource>(SFX);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetSFX(this IEntity entity, out AudioSource value) => entity.TryGetValue(SFX, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddSFX(this IEntity entity, AudioSource value) => entity.AddValue(SFX, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasSFX(this IEntity entity) => entity.HasValue(SFX);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelSFX(this IEntity entity) => entity.DelValue(SFX);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetSFX(this IEntity entity, AudioSource value) => entity.SetValue(SFX, value);
+
+		#endregion
+
+		#region Amount
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Const<int> GetAmount(this IEntity entity) => entity.GetValue<Const<int>>(Amount);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetAmount(this IEntity entity, out Const<int> value) => entity.TryGetValue(Amount, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddAmount(this IEntity entity, Const<int> value) => entity.AddValue(Amount, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasAmount(this IEntity entity) => entity.HasValue(Amount);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelAmount(this IEntity entity) => entity.DelValue(Amount);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetAmount(this IEntity entity, Const<int> value) => entity.SetValue(Amount, value);
 
 		#endregion
     }

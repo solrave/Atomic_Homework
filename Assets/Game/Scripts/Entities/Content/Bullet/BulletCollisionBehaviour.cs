@@ -25,8 +25,6 @@ namespace Game
         
         private void OnTriggerEnter(Collider obj)
         {
-                Debug.Log("Bullet Trigger!");
-            
             if (obj.TryGetComponent(out IEntity entity) && entity.HasDamageableTag() 
                                                         && entity.IsAliveTarget())
             {

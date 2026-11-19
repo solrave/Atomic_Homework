@@ -1776,6 +1776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.HealthInstaller
   _maxHealth: 2
+  _hitCollider: {fileID: 1842272872912051803}
 --- !u!114 &951191633192357580
 MonoBehaviour:
   m_ObjectHideFlags: 0

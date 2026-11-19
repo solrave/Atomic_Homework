@@ -10,5 +10,6 @@ namespace Game
             var currentHealth =  entity.GetCurrentHealth().Value;
             entity.GetCurrentHealth().Value = Mathf.Max(0, currentHealth - damage);
         }   
+        
     }
 }

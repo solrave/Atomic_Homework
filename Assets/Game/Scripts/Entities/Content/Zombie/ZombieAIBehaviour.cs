@@ -31,7 +31,6 @@ namespace Game
             {
                 entity.SetLookDirection(flatDirection.normalized);
                 entity.GetWeapon().Value.GetAttackRequest().Invoke();
-                Debug.Log("Attack invoked!");
             }
         }
     }

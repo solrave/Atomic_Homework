@@ -22,13 +22,12 @@ values:
 # Animator
     -Animator : Animator
     
-# Movement RCAE
+# Movement
     -MoveRequest : IRequest<Vector3>
     -MoveCondition : IExpression<Vector3, bool>
     -MoveAction : ICompositeAction<Vector3, float>
     -MoveEvent : IEvent<Vector3>
     
-# Movement    
     -LookDirection : ReactiveVector3
     -MoveSpeed : IVariable<float>
     -RotationSpeed : IVariable<float>
@@ -44,23 +43,22 @@ values:
      
 # Death
      -DeathEvent : IEvent<IEntity>
+     -HitCollider : Collider
      
 # Damage
-     -Damage : IVariable<int>
-     
-# Damage RCAE
      -TakeDamageRequest : IRequest<int>
      -TakeDamageCondition : IExpression<int, bool>
      -TakeDamageAction : ICompositeAction<int>
      -TakeDamageEvent : IEvent<int>
      
-# Attack RCAE
+     -Damage : IVariable<int>
+     
+# Attack
     -AttackRequest : IRequest
     -AttackCondition : IExpression<bool>
     -AttackAction : ICompositeAction
     -AttackEvent : IEvent
-
-# Attack
+    
     -AttackCooldown : ICooldown
 
 # Weapon
@@ -81,3 +79,14 @@ values:
 # Zombie
     -Target : IVariable<IEntity>
     -AttackDistance : Const<float>
+    
+#Item
+    -PickupRequest : IRequest<IEntity>
+    -PickupCondition : AndExpression<IEntity>
+    -PickupAction : ICompositeAction<IEntity>
+    -PickupEvent : IEvent<IEntity>
+    
+    -VFX : ParticleSystem
+    -SFX : AudioSource
+    
+    -Amount : Const<int>

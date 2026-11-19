@@ -38,7 +38,7 @@ namespace Game
         public static void ApplyHit(IEntity entity, IEntity targetEntity)
         {
             var damage = entity.GetDamage().Value;
-            targetEntity.TakeDamage(damage);
+            targetEntity.GetTakeDamageRequest().Invoke(damage);
             entity.DelMoveableTag();
             SceneEntity.Destroy(entity);
         }

@@ -45,7 +45,6 @@ namespace Game
             entity.AddBehaviour<WeaponAttackAnimationBehaviour>();
             
             entity.GetMoveCondition().Add(_ => entity.HasAliveTag() && entity.HasMoveableTag());
-            //entity.GetWeapon().Value.GetAttackCondition().Add(entity.IsAliveTarget);
         }
     }
 }

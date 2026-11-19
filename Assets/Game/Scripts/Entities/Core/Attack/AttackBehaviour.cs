@@ -23,7 +23,6 @@ namespace Game
         {
             if (!_request.Consume() || !_condition.Invoke()) return;
             
-            Debug.Log("Attack Invoked!");
             _action.Invoke();
             _event.Invoke();
         }

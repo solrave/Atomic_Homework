@@ -26,7 +26,6 @@ namespace Game
                     && targetEntity.HasPlayerTag() && targetEntity.IsAliveTarget())
                 {
                     targetEntity.GetTakeDamageRequest().Invoke(_damage.Value);
-                    Debug.Log($"DAMAGE WAS DEALT {_damage.Value}");
                 }
             }
         }

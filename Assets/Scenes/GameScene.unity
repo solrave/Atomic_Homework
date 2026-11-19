@@ -2157,6 +2157,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.4999998, y: 0.27415082, z: 2.5000048}
   m_Center: {x: -1.2499853, y: 0.13707541, z: 1.25}
+--- !u!136 &148411973 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 5168095568867884736, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
+  m_PrefabInstance: {fileID: 9048405937420967252}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &155916588
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27901,6 +27906,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[Character]'
       objectReference: {fileID: 0}
+    - target: {fileID: 3829406740677422837, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
+      propertyPath: _hitCollider
+      value: 
+      objectReference: {fileID: 148411973}
     - target: {fileID: 6992041410405490774, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.47
