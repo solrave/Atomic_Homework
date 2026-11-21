@@ -1282,6 +1282,9 @@ GameObject:
   m_Component:
   - component: {fileID: 76841824}
   - component: {fileID: 76841826}
+  - component: {fileID: 76841829}
+  - component: {fileID: 76841828}
+  - component: {fileID: 76841827}
   m_Layer: 0
   m_Name: Trigger4
   m_TagString: Untagged
@@ -1325,6 +1328,62 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 14.542461, y: 1, z: 16.938824}
   m_Center: {x: 1.3156872, y: 0, z: 15.540907}
+--- !u!114 &76841827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76841823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c11f7caf293d4158bfbb8855eade79be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Elements::Atomic.Elements.TriggerEvents
+--- !u!114 &76841828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76841823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7098d5595cb64002812f9127c2433af2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.TriggerInstaller
+  _enemies:
+  - {fileID: 2002798462}
+  - {fileID: 1181941831}
+  - {fileID: 1293755593}
+  - {fileID: 1407229937}
+  - {fileID: 430659184}
+  _trigger: {fileID: 76841827}
+--- !u!114 &76841829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76841823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
+  useUnityLifecycle: 1
+  disposeValues: 1
+  installOnAwake: 1
+  uninstallOnDestroy: 1
+  scriptableInstallers: []
+  sceneInstallers:
+  - {fileID: 76841828}
+  onlySelectedGizmos: 0
+  onlyEditModeGizmos: 0
+  autoCompile: 0
+  initialTagCapacity: 1
+  initialValueCapacity: 1
+  initialBehaviourCapacity: 0
 --- !u!1001 &91586453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2157,11 +2216,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.4999998, y: 0.27415082, z: 2.5000048}
   m_Center: {x: -1.2499853, y: 0.13707541, z: 1.25}
---- !u!136 &148411973 stripped
-CapsuleCollider:
-  m_CorrespondingSourceObject: {fileID: 5168095568867884736, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
-  m_PrefabInstance: {fileID: 9048405937420967252}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &155916588
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5989,6 +6043,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.509991, y: 3.0119958, z: 1}
   m_Center: {x: -1.2500002, y: 1.5, z: 0}
+--- !u!114 &430659184 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2563700149442823039, guid: 851e3fe164bba47c9ac1c74a9fc885ff, type: 3}
+  m_PrefabInstance: {fileID: 256725171}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
 --- !u!1001 &431128458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9901,6 +9966,9 @@ GameObject:
   m_Component:
   - component: {fileID: 680947262}
   - component: {fileID: 680947264}
+  - component: {fileID: 680947267}
+  - component: {fileID: 680947266}
+  - component: {fileID: 680947265}
   m_Layer: 0
   m_Name: Trigger2
   m_TagString: Untagged
@@ -9944,6 +10012,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7.6222334, y: 1, z: 7.757168}
   m_Center: {x: 0, y: 0, z: 15.505478}
+--- !u!114 &680947265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680947261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c11f7caf293d4158bfbb8855eade79be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Elements::Atomic.Elements.TriggerEvents
+--- !u!114 &680947266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680947261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7098d5595cb64002812f9127c2433af2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.TriggerInstaller
+  _enemies:
+  - {fileID: 1431237468}
+  - {fileID: 912174563}
+  _trigger: {fileID: 680947265}
+--- !u!114 &680947267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680947261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
+  useUnityLifecycle: 1
+  disposeValues: 1
+  installOnAwake: 1
+  uninstallOnDestroy: 1
+  scriptableInstallers: []
+  sceneInstallers:
+  - {fileID: 680947266}
+  onlySelectedGizmos: 0
+  onlyEditModeGizmos: 0
+  autoCompile: 0
+  initialTagCapacity: 1
+  initialValueCapacity: 1
+  initialBehaviourCapacity: 0
 --- !u!1001 &683460838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12420,6 +12541,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4361596233082998913, guid: 851e3fe164bba47c9ac1c74a9fc885ff, type: 3}
   m_PrefabInstance: {fileID: 912174561}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &912174563 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2563700149442823039, guid: 851e3fe164bba47c9ac1c74a9fc885ff, type: 3}
+  m_PrefabInstance: {fileID: 912174561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
 --- !u!1001 &913457089
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13950,6 +14082,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4972320902449404, guid: 964fad2f5f5558f40ad4bd59861c3555, type: 3}
   m_PrefabInstance: {fileID: 1059567947}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1062857237 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2563700149442823039, guid: 851e3fe164bba47c9ac1c74a9fc885ff, type: 3}
+  m_PrefabInstance: {fileID: 761039289}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
 --- !u!1001 &1069976334
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15100,6 +15243,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.509991, y: 3.0119958, z: 1}
   m_Center: {x: -1.2500002, y: 1.5, z: 0}
+--- !u!114 &1181941831 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2563700149442823039, guid: 851e3fe164bba47c9ac1c74a9fc885ff, type: 3}
+  m_PrefabInstance: {fileID: 683460838}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
 --- !u!1001 &1186104517
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17545,6 +17699,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4361596233082998913, guid: 851e3fe164bba47c9ac1c74a9fc885ff, type: 3}
   m_PrefabInstance: {fileID: 1293755590}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1293755593 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2563700149442823039, guid: 851e3fe164bba47c9ac1c74a9fc885ff, type: 3}
+  m_PrefabInstance: {fileID: 1293755590}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
 --- !u!1001 &1295137804
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18420,6 +18585,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4531327130127798, guid: e26c904fc2ace3f478fb4b50f6340d53, type: 3}
   m_PrefabInstance: {fileID: 1406005988}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1407229937 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2563700149442823039, guid: 851e3fe164bba47c9ac1c74a9fc885ff, type: 3}
+  m_PrefabInstance: {fileID: 131314610}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
 --- !u!1001 &1415356768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18478,6 +18654,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4531327130127798, guid: e26c904fc2ace3f478fb4b50f6340d53, type: 3}
   m_PrefabInstance: {fileID: 1415356768}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1431237468 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2563700149442823039, guid: 851e3fe164bba47c9ac1c74a9fc885ff, type: 3}
+  m_PrefabInstance: {fileID: 1295137804}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
 --- !u!1001 &1439316749
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24903,6 +25090,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.509991, y: 3.0119958, z: 1}
   m_Center: {x: -1.2499998, y: 1.5, z: 0}
+--- !u!114 &2002798462 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2563700149442823039, guid: 851e3fe164bba47c9ac1c74a9fc885ff, type: 3}
+  m_PrefabInstance: {fileID: 1293016458}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
 --- !u!1001 &2007642166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26030,6 +26228,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2117813608}
   - component: {fileID: 2117813610}
+  - component: {fileID: 2117813613}
+  - component: {fileID: 2117813612}
+  - component: {fileID: 2117813611}
   m_Layer: 0
   m_Name: Trigger3
   m_TagString: Untagged
@@ -26073,6 +26274,58 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 15.1424885, y: 1, z: 3.6964684}
   m_Center: {x: 3.760127, y: 0, z: 16.247978}
+--- !u!114 &2117813611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117813607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c11f7caf293d4158bfbb8855eade79be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Elements::Atomic.Elements.TriggerEvents
+--- !u!114 &2117813612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117813607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7098d5595cb64002812f9127c2433af2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.TriggerInstaller
+  _enemies:
+  - {fileID: 1062857237}
+  _trigger: {fileID: 2117813611}
+--- !u!114 &2117813613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117813607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
+  useUnityLifecycle: 1
+  disposeValues: 1
+  installOnAwake: 1
+  uninstallOnDestroy: 1
+  scriptableInstallers: []
+  sceneInstallers:
+  - {fileID: 2117813612}
+  onlySelectedGizmos: 0
+  onlyEditModeGizmos: 0
+  autoCompile: 0
+  initialTagCapacity: 1
+  initialValueCapacity: 1
+  initialBehaviourCapacity: 0
 --- !u!1 &2125758030
 GameObject:
   m_ObjectHideFlags: 0
@@ -27906,10 +28159,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[Character]'
       objectReference: {fileID: 0}
-    - target: {fileID: 3829406740677422837, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
-      propertyPath: _hitCollider
-      value: 
-      objectReference: {fileID: 148411973}
     - target: {fileID: 6992041410405490774, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.47
@@ -27949,10 +28198,6 @@ PrefabInstance:
     - target: {fileID: 6992041410405490774, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8896273558138171432, guid: 25ded69825984498db7dacfedbed37a1, type: 3}
-      propertyPath: _ammo
-      value: 88
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

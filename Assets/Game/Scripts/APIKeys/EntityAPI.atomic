@@ -42,7 +42,6 @@ values:
      -MaxHealth :  IValue<int>
      
 # Death
-     -DeathEvent : IEvent<IEntity>
      -HitCollider : Collider
      
 # Damage

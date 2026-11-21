@@ -27,6 +27,8 @@ namespace Game
         public override void Install(IEntity entity)
         {
            entity.AddPlayerTag();
+           entity.AddWeapon(new Variable<IEntity>(_weapon));
+           _weapon.WhenInstall(() => _weapon.GetAttackCondition().Add(entity, entity.IsAliveTarget));
            
            _rigidBodyInstaller.Install(entity);
            _rigidBodyMoveInstaller.Install(entity);
@@ -34,10 +36,8 @@ namespace Game
            _healthInstaller.Install(entity);
            _viewInstaller.Install(entity);
            
-           entity.AddWeapon(new Variable<IEntity>(_weapon));
-           _weapon.WhenInstall(() => _weapon.GetAttackCondition().Add(entity, entity.IsAliveTarget));
            entity.AddBehaviour<CharacterFeetAnimBehaviour>();
-           entity.AddBehaviour<WeaponAttackAnimationBehaviour>();
+           entity.GetMoveAction().Add(entity.RigidbodyMoveStep);
            entity.GetMoveCondition().Add(_ => entity.HasAliveTag());
         }
     }

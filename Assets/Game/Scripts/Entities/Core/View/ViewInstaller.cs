@@ -8,6 +8,7 @@ namespace Game
     {
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
         private static readonly int Death = Animator.StringToHash("Death");
+        private static readonly int Attack = Animator.StringToHash("Attack");
 
         private readonly DisposableComposite _disposables = new();
         
@@ -22,9 +23,16 @@ namespace Game
                 .SetBool(IsMoving, entity.IsMoving()))
                 .AddTo(_disposables);
             
-            entity.GetDeathEvent().Subscribe(_ => _animator
-                .SetBool(Death, true))
-                .AddTo(_disposables);
+            // entity.GetDeathEvent().Subscribe(_ => _animator
+            //     .SetBool(Death, true))
+            //     .AddTo(_disposables);
+            
+            entity.GetCurrentHealth().Subscribe(currentHealth => { if (currentHealth <= 0)
+                    _animator.SetBool(Death, true);}).AddTo(_disposables);
+            
+            entity.GetWeapon().Value.WhenInit(()
+                => entity.GetWeapon().Value.GetAttackEvent().Subscribe(()
+                    => entity.GetAnimator().SetTrigger(Attack))).AddTo(_disposables);
         }
 
         public override void Uninstall(IEntity entity)

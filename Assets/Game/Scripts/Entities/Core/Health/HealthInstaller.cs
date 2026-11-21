@@ -28,8 +28,6 @@ namespace Game
             entity.AddTakeDamageAction(new CompositeAction<int>(entity.TakeDamage));
             entity.AddTakeDamageEvent(new Event<int>());
             
-            entity.AddDeathEvent(new Event<IEntity>());
-            
             entity.GetTakeDamageCondition().Add(_ => entity.HasDamageableTag());
             entity.GetTakeDamageCondition().Add(_ => entity.HasAliveTag());
             entity.GetTakeDamageCondition().Add(damage => damage > 0);

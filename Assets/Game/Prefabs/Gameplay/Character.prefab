@@ -1499,6 +1499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.HealthInstaller
   _maxHealth: 4
+  _hitCollider: {fileID: 5168095568867884736}
 --- !u!114 &7447445132020411830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2879,7 +2880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29112cff398540dc809bdacac3312874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Scripts.Entities.Content.Weapon.WeaponInstaller
-  _ammo: 8
+  _ammo: 88
   _spreadAngle: 0.25
   _firePoint: {fileID: 7272988223813815378}
   _projectilePrefab: {fileID: 7950386576483382146, guid: fc383e20fc5b342059ed5ab71e30da44, type: 3}

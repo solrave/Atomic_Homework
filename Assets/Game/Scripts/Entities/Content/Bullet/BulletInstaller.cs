@@ -43,9 +43,9 @@ namespace Game
             entity.AddLayerMask(_layerMask);
             
             entity.GetMoveAction().Add(entity.CheckHit);
+            entity.GetMoveAction().Add(entity.RigidbodyMoveStep);
             entity.WhenFixedTick(_ => entity.GetMoveRequest().Invoke(entity.GetRigidbody().rotation * Vector3.forward));
             
-            //entity.AddBehaviour<BulletCollisionBehaviour>();
             entity.AddBehaviour<BulletLifeTimeBehaviour>();
         }
     }

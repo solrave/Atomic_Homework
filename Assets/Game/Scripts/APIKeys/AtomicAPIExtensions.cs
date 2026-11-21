@@ -41,7 +41,6 @@ namespace Game
 		public static readonly int MoveTime; // IVariable<float>
 		public static readonly int CurrentHealth; // IReactiveVariable<int>
 		public static readonly int MaxHealth; // IValue<int>
-		public static readonly int DeathEvent; // IEvent<IEntity>
 		public static readonly int HitCollider; // Collider
 		public static readonly int TakeDamageRequest; // IRequest<int>
 		public static readonly int TakeDamageCondition; // IExpression<int,bool>
@@ -94,7 +93,6 @@ namespace Game
 			MoveTime = NameToId(nameof(MoveTime));
 			CurrentHealth = NameToId(nameof(CurrentHealth));
 			MaxHealth = NameToId(nameof(MaxHealth));
-			DeathEvent = NameToId(nameof(DeathEvent));
 			HitCollider = NameToId(nameof(HitCollider));
 			TakeDamageRequest = NameToId(nameof(TakeDamageRequest));
 			TakeDamageCondition = NameToId(nameof(TakeDamageCondition));
@@ -467,28 +465,6 @@ namespace Game
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void SetMaxHealth(this IEntity entity, IValue<int> value) => entity.SetValue(MaxHealth, value);
-
-		#endregion
-
-		#region DeathEvent
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static IEvent<IEntity> GetDeathEvent(this IEntity entity) => entity.GetValue<IEvent<IEntity>>(DeathEvent);
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool TryGetDeathEvent(this IEntity entity, out IEvent<IEntity> value) => entity.TryGetValue(DeathEvent, out value);
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void AddDeathEvent(this IEntity entity, IEvent<IEntity> value) => entity.AddValue(DeathEvent, value);
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool HasDeathEvent(this IEntity entity) => entity.HasValue(DeathEvent);
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool DelDeathEvent(this IEntity entity) => entity.DelValue(DeathEvent);
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void SetDeathEvent(this IEntity entity, IEvent<IEntity> value) => entity.SetValue(DeathEvent, value);
 
 		#endregion
 

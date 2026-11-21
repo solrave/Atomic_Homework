@@ -27,7 +27,6 @@ namespace Game
             entity.AddMoveAction(new CompositeAction<Vector3, float>());
             entity.AddMoveEvent(new Event<Vector3>());
             
-            entity.GetMoveAction().Add(entity.RigidbodyMoveStep);
             entity.GetMoveCondition().Add(_ => entity.HasMoveableTag());
         }
     }
