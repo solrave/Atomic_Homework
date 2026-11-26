@@ -9,10 +9,10 @@ namespace Game
         private Camera _camera;
         
         [SerializeField]
-        private SceneEntity _character;
-        
+        private GameEntity _character;
+
         [SerializeField]
-        private SceneEntity _weapon;
+        private GameEntity _weapon;
 
         private Plane _floor;
 
@@ -59,7 +59,7 @@ namespace Game
                 _character.GetTakeDamageRequest().Invoke(1);
             
             if (Input.GetKeyDown(KeyCode.Space)) //Fire
-                _weapon.GetAttackRequest().Invoke();
+                _weapon.GetAttackRequest().Invoke(_character.GetLookDirection().Value);
             
             _character.GetMoveRequest().Invoke(moveDirection.normalized);
         }

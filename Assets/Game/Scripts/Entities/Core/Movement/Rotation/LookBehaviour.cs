@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Game
 {
-    public class LookBehaviour : IEntityFixedTick
+    public class LookBehaviour : IGameEntityFixedTick
     {
-        public void FixedTick(IEntity entity, float deltaTime)
+        public void FixedTick(IGameEntity entity, float deltaTime)
         {
             if (entity.HasAliveTag())
             {

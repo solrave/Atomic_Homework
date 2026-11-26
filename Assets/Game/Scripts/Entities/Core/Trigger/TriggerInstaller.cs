@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace Game
 {
-    public class TriggerInstaller : SceneEntityInstaller
+    public class TriggerInstaller : GameEntityInstaller
     {
         [SerializeField]
-        private List<SceneEntity> _enemies;
+        private List<GameEntity> _enemies;
 
         [SerializeField]
         private TriggerEvents _trigger;
         
-        public override void Install(IEntity entity)
+        public override void Install(IGameEntity entity)
         {
             entity.AddTrigger(_trigger);
             entity.AddTriggerEnemies(_enemies);

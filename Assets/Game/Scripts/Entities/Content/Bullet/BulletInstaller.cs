@@ -1,10 +1,11 @@
 ﻿using Atomic.Elements;
 using Atomic.Entities;
 using UnityEngine;
+using Event = Atomic.Elements.Event;
 
 namespace Game
 {
-    public class BulletInstaller : SceneEntityInstaller
+    public class BulletInstaller : GameEntityInstaller
     {
         [SerializeField]
         private RigidbodyInstaller _rigidBodyInstaller;
@@ -31,7 +32,7 @@ namespace Game
         [SerializeField]
         private DownTimer _lifeTime;
         
-        public override void Install(IEntity entity)
+        public override void Install(IGameEntity entity)
         {
             _rigidBodyInstaller.Install(entity);
             _rigidBodyMoveInstaller.Install(entity);
@@ -41,6 +42,7 @@ namespace Game
             entity.AddTrigger(_trigger);
             entity.AddSphereCastRadius(_sphereCastRadius);
             entity.AddLayerMask(_layerMask);
+            entity.AddDespawnEvent(new Event());
             
             entity.GetMoveAction().Add(entity.CheckHit);
             entity.GetMoveAction().Add(entity.RigidbodyMoveStep);

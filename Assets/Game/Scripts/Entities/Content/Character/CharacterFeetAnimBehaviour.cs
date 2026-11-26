@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class CharacterFeetAnimBehaviour : IEntityInit, IEntityTick, IEntityDispose
+    public class CharacterFeetAnimBehaviour : IGameEntityInit, IGameEntityTick, IGameEntityDispose
     {
         private static readonly int IsAiming = Animator.StringToHash("IsAiming");
         private static readonly int AimX = Animator.StringToHash("AimX");
@@ -16,7 +16,7 @@ namespace Game
         private Subscription<Vector3> _subscription;
         private Vector3 _local;
 
-        public void Init(IEntity entity)
+        public void Init(IGameEntity entity)
         {
             _animator = entity.GetAnimator();
             _rigidbody = entity.GetRigidbody();
@@ -30,13 +30,13 @@ namespace Game
             _local = _rigidbody.transform.InverseTransformDirection(moveDirection);
         }
 
-        public void Tick(IEntity entity, float deltaTime)
+        public void Tick(IGameEntity entity, float deltaTime)
         {
             _animator.SetFloat(AimX, _local.x, AIM_DAMP_TIME, deltaTime);
             _animator.SetFloat(AimZ, _local.z, AIM_DAMP_TIME, deltaTime);
         }
         
-        public void Dispose(IEntity entity)
+        public void Dispose(IGameEntity entity)
         {
             _subscription.Dispose();
         }

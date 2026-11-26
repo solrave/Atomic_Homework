@@ -5,11 +5,10 @@ namespace Game
 {
     public static class DamageUseCase
     {
-        public static void TakeDamage(this IEntity entity, int damage)
+        public static void TakeDamage(this IGameEntity target, float damage)
         {
-            var currentHealth =  entity.GetCurrentHealth().Value;
-            entity.GetCurrentHealth().Value = Mathf.Max(0, currentHealth - damage);
+            var currentHealth =  target.GetCurrentHealth().Value;
+            target.GetCurrentHealth().Value = Mathf.Max(0, currentHealth - damage);
         }   
-        
     }
 }

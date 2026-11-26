@@ -1,32 +1,34 @@
-﻿using Atomic.Elements;
-using Atomic.Entities;
+﻿using Atomic.Entities;
 using UnityEngine;
 
 namespace Game
 {
     public static class TriggerUseCase
     {
-        public static void SetTarget(this SceneEntity entity, Collider target)
+        public static void SetTarget(this IGameEntity entity, Collider target)
         {
-            if (!target.TryGetEntity(out var player)) return;
-               
-            if (!player.HasAliveTag() || !player.HasPlayerTag()) return;
-               
-                entity.GetTarget().Value = player;
+            Debug.Log("Trigger1");
+            
+            if (!target.TryGetGameEntity(out var player))
+                return;
+            Debug.Log("Trigger222");
+
+            if (!player.HasAliveTag() || !player.HasPlayerTag())
+                return;
+            Debug.Log("Trigger222");
+
+            entity.GetTarget().Value = player;
         }
 
-        public static void ReleaseTarget(this SceneEntity entity, Collider target)
+        public static void ReleaseTarget(this IGameEntity entity, Collider target)
         {
-            var currentTarget = entity.GetTarget().Value;
-
-            if (!target.TryGetEntity(out var player) || !player.HasPlayerTag())
+            if (!target.TryGetGameEntity(out var player) || !player.HasPlayerTag())
                 return;
-            
-            if (currentTarget != null)
-            {
-                if (currentTarget.Equals(player))
-                    entity.GetTarget().Value = null;
-            }
+
+            var currentTarget = entity.GetTarget();
+
+            if (currentTarget.Value != null && currentTarget.Value.Equals(player))
+                currentTarget.Value = null;
         }
     }
 }

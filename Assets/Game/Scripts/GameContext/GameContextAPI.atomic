@@ -1,0 +1,19 @@
+﻿className: GameContextAPI
+directory: Assets/Game/Scripts/GameContext/
+aggressiveInlining: true
+unsafe: false
+entityType: IEntity
+namespace: Game
+
+imports:
+- Atomic.Entities
+- Game
+
+tags:
+  # Add your tags here
+  # - Player
+  # - Enemy
+
+values:
+  - BulletPool : BulletPool
+  - Player : IGameEntity

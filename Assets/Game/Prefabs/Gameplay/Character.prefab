@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82752fed00d948f7a053c09fe615802c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntityProxy
-  _source: {fileID: 16110539119008928}
+  _source: {fileID: 0}
 --- !u!1 &482368463370242186
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,6 +701,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7972666730141032358}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1348981790742859602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7963259529692892511}
+  m_Layer: 0
+  m_Name: <FirePoint>
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7963259529692892511
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348981790742859602}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.052, y: 1.349, z: 1.085}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6992041410405490774}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1842646630780426706
 GameObject:
@@ -1366,7 +1397,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6992041410405490774}
   - component: {fileID: 956588022611877713}
-  - component: {fileID: 16110539119008928}
+  - component: {fileID: 6336180635246286016}
   - component: {fileID: 7789279423559653115}
   - component: {fileID: 43682624458955954}
   - component: {fileID: 3829406740677422837}
@@ -1398,6 +1429,7 @@ Transform:
   - {fileID: 8407613841891128510}
   - {fileID: 2438455280256005863}
   - {fileID: 5137694984199509347}
+  - {fileID: 7963259529692892511}
   - {fileID: 6581213276499623184}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1428,7 +1460,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &16110539119008928
+--- !u!114 &6336180635246286016
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1437,9 +1469,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3578180279390331970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c799fc34130ee14f9a930d5afbe8f86, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
+  m_EditorClassIdentifier: Assembly-CSharp::Game.GameEntity
   useUnityLifecycle: 1
   disposeValues: 1
   installOnAwake: 1
@@ -1451,8 +1483,8 @@ MonoBehaviour:
   onlyEditModeGizmos: 0
   autoCompile: 0
   initialTagCapacity: 1
-  initialValueCapacity: 9
-  initialBehaviourCapacity: 2
+  initialValueCapacity: 1
+  initialBehaviourCapacity: 0
 --- !u!114 &7789279423559653115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1470,7 +1502,7 @@ MonoBehaviour:
   _rotationInstaller: {fileID: 3934656177335163850}
   _healthInstaller: {fileID: 3829406740677422837}
   _viewInstaller: {fileID: 7447445132020411830}
-  _weapon: {fileID: 6630338406449394791}
+  _weapon: {fileID: 3336850022616289553}
 --- !u!114 &43682624458955954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1498,7 +1530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea715d1d71a454da19cb436359c7699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.HealthInstaller
-  _maxHealth: 4
+  _maxHealth: 333333
   _hitCollider: {fileID: 5168095568867884736}
 --- !u!114 &7447445132020411830
 MonoBehaviour:
@@ -2825,12 +2857,13 @@ PrefabInstance:
       value: -169.003
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2136375040396124517, guid: 8c9bfd0f9949b4ed0b1b7e6c4a039d83, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2555051196878869353, guid: 8c9bfd0f9949b4ed0b1b7e6c4a039d83, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6630338406449394791}
+      addedObject: {fileID: 3336850022616289553}
     - targetCorrespondingSourceObject: {fileID: 2555051196878869353, guid: 8c9bfd0f9949b4ed0b1b7e6c4a039d83, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8896273558138171432}
@@ -2843,7 +2876,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2555051196878869353, guid: 8c9bfd0f9949b4ed0b1b7e6c4a039d83, type: 3}
   m_PrefabInstance: {fileID: 4738243663061736236}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6630338406449394791
+--- !u!114 &3336850022616289553
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2852,9 +2885,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7112523048471529541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c799fc34130ee14f9a930d5afbe8f86, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
+  m_EditorClassIdentifier: Assembly-CSharp::Game.GameEntity
   useUnityLifecycle: 1
   disposeValues: 1
   installOnAwake: 1
@@ -2865,9 +2898,9 @@ MonoBehaviour:
   onlySelectedGizmos: 0
   onlyEditModeGizmos: 0
   autoCompile: 0
-  initialTagCapacity: 0
-  initialValueCapacity: 7
-  initialBehaviourCapacity: 1
+  initialTagCapacity: 1
+  initialValueCapacity: 1
+  initialBehaviourCapacity: 0
 --- !u!114 &8896273558138171432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2882,8 +2915,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Scripts.Entities.Content.Weapon.WeaponInstaller
   _ammo: 88
   _spreadAngle: 0.25
-  _firePoint: {fileID: 7272988223813815378}
-  _projectilePrefab: {fileID: 7950386576483382146, guid: fc383e20fc5b342059ed5ab71e30da44, type: 3}
+  _firePoint: {fileID: 7963259529692892511}
+  _projectilePrefab: {fileID: 5334448998248674386, guid: fc383e20fc5b342059ed5ab71e30da44, type: 3}
   _attackInstaller: {fileID: 7514724642488947677}
   _cooldown:
     _duration: 1
@@ -2900,11 +2933,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5608ac30e1bf4f5fb7b293622d465cb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.GunFireInstaller
---- !u!4 &7272988223813815378 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2679439196154746750, guid: 8c9bfd0f9949b4ed0b1b7e6c4a039d83, type: 3}
-  m_PrefabInstance: {fileID: 4738243663061736236}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7708566380249203598 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3115307619230652578, guid: 8c9bfd0f9949b4ed0b1b7e6c4a039d83, type: 3}

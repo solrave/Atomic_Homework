@@ -203,7 +203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 906204727706075558}
   - component: {fileID: 3100126443347532207}
-  - component: {fileID: 7771983544786642302}
+  - component: {fileID: 1322143951073860814}
   - component: {fileID: 1309541090851605987}
   - component: {fileID: 3612839411863375220}
   m_Layer: 11
@@ -252,7 +252,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.83043134, y: 0.5, z: 0.77526355}
   m_Center: {x: 0.00082963705, y: 0.25, z: 0.016052604}
---- !u!114 &7771983544786642302
+--- !u!114 &1322143951073860814
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -261,9 +261,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5903764127141603557}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c799fc34130ee14f9a930d5afbe8f86, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
+  m_EditorClassIdentifier: Assembly-CSharp::Game.GameEntity
   useUnityLifecycle: 1
   disposeValues: 1
   installOnAwake: 1
@@ -289,10 +289,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc08149be16470cbf98aa8d02a926fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.HealthPickupInstaller
+  _trigger: {fileID: 3612839411863375220}
   _amount: 2
   _vfx: {fileID: 3922024436423282089}
   _sfx: {fileID: 2298006360191853931}
-  _trigger: {fileID: 3612839411863375220}
 --- !u!114 &3612839411863375220
 MonoBehaviour:
   m_ObjectHideFlags: 0

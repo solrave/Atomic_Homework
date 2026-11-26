@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class HandInstaller : SceneEntityInstaller
+    public class HandInstaller : GameEntityInstaller
     {
         [SerializeField]
         private AttackInstaller _attackInstaller;
@@ -21,21 +21,20 @@ namespace Game
         [SerializeField] 
         private int _damage;
         
-        public override void Install(IEntity entity)
+        public override void Install(IGameEntity entity)
         {
            _attackInstaller.Install(entity);
 
            entity.AddTrigger(_trigger);
-           entity.AddAttackCooldown(_cooldown);
-           entity.AddHitDelay(_hitDelay);
            entity.AddDamage(new Variable<int>(_damage));
            
-           entity.AddBehaviour<HandAttackBehaviour>();
-            
-           entity.GetAttackAction().Add(entity.GetAttackCooldown().ResetTime);
-           entity.GetAttackAction().Add(entity.GetHitDelay().Start);
-           entity.GetAttackCondition().Add(() => entity.GetAttackCooldown().IsCompleted());
-            
+           entity.AddBehaviour(new HandAttackBehaviour(_hitDelay));
+           
+           entity.GetAttackCondition().Add(() => _cooldown.IsCompleted());
+           
+           entity.GetAttackAction().Add(_ => _cooldown.ResetTime());
+           entity.GetAttackAction().Add(_ => _hitDelay.Start());
+           
            entity.WhenTick(_cooldown.Tick);
            entity.WhenTick(_hitDelay.Tick);
         }

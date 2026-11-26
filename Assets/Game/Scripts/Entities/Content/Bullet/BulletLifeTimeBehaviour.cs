@@ -3,23 +3,22 @@ using Atomic.Entities;
 
 namespace Game
 {
-    public sealed class BulletLifeTimeBehaviour : IEntityInit, IEntityFixedTick, IEntityDispose
+    public sealed class BulletLifeTimeBehaviour : IGameEntityInit, IGameEntityFixedTick, IGameEntityDispose
     {
-        private IEntity _self;
+        private IGameEntity _self;
         private ITimer _lifeTime;
         
-        public void Init(IEntity entity)
+        public void Init(IGameEntity entity)
         {
             _self = entity;
             _lifeTime = entity.GetLifeTime();
             _lifeTime.OnCompleted += this.OnLifeEnded;
-            _lifeTime.Start();
         }
 
-        public void FixedTick(IEntity entity, float deltaTime) => _lifeTime.Tick(deltaTime);
+        public void FixedTick(IGameEntity entity, float deltaTime) => _lifeTime.Tick(deltaTime);
 
-        private void OnLifeEnded() => SceneEntity.Destroy(_self);
+        private void OnLifeEnded() => _self.GetDespawnEvent().Invoke();
 
-        public void Dispose(IEntity entity) => _lifeTime.OnCompleted -= this.OnLifeEnded;
+        public void Dispose(IGameEntity entity) => _lifeTime.OnCompleted -= this.OnLifeEnded;
     }
 }

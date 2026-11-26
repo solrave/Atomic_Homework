@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class RigidbodyMoveInstaller : SceneEntityInstaller
+    public class RigidbodyMoveInstaller : GameEntityInstaller
     {
         [SerializeField]
         private float _moveSpeed;
@@ -12,7 +12,7 @@ namespace Game
         [SerializeField]
         private Const<float> _moveDuration;
         
-        public override void Install(IEntity entity)
+        public override void Install(IGameEntity entity)
         {
             entity.AddMoveableTag();
             
@@ -21,7 +21,6 @@ namespace Game
             entity.AddMoveSpeed(new Variable<float>(_moveSpeed));
             
             entity.AddBehaviour<MoveBehaviour>();
-            
             entity.AddMoveRequest(new Request<Vector3>());
             entity.AddMoveCondition(new AndExpression<Vector3>());
             entity.AddMoveAction(new CompositeAction<Vector3, float>());

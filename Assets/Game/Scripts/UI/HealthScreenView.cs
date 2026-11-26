@@ -51,7 +51,7 @@ namespace Game.UI
             }
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damage)
         {
             if (this.takeDamageTween != null)
             {

@@ -1,28 +1,31 @@
 ﻿using Atomic.Elements;
 using Atomic.Entities;
-using UnityEngine;
 
 namespace Game
 {
-    public class HandAttackBehaviour : IEntityInit, IEntityDispose
+    public class HandAttackBehaviour : IGameEntityInit, IGameEntityDispose
     {
         private DownTimer _hitDelay;
-        private TriggerEvents _trigger;
+        private TriggerEvents _handAttackRange;
         private IVariable<int> _damage;
-        
-        public void Init(IEntity entity)
+
+        public HandAttackBehaviour(DownTimer hitDelay)
         {
-            _hitDelay = entity.GetHitDelay();
-            _trigger = entity.GetTrigger();
+            _hitDelay = hitDelay;
+        }
+        
+        public void Init(IGameEntity entity)
+        {
+            _handAttackRange = entity.GetTrigger();
             _hitDelay.OnCompleted += this.ApplyHit;
             _damage = entity.GetDamage();
         }
 
         private void ApplyHit()
         {
-            foreach (var target in _trigger.CurrentColliders)
+            foreach (var target in _handAttackRange.CurrentColliders)
             {
-                if (target.TryGetEntity(out IEntity targetEntity) 
+                if (target.TryGetGameEntity(out var targetEntity)
                     && targetEntity.HasPlayerTag() && targetEntity.IsAliveTarget())
                 {
                     targetEntity.GetTakeDamageRequest().Invoke(_damage.Value);
@@ -30,7 +33,7 @@ namespace Game
             }
         }
         
-        public void Dispose(IEntity entity)
+        public void Dispose(IGameEntity entity)
         {
             _hitDelay.OnCompleted -= this.ApplyHit;
         }

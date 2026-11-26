@@ -1,9 +1,9 @@
 ﻿namespace: Game
-className: AtomicAPIExtensions
-directory: Assets/Game/Scripts/APIKeys/
+className: GameEntityAPI
+directory: Assets/Game/Scripts/Entities/Domain/API/
 aggressiveInlining: true
 unsafe: false
-entityType: IEntity
+entityType: IGameEntity
 
 imports:
 - UnityEngine
@@ -11,6 +11,8 @@ imports:
 - System.Collections.Generic
 - Atomic.Entities
 - Unity.Mathematics
+- System.Numerics
+- Game
 
 tags:
     -Player
@@ -38,52 +40,49 @@ values:
      -MoveTime : IVariable<float>  
        
 # Health
-     -CurrentHealth : IReactiveVariable<int>
-     -MaxHealth :  IValue<int>
+     -CurrentHealth : IReactiveVariable<float>
+     -MaxHealth :  IValue<float>
      
 # Death
      -HitCollider : Collider
      
 # Damage
-     -TakeDamageRequest : IRequest<int>
-     -TakeDamageCondition : IExpression<int, bool>
-     -TakeDamageAction : ICompositeAction<int>
-     -TakeDamageEvent : IEvent<int>
+     -TakeDamageRequest : IRequest<float>
+     -TakeDamageCondition : IExpression<float, bool>
+     -TakeDamageAction : ICompositeAction<float>
+     -TakeDamageEvent : IEvent<float>
      
      -Damage : IVariable<int>
      
 # Attack
-    -AttackRequest : IRequest
+    -AttackRequest : IRequest<Vector3>
     -AttackCondition : IExpression<bool>
-    -AttackAction : ICompositeAction
+    -AttackAction : ICompositeAction<Vector3>
     -AttackEvent : IEvent
     
-    -AttackCooldown : ICooldown
-
 # Weapon
-    -Weapon : IVariable<IEntity>
-    -Ammo : IVariable<int>
-    -SpreadAngle : Const<float>
-    -HitDelay : DownTimer
+    -Weapon : IVariable<IGameEntity>
+    -Ammo : IReactiveVariable<float>
     
 # Bullet
     -LifeTime : DownTimer
     -Trigger : TriggerEvents
     -SphereCastRadius : Const<float>
     -LayerMask : Const<LayerMask>
+    -DespawnEvent : IEvent
     
 # Trigger
-    -TriggerEnemies : List<SceneEntity>
-    
+    -TriggerEnemies : List<GameEntity>
+
 # Zombie
-    -Target : IVariable<IEntity>
+    -Target : IVariable<IGameEntity>
     -AttackDistance : Const<float>
-    
+
 #Item
-    -PickupRequest : IRequest<IEntity>
-    -PickupCondition : AndExpression<IEntity>
-    -PickupAction : ICompositeAction<IEntity>
-    -PickupEvent : IEvent<IEntity>
+    -PickupRequest : IRequest<IGameEntity>
+    -PickupCondition : AndExpression<IGameEntity>
+    -PickupAction : ICompositeAction<IGameEntity>
+    -PickupEvent : IEvent<IGameEntity>
     
     -VFX : ParticleSystem
     -SFX : AudioSource

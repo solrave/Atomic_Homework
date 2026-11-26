@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Game
 {
-    public class DeathBehaviour : IEntityInit
+    public class DeathBehaviour : IGameEntityInit
     {
         private readonly DisposableComposite _disposables = new();
         
-        public void Init(IEntity entity)
+        public void Init(IGameEntity entity)
         {
             entity.GetCurrentHealth().Subscribe(currentHealth =>
                 {

@@ -2,16 +2,16 @@
 
 namespace Game
 {
-    public class ItemPickupBehaviour : IEntityInit, IEntityTick
+    public class ItemPickupBehaviour : IGameEntityInit, IGameEntityTick
     {
-        private IEntity _item;
+        private IGameEntity _item;
         
-        public void Init(IEntity entity)
+        public void Init(IGameEntity entity)
         {
             _item = entity;
         }
 
-        public void Tick(IEntity entity, float deltaTime)
+        public void Tick(IGameEntity entity, float deltaTime)
         {
             if (!_item.GetPickupRequest().Consume(out var player) 
                 || !_item.GetPickupCondition().Invoke(player)) return;

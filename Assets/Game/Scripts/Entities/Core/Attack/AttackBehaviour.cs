@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Game
 {
-    public class AttackBehaviour : IEntityInit, IEntityTick
+    public class AttackBehaviour : IGameEntityInit, IGameEntityTick
     {
-        private IRequest _request;
+        private IRequest<Vector3> _request;
         private IExpression<bool> _condition;
-        private ICompositeAction _action;
+        private ICompositeAction<Vector3> _action;
         private IEvent _event;
         
-        public void Init(IEntity entity)
+        public void Init(IGameEntity entity)
         {
             _request = entity.GetAttackRequest();
             _condition = entity.GetAttackCondition();
@@ -19,11 +19,11 @@ namespace Game
             _event = entity.GetAttackEvent();
         }
 
-        public void Tick(IEntity entity, float deltaTime)
+        public void Tick(IGameEntity entity, float deltaTime)
         {
-            if (!_request.Consume() || !_condition.Invoke()) return;
+            if (!_request.Consume(out var direction) || !_condition.Invoke()) return;
             
-            _action.Invoke();
+            _action.Invoke(direction);
             _event.Invoke();
         }
     }

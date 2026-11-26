@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace Game
 {
-    public class ZombieAIBehaviour : IEntityInit, IEntityFixedTick
+    public class ZombieAIBehaviour : IGameEntityInit, IGameEntityFixedTick
     {
-        private IEntity _target;
+        private IGameEntity _target;
         private float _attackDistance;
         
-        public void Init(IEntity entity)
+        public void Init(IGameEntity entity)
         {
             _attackDistance = entity.GetAttackDistance();
         }
         
-        public void FixedTick(IEntity entity, float deltaTime)
+        public void FixedTick(IGameEntity entity, float deltaTime)
         {
             _target = entity.GetTarget().Value;
             
@@ -30,7 +30,7 @@ namespace Game
             else
             {
                 entity.SetLookDirection(flatDirection.normalized);
-                entity.GetWeapon().Value.GetAttackRequest().Invoke();
+                entity.GetWeapon().Value.GetAttackRequest().Invoke(entity.GetLookDirection().Value);
             }
         }
     }

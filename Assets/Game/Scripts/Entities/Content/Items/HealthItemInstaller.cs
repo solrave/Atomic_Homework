@@ -5,19 +5,12 @@ namespace Game
 {
     public class HealthItemInstaller : ItemInstaller
     {
-        private DisposableComposite _disposables = new();
-        
-        public override void Install(IEntity entity)
+        public override void Install(IGameEntity entity)
         {
             base.Install(entity);
-            
-            entity.GetPickupAction().Add(player => player.Heal(entity.GetAmount()));
-            entity.GetPickupCondition().Add(player => player.CanHeal());
-        }
 
-        public override void Uninstall(IEntity entity)
-        {
-            _disposables.Dispose();
+            entity.GetPickupAction().Add(player => player.PickHealth(entity.GetAmount()));
+            entity.GetPickupCondition().Add(player => player.CanHeal());
         }
     }
 }

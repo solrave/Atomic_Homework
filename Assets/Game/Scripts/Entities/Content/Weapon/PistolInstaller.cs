@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class PistolInstaller : SceneEntityInstaller
+    public class PistolInstaller : GameEntityInstaller
     {
         [SerializeField]
         private int _ammo;
@@ -16,30 +16,28 @@ namespace Game
         private Transform _firePoint;
         
         [SerializeField]
-        private SceneEntity _projectilePrefab;
-        
-        [SerializeField]
         private AttackInstaller _attackInstaller;
         
         [SerializeField]
         private Cooldown _cooldown;
         
-        public override void Install(IEntity entity)
+        public override void Install(IGameEntity entity)
         {
            _attackInstaller.Install(entity);
 
-           entity.AddAttackCooldown(_cooldown);
-           entity.AddAmmo(new Variable<int>(_ammo));
-           entity.AddSpreadAngle(_spreadAngle);
-           
-           entity.GetAttackAction().Add(() => entity.GetAmmo().Value--);
-           entity.GetAttackAction().Add(entity.GetAttackCooldown().ResetTime);
-           entity.GetAttackAction().Add(() => 
-              SceneEntity.Create(_projectilePrefab, _firePoint.position, 
-                  _firePoint.rotation.WithRandomSpread(entity.GetSpreadAngle())));
+           entity.AddAmmo(new ReactiveVariable<float>(_ammo));
            
            entity.GetAttackCondition().Add(() => entity.GetAmmo().Value > 0);
-           entity.GetAttackCondition().Add(entity.GetAttackCooldown().IsCompleted);
+           entity.GetAttackCondition().Add(_cooldown.IsCompleted);
+           
+           entity.GetAttackAction().Add(_ => entity.GetAmmo().Value--);
+           entity.GetAttackAction().Add(_ => _cooldown.ResetTime());
+           entity.GetAttackAction().Add(look =>
+           {
+               var bullet = GameContext.Instance.GetBulletPool().Rent();
+               bullet.GetRigidbody().position = _firePoint.position;
+               bullet.GetRigidbody().rotation = Quaternion.LookRotation(look).WithRandomSpread(_spreadAngle);
+           });
            
            entity.WhenTick(_cooldown.Tick);
         }

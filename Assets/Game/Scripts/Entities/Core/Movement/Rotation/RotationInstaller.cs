@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Game
 {
-    public class RotationInstaller : SceneEntityInstaller
+    public class RotationInstaller : GameEntityInstaller
     {
         [SerializeField]
         private float _rotationSpeed;
         
-        public override void Install(IEntity entity)
+        public override void Install(IGameEntity entity)
         {
             entity.AddRotationSpeed(new Variable<float>(_rotationSpeed));
             entity.AddLookDirection(Vector3.zero);

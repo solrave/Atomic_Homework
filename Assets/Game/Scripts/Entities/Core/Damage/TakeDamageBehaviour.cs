@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Game
 {
-    public class TakeDamageBehaviour : IEntityInit, IEntityTick
+    public class TakeDamageBehaviour : IGameEntityInit, IGameEntityTick
     {
-        private IRequest<int> _request;
-        private IExpression<int, bool> _condition;
-        private ICompositeAction<int> _action;
-        private IEvent<int> _event;
+        private IRequest<float> _request;
+        private IExpression<float, bool> _condition;
+        private ICompositeAction<float> _action;
+        private IEvent<float> _event;
         
-        public void Init(IEntity entity)
+        public void Init(IGameEntity entity)
         {
             _request = entity.GetTakeDamageRequest();
             _condition = entity.GetTakeDamageCondition();
@@ -19,9 +19,9 @@ namespace Game
             _event = entity.GetTakeDamageEvent();
         }
         
-        public void Tick(IEntity entity, float deltaTime)
+        public void Tick(IGameEntity entity, float deltaTime)
         {
-            if (_request.Consume(out int damage) && _condition.Invoke(damage))
+            if (_request.Consume(out float damage) && _condition.Invoke(damage))
             {
                 _action.Invoke(damage);
                 _event.Invoke(damage);

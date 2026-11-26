@@ -171,7 +171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6979400397003836636}
   - component: {fileID: 4267398721809954443}
-  - component: {fileID: 827333940064019911}
+  - component: {fileID: 4507706674194550818}
   - component: {fileID: 5340088768723465745}
   - component: {fileID: 7008755718767433219}
   m_Layer: 11
@@ -220,7 +220,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.48086452, y: 0.5, z: 0.6702087}
   m_Center: {x: -0.035928726, y: 0.25, z: 0.053168178}
---- !u!114 &827333940064019911
+--- !u!114 &4507706674194550818
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -229,9 +229,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3332313712654455240}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c799fc34130ee14f9a930d5afbe8f86, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Atomic.Entities::Atomic.Entities.SceneEntity
+  m_EditorClassIdentifier: Assembly-CSharp::Game.GameEntity
   useUnityLifecycle: 1
   disposeValues: 1
   installOnAwake: 1
@@ -385,6 +385,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 6296879df197c4623a6fb41f63a1905d, type: 2}
+    - target: {fileID: 6591815806074881312, guid: 65cb20f8c841b431b82ba08ed45644e1, type: 3}
+      propertyPath: stopAction
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

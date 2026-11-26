@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class ZombieInstaller : SceneEntityInstaller
+    public class ZombieInstaller : GameEntityInstaller
     {
         [SerializeField] 
         private RigidbodyInstaller _rigidBodyInstaller;
@@ -25,11 +25,11 @@ namespace Game
         private float _attackDistance;
         
         [SerializeField]
-        private SceneEntity _weapon;
+        private GameEntity _weapon;
         
-        public override void Install(IEntity entity)
+        public override void Install(IGameEntity entity)
         {
-            entity.AddWeapon(new Variable<IEntity>(_weapon));
+            entity.AddWeapon(new Variable<IGameEntity>(_weapon));
            _weapon.WhenInstall(() => _weapon.GetAttackCondition().Add(entity, entity.IsAliveTarget));
             
             _rigidBodyInstaller.Install(entity);
@@ -38,7 +38,7 @@ namespace Game
             _healthInstaller.Install(entity);
             _viewInstaller.Install(entity);
             
-            entity.AddTarget(new Variable<IEntity>());
+            entity.AddTarget(new Variable<IGameEntity>());
             entity.AddAttackDistance(_attackDistance);
             
             entity.AddBehaviour<ZombieAIBehaviour>();

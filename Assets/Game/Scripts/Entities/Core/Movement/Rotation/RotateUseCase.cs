@@ -5,7 +5,7 @@ namespace Game
 {
     public static class RotateUseCase
     {
-        public static void RotateStep(this IEntity entity, float deltaTime)
+        public static void RotateStep(this IGameEntity entity, float deltaTime)
         {
             var rigidbody = entity.GetRigidbody();
             var lookDirection = entity.GetLookDirection().Value;

@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Game
 {
-    public class TargetSelectBehaviour : IEntityInit, IEntityDispose
+    public class TargetSelectBehaviour : IGameEntityInit, IGameEntityDispose
     {
         private TriggerEvents _trigger;
-        private List<SceneEntity> _enemies;
+        private List<GameEntity> _enemies;
         
-        public void Init(IEntity entity)
+        public void Init(IGameEntity entity)
         {
             _trigger = entity.GetTrigger();
             _trigger.OnEntered += this.OnTriggerEntered;
@@ -18,7 +18,7 @@ namespace Game
             _enemies = entity.GetTriggerEnemies();
         }
         
-        public void Dispose(IEntity entity)
+        public void Dispose(IGameEntity entity)
         {
             _trigger.OnEntered -= this.OnTriggerEntered;
             _trigger.OnExited -= this.OnTriggerExited;

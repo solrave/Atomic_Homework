@@ -4,26 +4,28 @@ using UnityEngine;
 
 namespace Game
 {
-    public class ItemTriggerBehaviour : IEntityInit, IEntityDispose
+    public class ItemTriggerBehaviour : IGameEntityInit, IGameEntityDispose
     {
-        private IEntity _item;
+        private IGameEntity _item;
         private TriggerEvents _trigger;
         
-        public void Init(IEntity entity)
+        public void Init(IGameEntity entity)
         {
             _item = entity;
             _trigger = entity.GetTrigger();
             _trigger.OnEntered += this.Pickup;
         }
         
-        public void Dispose(IEntity entity)
+        public void Dispose(IGameEntity entity)
         {
             _trigger.OnEntered -= this.Pickup;
         }
         
         private void Pickup(Collider obj)
         {
-            if (!obj.TryGetEntity(out var player) || !player.HasPlayerTag()) return;
+            Debug.Log("Picup1");
+            if (!obj.TryGetGameEntity(out var player) || !player.HasPlayerTag()) return;
+            Debug.Log("Picup222222");
 
             _item.GetPickupRequest().Invoke(player);
         }

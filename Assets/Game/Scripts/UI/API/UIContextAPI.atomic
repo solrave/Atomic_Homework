@@ -1,0 +1,21 @@
+﻿namespace: Game
+className: UIContextAPI
+directory: Assets/Game/Scripts/UI/API
+aggressiveInlining: true
+unsafe: false
+entityType: IGameUI
+
+imports:
+- Game
+- Game.UI
+
+tags:
+  # Add your tags here
+  # - Player
+  # - Enemy
+
+values:
+  -HealthView : HealthScreenView
+  -HealthCount  : StatView
+  -AmmoCount  : StatView
+  -KillCount  : StatView

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class CharacterInstaller : SceneEntityInstaller
+    public class CharacterInstaller : GameEntityInstaller
     {
         [SerializeField] 
         private RigidbodyInstaller _rigidBodyInstaller;
@@ -22,12 +22,12 @@ namespace Game
         private ViewInstaller _viewInstaller;
 
         [SerializeField]
-        private SceneEntity _weapon;
+        private GameEntity _weapon;
         
-        public override void Install(IEntity entity)
+        public override void Install(IGameEntity entity)
         {
            entity.AddPlayerTag();
-           entity.AddWeapon(new Variable<IEntity>(_weapon));
+           entity.AddWeapon(new Variable<IGameEntity>(_weapon));
            _weapon.WhenInstall(() => _weapon.GetAttackCondition().Add(entity, entity.IsAliveTarget));
            
            _rigidBodyInstaller.Install(entity);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class ItemInstaller : SceneEntityInstaller
+    public class ItemInstaller : GameEntityInstaller
     {
         [SerializeField] 
         private TriggerEvents _trigger;
@@ -23,17 +23,17 @@ namespace Game
         
         private DisposableComposite _disposables = new();
         
-        public override void Install(IEntity entity)
+        public override void Install(IGameEntity entity)
         {
             entity.AddTrigger(_trigger);
             entity.AddVFX(_vfx);
             entity.AddSFX(_sfx);
             entity.AddAmount(_amount);
             
-            entity.AddPickupRequest(new Request<IEntity>());
-            entity.AddPickupCondition(new AndExpression<IEntity>());
-            entity.AddPickupAction(new CompositeAction<IEntity>());
-            entity.AddPickupEvent(new Event<IEntity>());
+            entity.AddPickupRequest(new Request<IGameEntity>());
+            entity.AddPickupCondition(new AndExpression<IGameEntity>());
+            entity.AddPickupAction(new CompositeAction<IGameEntity>());
+            entity.AddPickupEvent(new Event<IGameEntity>());
             
             entity.GetPickupEvent().Subscribe(_ 
                 => AudioSource.PlayClipAtPoint(entity.GetSFX().clip, transform.position)).AddTo(_disposables);
@@ -51,7 +51,7 @@ namespace Game
             entity.AddBehaviour<ItemPickupBehaviour>();
         }
         
-        public override void Uninstall(IEntity entity)
+        public override void Uninstall(IGameEntity entity)
         {
             _disposables.Dispose();
         }
