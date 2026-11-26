@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using UnityEditor;
 #endif
 using Game;
+using Atomic.Elements;
 
 namespace Game
 {
@@ -20,12 +21,14 @@ namespace Game
 		///Values
 		public static readonly int BulletPool; // BulletPool
 		public static readonly int Player; // IGameEntity
+		public static readonly int Score; // IReactiveVariable<int>
 
 		static GameContextAPI()
 		{
 			//Values
 			BulletPool = NameToId(nameof(BulletPool));
 			Player = NameToId(nameof(Player));
+			Score = NameToId(nameof(Score));
 		}
 
 
@@ -72,6 +75,28 @@ namespace Game
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void SetPlayer(this IEntity entity, IGameEntity value) => entity.SetValue(Player, value);
+
+		#endregion
+
+		#region Score
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IReactiveVariable<int> GetScore(this IEntity entity) => entity.GetValue<IReactiveVariable<int>>(Score);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetScore(this IEntity entity, out IReactiveVariable<int> value) => entity.TryGetValue(Score, out value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void AddScore(this IEntity entity, IReactiveVariable<int> value) => entity.AddValue(Score, value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasScore(this IEntity entity) => entity.HasValue(Score);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelScore(this IEntity entity) => entity.DelValue(Score);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void SetScore(this IEntity entity, IReactiveVariable<int> value) => entity.SetValue(Score, value);
 
 		#endregion
     }

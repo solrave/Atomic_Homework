@@ -27813,7 +27813,7 @@ MonoBehaviour:
   _healthScreenView: {fileID: 548561269895222117}
   _healthCount: {fileID: 7160444056652517396}
   _ammoCount: {fileID: 7160444056652517395}
-  _killCount: {fileID: 0}
+  _killCount: {fileID: 2087522111}
 --- !u!1001 &7160444056652517393
 PrefabInstance:
   m_ObjectHideFlags: 0

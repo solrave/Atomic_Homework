@@ -22,7 +22,7 @@ namespace Game
         {
             ui.AddHealthView(_healthScreenView);
             ui.AddHealthCount(_healthCount);
-            ui.AddKillCount(_killCount);
+            ui.AddScoreView(_killCount);
             ui.AddAmmoCount(_ammoCount);
             ui.AddBehaviour<GameUIPresenter>();
         }

@@ -32,23 +32,23 @@ namespace Game
         [SerializeField]
         private DownTimer _lifeTime;
         
-        public override void Install(IGameEntity entity)
+        public override void Install(IGameEntity bullet)
         {
-            _rigidBodyInstaller.Install(entity);
-            _rigidBodyMoveInstaller.Install(entity);
+            _rigidBodyInstaller.Install(bullet);
+            _rigidBodyMoveInstaller.Install(bullet);
             
-            entity.AddLifeTime(_lifeTime);
-            entity.AddDamage(new Variable<int>(_damage));
-            entity.AddTrigger(_trigger);
-            entity.AddSphereCastRadius(_sphereCastRadius);
-            entity.AddLayerMask(_layerMask);
-            entity.AddDespawnEvent(new Event());
+            bullet.AddLifeTime(_lifeTime);
+            bullet.AddDamage(new Variable<int>(_damage));
+            bullet.AddTrigger(_trigger);
+            bullet.AddSphereCastRadius(_sphereCastRadius);
+            bullet.AddLayerMask(_layerMask);
+            bullet.AddDespawnEvent(new Event());
             
-            entity.GetMoveAction().Add(entity.CheckHit);
-            entity.GetMoveAction().Add(entity.RigidbodyMoveStep);
-            entity.WhenFixedTick(_ => entity.GetMoveRequest().Invoke(entity.GetRigidbody().rotation * Vector3.forward));
+            bullet.GetMoveAction().Add(bullet.CheckHit);
+            bullet.GetMoveAction().Add(bullet.RigidbodyMoveStep);
+            bullet.WhenFixedTick(_ => bullet.GetMoveRequest().Invoke(bullet.GetRigidbody().rotation * Vector3.forward));
             
-            entity.AddBehaviour<BulletLifeTimeBehaviour>();
+            bullet.AddBehaviour<BulletLifeTimeBehaviour>();
         }
     }
 }

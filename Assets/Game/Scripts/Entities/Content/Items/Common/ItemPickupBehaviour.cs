@@ -6,12 +6,12 @@ namespace Game
     {
         private IGameEntity _item;
         
-        public void Init(IGameEntity entity)
+        public void Init(IGameEntity item)
         {
-            _item = entity;
+            _item = item;
         }
 
-        public void Tick(IGameEntity entity, float deltaTime)
+        public void Tick(IGameEntity item, float deltaTime)
         {
             if (!_item.GetPickupRequest().Consume(out var player) 
                 || !_item.GetPickupCondition().Invoke(player)) return;

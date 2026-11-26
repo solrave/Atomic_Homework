@@ -21,22 +21,22 @@ namespace Game
         [SerializeField] 
         private int _damage;
         
-        public override void Install(IGameEntity entity)
+        public override void Install(IGameEntity hand)
         {
-           _attackInstaller.Install(entity);
+           _attackInstaller.Install(hand);
 
-           entity.AddTrigger(_trigger);
-           entity.AddDamage(new Variable<int>(_damage));
+           hand.AddTrigger(_trigger);
+           hand.AddDamage(new Variable<int>(_damage));
            
-           entity.AddBehaviour(new HandAttackBehaviour(_hitDelay));
+           hand.AddBehaviour(new HandAttackBehaviour(_hitDelay));
            
-           entity.GetAttackCondition().Add(() => _cooldown.IsCompleted());
+           hand.GetAttackCondition().Add(() => _cooldown.IsCompleted());
            
-           entity.GetAttackAction().Add(_ => _cooldown.ResetTime());
-           entity.GetAttackAction().Add(_ => _hitDelay.Start());
+           hand.GetAttackAction().Add(_ => _cooldown.ResetTime());
+           hand.GetAttackAction().Add(_ => _hitDelay.Start());
            
-           entity.WhenTick(_cooldown.Tick);
-           entity.WhenTick(_hitDelay.Tick);
+           hand.WhenTick(_cooldown.Tick);
+           hand.WhenTick(_hitDelay.Tick);
         }
     }
 }

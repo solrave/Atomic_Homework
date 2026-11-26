@@ -8,17 +8,17 @@ namespace Game
         private IGameEntity _self;
         private ITimer _lifeTime;
         
-        public void Init(IGameEntity entity)
+        public void Init(IGameEntity bullet)
         {
-            _self = entity;
-            _lifeTime = entity.GetLifeTime();
+            _self = bullet;
+            _lifeTime = bullet.GetLifeTime();
             _lifeTime.OnCompleted += this.OnLifeEnded;
         }
 
-        public void FixedTick(IGameEntity entity, float deltaTime) => _lifeTime.Tick(deltaTime);
+        public void FixedTick(IGameEntity bullet, float deltaTime) => _lifeTime.Tick(deltaTime);
 
         private void OnLifeEnded() => _self.GetDespawnEvent().Invoke();
 
-        public void Dispose(IGameEntity entity) => _lifeTime.OnCompleted -= this.OnLifeEnded;
+        public void Dispose(IGameEntity bullet) => _lifeTime.OnCompleted -= this.OnLifeEnded;
     }
 }

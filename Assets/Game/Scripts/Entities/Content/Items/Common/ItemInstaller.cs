@@ -23,35 +23,35 @@ namespace Game
         
         private DisposableComposite _disposables = new();
         
-        public override void Install(IGameEntity entity)
+        public override void Install(IGameEntity item)
         {
-            entity.AddTrigger(_trigger);
-            entity.AddVFX(_vfx);
-            entity.AddSFX(_sfx);
-            entity.AddAmount(_amount);
+            item.AddTrigger(_trigger);
+            item.AddVFX(_vfx);
+            item.AddSFX(_sfx);
+            item.AddAmount(_amount);
             
-            entity.AddPickupRequest(new Request<IGameEntity>());
-            entity.AddPickupCondition(new AndExpression<IGameEntity>());
-            entity.AddPickupAction(new CompositeAction<IGameEntity>());
-            entity.AddPickupEvent(new Event<IGameEntity>());
+            item.AddPickupRequest(new Request<IGameEntity>());
+            item.AddPickupCondition(new AndExpression<IGameEntity>());
+            item.AddPickupAction(new CompositeAction<IGameEntity>());
+            item.AddPickupEvent(new Event<IGameEntity>());
             
-            entity.GetPickupEvent().Subscribe(_ 
-                => AudioSource.PlayClipAtPoint(entity.GetSFX().clip, transform.position)).AddTo(_disposables);
+            item.GetPickupEvent().Subscribe(_ 
+                => AudioSource.PlayClipAtPoint(item.GetSFX().clip, transform.position)).AddTo(_disposables);
             
-            entity.GetPickupEvent().Subscribe(_ 
-                => { var vfx = Instantiate(entity.GetVFX(),
+            item.GetPickupEvent().Subscribe(_ 
+                => { var vfx = Instantiate(item.GetVFX(),
                     new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.rotation);
                 vfx.Play();}).AddTo(_disposables);
             
-            entity.GetPickupEvent().Subscribe(_ 
+            item.GetPickupEvent().Subscribe(_ 
                 => {gameObject.GetComponent<Collider>().enabled = false; 
-                SceneEntity.Destroy(entity, 0.3f);}).AddTo(_disposables);
+                SceneEntity.Destroy(item, 0.3f);}).AddTo(_disposables);
             
-            entity.AddBehaviour<ItemTriggerBehaviour>();
-            entity.AddBehaviour<ItemPickupBehaviour>();
+            item.AddBehaviour<ItemTriggerBehaviour>();
+            item.AddBehaviour<ItemPickupBehaviour>();
         }
         
-        public override void Uninstall(IGameEntity entity)
+        public override void Uninstall(IGameEntity item)
         {
             _disposables.Dispose();
         }

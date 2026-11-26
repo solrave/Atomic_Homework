@@ -5,20 +5,20 @@ namespace Game
 {
     public static class BulletUseCase
     {
-        public static void CheckHit(this IGameEntity entity, Vector3 direction, float deltaTime)
+        public static void CheckHit(this IGameEntity bullet, Vector3 direction, float deltaTime)
         {
-            if (HitReceived(entity, direction, deltaTime, out IGameEntity target))
+            if (HitReceived(bullet, direction, deltaTime, out IGameEntity target))
             {
-                ApplyHit(entity, target);
+                ApplyHit(bullet, target);
             }
         }
 
-        public static bool HitReceived(this IGameEntity entity, Vector3 direction, float deltaTime, out IGameEntity targetEntity)
+        public static bool HitReceived(this IGameEntity bullet, Vector3 direction, float deltaTime, out IGameEntity targetEntity)
         {
-            var radius = entity.GetSphereCastRadius().Value;
-            var layerMask = entity.GetLayerMask().Value;
-            var origin = entity.GetRigidbody().position;
-            var speed = entity.GetMoveSpeed().Value;
+            var radius = bullet.GetSphereCastRadius().Value;
+            var layerMask = bullet.GetLayerMask().Value;
+            var origin = bullet.GetRigidbody().position;
+            var speed = bullet.GetMoveSpeed().Value;
             targetEntity = null;
 
             if (!Physics.SphereCast(origin, radius, direction,
@@ -35,13 +35,13 @@ namespace Game
             return true;
         }
 
-        public static void ApplyHit(IGameEntity entity, IGameEntity targetEntity)
+        public static void ApplyHit(IGameEntity bullet, IGameEntity targetEntity)
         {
-            var damage = entity.GetDamage().Value;
+            var damage = bullet.GetDamage().Value;
             targetEntity.GetTakeDamageRequest().Invoke(damage);
-            entity.DelMoveableTag();
-            entity.GetLifeTime().Stop();
-            entity.GetDespawnEvent().Invoke();
+            bullet.DelMoveableTag();
+            bullet.GetLifeTime().Stop();
+            bullet.GetDespawnEvent().Invoke();
         }
     }
 }

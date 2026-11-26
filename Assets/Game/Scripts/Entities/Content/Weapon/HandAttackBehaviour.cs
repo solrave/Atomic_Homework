@@ -14,11 +14,11 @@ namespace Game
             _hitDelay = hitDelay;
         }
         
-        public void Init(IGameEntity entity)
+        public void Init(IGameEntity hand)
         {
-            _handAttackRange = entity.GetTrigger();
+            _handAttackRange = hand.GetTrigger();
             _hitDelay.OnCompleted += this.ApplyHit;
-            _damage = entity.GetDamage();
+            _damage = hand.GetDamage();
         }
 
         private void ApplyHit()
@@ -33,7 +33,7 @@ namespace Game
             }
         }
         
-        public void Dispose(IGameEntity entity)
+        public void Dispose(IGameEntity hand)
         {
             _hitDelay.OnCompleted -= this.ApplyHit;
         }

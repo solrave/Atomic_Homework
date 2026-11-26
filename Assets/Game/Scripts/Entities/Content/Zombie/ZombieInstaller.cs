@@ -27,24 +27,25 @@ namespace Game
         [SerializeField]
         private GameEntity _weapon;
         
-        public override void Install(IGameEntity entity)
+        public override void Install(IGameEntity zombie)
         {
-            entity.AddWeapon(new Variable<IGameEntity>(_weapon));
-           _weapon.WhenInstall(() => _weapon.GetAttackCondition().Add(entity, entity.IsAliveTarget));
+            zombie.AddEnemyTag();
+            zombie.AddWeapon(new Variable<IGameEntity>(_weapon));
+           _weapon.WhenInstall(() => _weapon.GetAttackCondition().Add(zombie, zombie.IsAliveTarget));
             
-            _rigidBodyInstaller.Install(entity);
-            _rigidBodyMoveInstaller.Install(entity);
-            _rotationInstaller.Install(entity);
-            _healthInstaller.Install(entity);
-            _viewInstaller.Install(entity);
+            _rigidBodyInstaller.Install(zombie);
+            _rigidBodyMoveInstaller.Install(zombie);
+            _rotationInstaller.Install(zombie);
+            _healthInstaller.Install(zombie);
+            _viewInstaller.Install(zombie);
             
-            entity.AddTarget(new Variable<IGameEntity>());
-            entity.AddAttackDistance(_attackDistance);
+            zombie.AddTarget(new Variable<IGameEntity>());
+            zombie.AddAttackDistance(_attackDistance);
             
-            entity.AddBehaviour<ZombieAIBehaviour>();
+            zombie.AddBehaviour<ZombieAIBehaviour>();
             
-            entity.GetMoveAction().Add(entity.RigidbodyMoveStep);
-            entity.GetMoveCondition().Add(_ => entity.HasAliveTag() && entity.HasMoveableTag());
+            zombie.GetMoveAction().Add(zombie.RigidbodyMoveStep);
+            zombie.GetMoveCondition().Add(_ => zombie.HasAliveTag() && zombie.HasMoveableTag());
         }
     }
 }

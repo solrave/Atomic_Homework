@@ -22,7 +22,7 @@ namespace Game
 		public static readonly int HealthView; // HealthScreenView
 		public static readonly int HealthCount; // StatView
 		public static readonly int AmmoCount; // StatView
-		public static readonly int KillCount; // StatView
+		public static readonly int ScoreView; // StatView
 
 		static UIContextAPI()
 		{
@@ -30,7 +30,7 @@ namespace Game
 			HealthView = NameToId(nameof(HealthView));
 			HealthCount = NameToId(nameof(HealthCount));
 			AmmoCount = NameToId(nameof(AmmoCount));
-			KillCount = NameToId(nameof(KillCount));
+			ScoreView = NameToId(nameof(ScoreView));
 		}
 
 
@@ -102,25 +102,25 @@ namespace Game
 
 		#endregion
 
-		#region KillCount
+		#region ScoreView
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static StatView GetKillCount(this IGameUI entity) => entity.GetValue<StatView>(KillCount);
+		public static StatView GetScoreView(this IGameUI entity) => entity.GetValue<StatView>(ScoreView);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool TryGetKillCount(this IGameUI entity, out StatView value) => entity.TryGetValue(KillCount, out value);
+		public static bool TryGetScoreView(this IGameUI entity, out StatView value) => entity.TryGetValue(ScoreView, out value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void AddKillCount(this IGameUI entity, StatView value) => entity.AddValue(KillCount, value);
+		public static void AddScoreView(this IGameUI entity, StatView value) => entity.AddValue(ScoreView, value);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool HasKillCount(this IGameUI entity) => entity.HasValue(KillCount);
+		public static bool HasScoreView(this IGameUI entity) => entity.HasValue(ScoreView);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool DelKillCount(this IGameUI entity) => entity.DelValue(KillCount);
+		public static bool DelScoreView(this IGameUI entity) => entity.DelValue(ScoreView);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void SetKillCount(this IGameUI entity, StatView value) => entity.SetValue(KillCount, value);
+		public static void SetScoreView(this IGameUI entity, StatView value) => entity.SetValue(ScoreView, value);
 
 		#endregion
     }

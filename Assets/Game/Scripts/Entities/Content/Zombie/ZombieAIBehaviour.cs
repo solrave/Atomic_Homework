@@ -8,29 +8,29 @@ namespace Game
         private IGameEntity _target;
         private float _attackDistance;
         
-        public void Init(IGameEntity entity)
+        public void Init(IGameEntity zombie)
         {
-            _attackDistance = entity.GetAttackDistance();
+            _attackDistance = zombie.GetAttackDistance();
         }
         
-        public void FixedTick(IGameEntity entity, float deltaTime)
+        public void FixedTick(IGameEntity zombie, float deltaTime)
         {
-            _target = entity.GetTarget().Value;
+            _target = zombie.GetTarget().Value;
             
-            if (!_target.IsAliveTarget() || !entity.IsAliveTarget()) return;
+            if (!_target.IsAliveTarget() || !zombie.IsAliveTarget()) return;
             
-            var direction = _target.GetRigidbody().position - entity.GetRigidbody().position;
+            var direction = _target.GetRigidbody().position - zombie.GetRigidbody().position;
             var flatDirection = new Vector3(direction.x, 0, direction.z);
             
             if (flatDirection.sqrMagnitude > _attackDistance * _attackDistance)
             {
-                entity.GetMoveRequest().Invoke(flatDirection.normalized);
-                entity.SetLookDirection(flatDirection.normalized);
+                zombie.GetMoveRequest().Invoke(flatDirection.normalized);
+                zombie.SetLookDirection(flatDirection.normalized);
             }
             else
             {
-                entity.SetLookDirection(flatDirection.normalized);
-                entity.GetWeapon().Value.GetAttackRequest().Invoke(entity.GetLookDirection().Value);
+                zombie.SetLookDirection(flatDirection.normalized);
+                zombie.GetWeapon().Value.GetAttackRequest().Invoke(zombie.GetLookDirection().Value);
             }
         }
     }

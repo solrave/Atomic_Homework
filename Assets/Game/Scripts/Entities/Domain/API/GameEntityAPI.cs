@@ -25,6 +25,7 @@ namespace Game
 		public static readonly int Moveable;
 		public static readonly int Damageable;
 		public static readonly int Alive;
+		public static readonly int Enemy;
 
 		///Values
 		public static readonly int Animator; // Animator
@@ -75,6 +76,7 @@ namespace Game
 			Moveable = NameToId(nameof(Moveable));
 			Damageable = NameToId(nameof(Damageable));
 			Alive = NameToId(nameof(Alive));
+			Enemy = NameToId(nameof(Enemy));
 
 			//Values
 			Animator = NameToId(nameof(Animator));
@@ -171,6 +173,19 @@ namespace Game
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool DelAliveTag(this IGameEntity entity) => entity.DelTag(Alive);
+
+		#endregion
+
+		#region Enemy
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasEnemyTag(this IGameEntity entity) => entity.HasTag(Enemy);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool AddEnemyTag(this IGameEntity entity) => entity.AddTag(Enemy);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool DelEnemyTag(this IGameEntity entity) => entity.DelTag(Enemy);
 
 		#endregion
 

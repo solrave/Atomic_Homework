@@ -1,4 +1,5 @@
-﻿using Atomic.Entities;
+﻿using Atomic.Elements;
+using Atomic.Entities;
 using UnityEngine;
 
 namespace Game
@@ -11,10 +12,11 @@ namespace Game
         [SerializeField] 
         private GameEntity _player;
 
-        public override void Install(IEntity entity)
+        public override void Install(IEntity gameContext)
         {
-            entity.AddBulletPool(_bulletPool);
-            entity.AddPlayer(_player);
+            gameContext.AddBulletPool(_bulletPool);
+            gameContext.AddPlayer(_player);
+            gameContext.AddScore(new ReactiveVariable<int>());
         }
     }
 }

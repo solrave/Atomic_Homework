@@ -18,4 +18,4 @@ values:
   -HealthView : HealthScreenView
   -HealthCount  : StatView
   -AmmoCount  : StatView
-  -KillCount  : StatView
+  -ScoreView : StatView

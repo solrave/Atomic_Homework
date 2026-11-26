@@ -24,21 +24,21 @@ namespace Game
         [SerializeField]
         private GameEntity _weapon;
         
-        public override void Install(IGameEntity entity)
+        public override void Install(IGameEntity character)
         {
-           entity.AddPlayerTag();
-           entity.AddWeapon(new Variable<IGameEntity>(_weapon));
-           _weapon.WhenInstall(() => _weapon.GetAttackCondition().Add(entity, entity.IsAliveTarget));
+           character.AddPlayerTag();
+           character.AddWeapon(new Variable<IGameEntity>(_weapon));
+           _weapon.WhenInstall(() => _weapon.GetAttackCondition().Add(character, character.IsAliveTarget));
            
-           _rigidBodyInstaller.Install(entity);
-           _rigidBodyMoveInstaller.Install(entity);
-           _rotationInstaller.Install(entity);
-           _healthInstaller.Install(entity);
-           _viewInstaller.Install(entity);
+           _rigidBodyInstaller.Install(character);
+           _rigidBodyMoveInstaller.Install(character);
+           _rotationInstaller.Install(character);
+           _healthInstaller.Install(character);
+           _viewInstaller.Install(character);
            
-           entity.AddBehaviour<CharacterFeetAnimBehaviour>();
-           entity.GetMoveAction().Add(entity.RigidbodyMoveStep);
-           entity.GetMoveCondition().Add(_ => entity.HasAliveTag());
+           character.AddBehaviour<CharacterFeetAnimBehaviour>();
+           character.GetMoveAction().Add(character.RigidbodyMoveStep);
+           character.GetMoveCondition().Add(_ => character.HasAliveTag());
         }
     }
 }

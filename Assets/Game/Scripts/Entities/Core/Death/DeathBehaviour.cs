@@ -15,6 +15,9 @@ namespace Game
                     if (currentHealth > 0) return;
                     entity.DelAliveTag();
                     entity.GetHitCollider().enabled = false;
+
+                    if (entity.HasEnemyTag())
+                        GameContext.Instance.GetScore().Value++;
                 })
                 .AddTo(_disposables);
         }

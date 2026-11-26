@@ -9,14 +9,14 @@ namespace Game
         private IGameEntity _item;
         private TriggerEvents _trigger;
         
-        public void Init(IGameEntity entity)
+        public void Init(IGameEntity item)
         {
-            _item = entity;
-            _trigger = entity.GetTrigger();
+            _item = item;
+            _trigger = item.GetTrigger();
             _trigger.OnEntered += this.Pickup;
         }
         
-        public void Dispose(IGameEntity entity)
+        public void Dispose(IGameEntity item)
         {
             _trigger.OnEntered -= this.Pickup;
         }

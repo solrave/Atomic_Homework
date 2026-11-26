@@ -8,6 +8,7 @@ namespace: Game
 imports:
 - Atomic.Entities
 - Game
+- Atomic.Elements
 
 tags:
   # Add your tags here
@@ -17,3 +18,4 @@ tags:
 values:
   - BulletPool : BulletPool
   - Player : IGameEntity
+  - Score : IReactiveVariable<int>

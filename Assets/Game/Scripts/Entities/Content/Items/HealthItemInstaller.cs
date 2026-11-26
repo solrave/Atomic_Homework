@@ -5,12 +5,12 @@ namespace Game
 {
     public class HealthItemInstaller : ItemInstaller
     {
-        public override void Install(IGameEntity entity)
+        public override void Install(IGameEntity health)
         {
-            base.Install(entity);
+            base.Install(health);
 
-            entity.GetPickupAction().Add(player => player.PickHealth(entity.GetAmount()));
-            entity.GetPickupCondition().Add(player => player.CanHeal());
+            health.GetPickupAction().Add(player => player.PickHealth(health.GetAmount()));
+            health.GetPickupCondition().Add(player => player.CanHeal());
         }
     }
 }

@@ -5,12 +5,12 @@ namespace Game
 {
     public class AmmoItemInstaller : ItemInstaller
     {
-        public override void Install(IGameEntity entity)
+        public override void Install(IGameEntity ammo)
         {
-            base.Install(entity);
+            base.Install(ammo);
 
-            entity.GetPickupAction().Add(player => player.PickAmmo(entity.GetAmount()));
-            entity.GetPickupCondition().Add(player => player.GetWeapon().Value.HasAmmo());
+            ammo.GetPickupAction().Add(player => player.PickAmmo(ammo.GetAmount()));
+            ammo.GetPickupCondition().Add(player => player.GetWeapon().Value.HasAmmo());
         }
     }
 }

@@ -16,11 +16,11 @@ namespace Game
         private Subscription<Vector3> _subscription;
         private Vector3 _local;
 
-        public void Init(IGameEntity entity)
+        public void Init(IGameEntity character)
         {
-            _animator = entity.GetAnimator();
-            _rigidbody = entity.GetRigidbody();
-            _moveEvent = entity.GetMoveEvent();
+            _animator = character.GetAnimator();
+            _rigidbody = character.GetRigidbody();
+            _moveEvent = character.GetMoveEvent();
             _subscription = _moveEvent.Subscribe(this.OnMove);
             _animator.SetBool(IsAiming, true);
         }
@@ -30,13 +30,13 @@ namespace Game
             _local = _rigidbody.transform.InverseTransformDirection(moveDirection);
         }
 
-        public void Tick(IGameEntity entity, float deltaTime)
+        public void Tick(IGameEntity character, float deltaTime)
         {
             _animator.SetFloat(AimX, _local.x, AIM_DAMP_TIME, deltaTime);
             _animator.SetFloat(AimZ, _local.z, AIM_DAMP_TIME, deltaTime);
         }
         
-        public void Dispose(IGameEntity entity)
+        public void Dispose(IGameEntity character)
         {
             _subscription.Dispose();
         }

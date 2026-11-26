@@ -21,25 +21,25 @@ namespace Game
         [SerializeField]
         private Cooldown _cooldown;
         
-        public override void Install(IGameEntity entity)
+        public override void Install(IGameEntity pistol)
         {
-           _attackInstaller.Install(entity);
+           _attackInstaller.Install(pistol);
 
-           entity.AddAmmo(new ReactiveVariable<float>(_ammo));
+           pistol.AddAmmo(new ReactiveVariable<float>(_ammo));
            
-           entity.GetAttackCondition().Add(() => entity.GetAmmo().Value > 0);
-           entity.GetAttackCondition().Add(_cooldown.IsCompleted);
+           pistol.GetAttackCondition().Add(() => pistol.GetAmmo().Value > 0);
+           pistol.GetAttackCondition().Add(_cooldown.IsCompleted);
            
-           entity.GetAttackAction().Add(_ => entity.GetAmmo().Value--);
-           entity.GetAttackAction().Add(_ => _cooldown.ResetTime());
-           entity.GetAttackAction().Add(look =>
+           pistol.GetAttackAction().Add(_ => pistol.GetAmmo().Value--);
+           pistol.GetAttackAction().Add(_ => _cooldown.ResetTime());
+           pistol.GetAttackAction().Add(look =>
            {
                var bullet = GameContext.Instance.GetBulletPool().Rent();
                bullet.GetRigidbody().position = _firePoint.position;
                bullet.GetRigidbody().rotation = Quaternion.LookRotation(look).WithRandomSpread(_spreadAngle);
            });
            
-           entity.WhenTick(_cooldown.Tick);
+           pistol.WhenTick(_cooldown.Tick);
         }
     }
 }

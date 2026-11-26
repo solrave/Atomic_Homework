@@ -19,6 +19,7 @@ tags:
     -Moveable
     -Damageable
     -Alive
+    -Enemy
 
 values:
 # Animator
